@@ -531,26 +531,26 @@
         // Products database with exact image mappings requested
         const products = [
             // Discord (img/discord.png)
-            { id: 1, category: 'discord', name: 'configuração', price: 'R$ 7', subtitle: 'Configuração básica inicial para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
-            { id: 2, category: 'discord', name: 'discord-básico', price: 'R$ 15', subtitle: 'Servidor Discord básico estruturado e pronto', icon: 'fa-server', image: 'img/dc_base.jpg' },
-            { id: 3, category: 'discord', name: 'discord-profissional', price: 'R$ 30', subtitle: 'Servidor completo com cargos, bots e segurança', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
-            { id: 4, category: 'discord', name: 'discord-premium', price: 'R$ 50', subtitle: 'Servidor avançado com design visual exclusivo', icon: 'fa-crown', image: 'img/dc_premiun.jpg' },
-            { id: 5, category: 'discord', name: 'discord-personalizado', price: 'R$ 70', subtitle: 'Setup 100% sob medida para seu projeto/guilda', icon: 'fa-star', image: 'img/dc_pers.jpg' },
+            { id: 1, category: 'discord', name: 'configuração', price: 'R$ 6,99', subtitle: 'Configuração básica inicial para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
+            { id: 2, category: 'discord', name: 'discord-básico', price: 'R$ 15,49', subtitle: 'Servidor Discord básico estruturado e pronto', icon: 'fa-server', image: 'img/dc_base.jpg' },
+            { id: 3, category: 'discord', name: 'discord-profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos, bots e segurança', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
+            { id: 4, category: 'discord', name: 'discord-premium', price: 'R$ 49,49', subtitle: 'Servidor avançado com design visual exclusivo', icon: 'fa-crown', image: 'img/dc_premiun.jpg' },
+            { id: 5, category: 'discord', name: 'discord-personalizado', price: 'R$ 69,90', subtitle: 'Setup 100% sob medida para seu projeto/guilda', icon: 'fa-star', image: 'img/dc_pers.jpg' },
 
             // Sites (img/site.png)
-            { id: 6, category: 'sites', name: 'link-na-bio', price: 'R$ 15', subtitle: 'Página de links estilizada, rápida e responsiva', icon: 'fa-link', image: 'img/link_na_bio.jpg' },
-            { id: 7, category: 'sites', name: 'página-divulgação', price: 'R$ 25', subtitle: 'Página focada em conversão e anúncios', icon: 'fa-bullhorn', image: 'img/divulgacao.jpg' },
-            { id: 8, category: 'sites', name: 'portfólio', price: 'R$ 30', subtitle: 'Mostre seus trabalhos e serviços com elegância', icon: 'fa-briefcase', image: 'img/portfolio.jpg' },
-            { id: 9, category: 'sites', name: 'landing-page', price: 'R$ 35', subtitle: 'Landing page moderna de alta performance', icon: 'fa-window-maximize', image: 'img/pages.jpg' },
-            { id: 10, category: 'sites', name: 'site-institucional', price: 'R$ 50', subtitle: 'Site corporativo profissional completo', icon: 'fa-building', image: 'img/institucional.jpg' },
-            { id: 11, category: 'sites', name: 'site-gta-rp', price: 'R$ 50', subtitle: 'Painel ou site dedicado para servidores GTA RP', icon: 'fa-car', image: 'img/gtarp.jpg' },
-            { id: 12, category: 'sites', name: 'site-personalizado', price: 'A partir de R$ 70', subtitle: 'Desenvolvimento web customizado do zero', icon: 'fa-code', image: 'img/site_personalizado.jpg' },
+            { id: 6, category: 'sites', name: 'link-na-bio', price: 'R$ 14,49', subtitle: 'Página de links estilizada, rápida e responsiva', icon: 'fa-link', image: 'img/link_na_bio.jpg' },
+            { id: 7, category: 'sites', name: 'página-divulgação', price: 'R$ 24,99', subtitle: 'Página focada em conversão e anúncios', icon: 'fa-bullhorn', image: 'img/divulgacao.jpg' },
+            { id: 8, category: 'sites', name: 'portfólio', price: 'R$ 29,99', subtitle: 'Mostre seus trabalhos e serviços com elegância', icon: 'fa-briefcase', image: 'img/portfolio.jpg' },
+            { id: 9, category: 'sites', name: 'landing-page', price: 'R$ 34,99', subtitle: 'Landing page moderna de alta performance', icon: 'fa-window-maximize', image: 'img/pages.jpg' },
+            { id: 10, category: 'sites', name: 'site-institucional', price: 'R$ 49,99', subtitle: 'Site corporativo profissional completo', icon: 'fa-building', image: 'img/institucional.jpg' },
+            { id: 11, category: 'sites', name: 'site-gta-rp', price: 'R$ 49,99', subtitle: 'Painel ou site dedicado para servidores GTA RP', icon: 'fa-car', image: 'img/gtarp.jpg' },
+            { id: 12, category: 'sites', name: 'site-personalizado', price: 'A partir de R$ 69,90', subtitle: 'Desenvolvimento web customizado do zero', icon: 'fa-code', image: 'img/site_personalizado.jpg' },
 
             // Marketing (img/marketing.png)
-            { id: 13, category: 'marketing', name: 'post-design', price: 'A partir de R$ 5', subtitle: 'Artes criativas e profissionais para redes sociais', icon: 'fa-palette', image: 'img/post.jpg' },
-            { id: 14, category: 'marketing', name: 'arte-divulgação', price: 'A partir de R$ 10', subtitle: 'Banners e flyers promocionais de alto impacto', icon: 'fa-rectangle-ad', image: 'img/arte.jpg' },
-            { id: 15, category: 'marketing', name: 'edição-short', price: 'A partir de R$ 15', subtitle: 'Edição dinâmica de vídeos curtos / Reels / TikTok', icon: 'fa-clapperboard', image: 'img/short.jpg' },
-            { id: 16, category: 'marketing', name: 'campanha-divulgação', price: 'A partir de R$ 30', subtitle: 'Estratégia e material completo de marketing', icon: 'fa-rocket', image: 'img/divulgacao.jpg' }
+            { id: 13, category: 'marketing', name: 'post-design', price: 'A partir de R$ 5,49', subtitle: 'Artes criativas e profissionais para redes sociais', icon: 'fa-palette', image: 'img/post.jpg' },
+            { id: 14, category: 'marketing', name: 'arte-divulgação', price: 'A partir de R$ 9,99', subtitle: 'Banners e flyers promocionais de alto impacto', icon: 'fa-rectangle-ad', image: 'img/arte.jpg' },
+            { id: 15, category: 'marketing', name: 'edição-short', price: 'A partir de R$ 14,99', subtitle: 'Edição dinâmica de vídeos curtos / Reels / TikTok', icon: 'fa-clapperboard', image: 'img/short.jpg' },
+            { id: 16, category: 'marketing', name: 'campanha-divulgação', price: 'A partir de R$ 29,90', subtitle: 'Estratégia e material completo de marketing', icon: 'fa-rocket', image: 'img/divulgacao.jpg' }
         ];
 
         let currentFilter = 'all';
