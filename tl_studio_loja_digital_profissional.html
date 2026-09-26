@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TL STUDIO - Loja Digital & Serviços Premium</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        discord: {
+                            dark: '#1e1f22',
+                            darker: '#111214',
+                            accent: '#5865F2',
+                            hover: '#4752C4',
+                            green: '#23a55a'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 31, 34, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-effect {
+            box-shadow: 0 0 50px -10px rgba(88, 101, 242, 0.25);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #5865F2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#0b0c0e] text-gray-100 min-h-screen flex flex-col selection:bg-[#5865F2] selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#5865F2] to-indigo-400 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-float">
+                    <i class="fa-solid fa-gamepad text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-wider text-gradient">TL STUDIO</span>
+                    <span class="block text-[10px] text-indigo-400 font-bold tracking-widest uppercase">Digital Marketplace</span>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#produtos" class="text-sm font-semibold text-gray-300 hover:text-white transition">Produtos</a>
+                <a href="#destaques" class="text-sm font-semibold text-gray-300 hover:text-white transition">Destaques</a>
+                <a href="#avaliacoes" class="text-sm font-semibold text-gray-300 hover:text-white transition">Avaliações</a>
+                <a href="#sobre" class="text-sm font-semibold text-gray-300 hover:text-white transition">Sobre</a>
+                <div class="h-5 w-[1px] bg-gray-800"></div>
+                <a href="https://discord.gg/G7qT7aW745" target="_blank" class="flex items-center space-x-2 bg-[#5865F2] hover:bg-[#4752C4] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition shadow-lg shadow-[#5865F2]/25">
+                    <i class="fa-brands fa-discord text-lg"></i>
+                    <span>Discord</span>
+                </a>
+                <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="flex items-center space-x-2 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition shadow-lg shadow-pink-500/20">
+                    <i class="fa-brands fa-instagram text-lg"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="flex md:hidden items-center space-x-3">
+                <a href="https://discord.gg/G7qT7aW745" target="_blank" class="bg-[#5865F2] text-white p-2.5 rounded-xl">
+                    <i class="fa-brands fa-discord text-lg"></i>
+                </a>
+                <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-3 pb-5 border-t border-gray-800 space-y-3 bg-[#161719]">
+            <a href="#produtos" class="block text-gray-300 hover:text-white py-1.5 font-medium">Produtos</a>
+            <a href="#destaques" class="block text-gray-300 hover:text-white py-1.5 font-medium">Destaques</a>
+            <a href="#avaliacoes" class="block text-gray-300 hover:text-white py-1.5 font-medium">Avaliações</a>
+            <a href="#sobre" class="block text-gray-300 hover:text-white py-1.5 font-medium">Sobre</a>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <a href="https://discord.gg/G7qT7aW745" target="_blank" class="flex items-center justify-center space-x-2 bg-[#5865F2] text-white py-2.5 rounded-xl text-sm font-semibold">
+                    <i class="fa-brands fa-discord"></i> <span>Discord</span>
+                </a>
+                <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 rounded-xl text-sm font-semibold">
+                    <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-24 lg:py-32">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-950/40 via-[#0b0c0e] to-[#0b0c0e] pointer-events-none"></div>
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-20 -right-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-6 shadow-sm">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Atendimento Automático & Rápido via Discord</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-white leading-tight">
+                Eleve seu Servidor e Negócio ao <br class="hidden sm:inline">
+                <span class="text-gradient">Próximo Nível</span>
+            </h1>
+            
+            <p class="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 mb-10">
+                Especialistas em servidores Discord profissionais, desenvolvimento de sites modernos e estratégias de marketing digital de alto impacto.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#produtos" class="px-8 py-4 rounded-2xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold transition shadow-xl shadow-[#5865F2]/30 flex items-center space-x-3 text-base">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Explorar Produtos</span>
+                </a>
+                <a href="https://discord.gg/G7qT7aW745" target="_blank" class="px-8 py-4 rounded-2xl bg-[#1e1f22] hover:bg-[#2b2d31] text-gray-200 font-bold transition border border-gray-700/80 flex items-center space-x-3 text-base">
+                    <i class="fa-brands fa-discord text-xl text-[#5865F2]"></i>
+                    <span>Entrar no Discord Oficial</span>
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mt-20 pt-10 border-t border-gray-800/80">
+                <div class="text-center">
+                    <span class="block text-3xl font-extrabold text-white mb-1">+500</span>
+                    <span class="text-xs text-gray-400 font-medium uppercase tracking-wider">Clientes Satisfeitos</span>
+                </div>
+                <div class="text-center">
+                    <span class="block text-3xl font-extrabold text-[#5865F2] mb-1">100%</span>
+                    <span class="text-xs text-gray-400 font-medium uppercase tracking-wider">Seguro & Garantido</span>
+                </div>
+                <div class="text-center">
+                    <span class="block text-3xl font-extrabold text-white mb-1">24/7</span>
+                    <span class="text-xs text-gray-400 font-medium uppercase tracking-wider">Suporte Dedicado</span>
+                </div>
+                <div class="text-center">
+                    <span class="block text-3xl font-extrabold text-pink-500 mb-1">Top 1</span>
+                    <span class="text-xs text-gray-400 font-medium uppercase tracking-wider">Qualidade do Mercado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Catalog Section -->
+    <main id="produtos" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+        
+        <div class="text-center mb-12">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Catálogo de Serviços & Produtos</h2>
+            <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">Escolha a categoria desejada e adquira diretamente com nossa equipe no Discord.</p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <button onclick="filterCategory('all')" class="cat-btn active px-6 py-3 rounded-2xl font-bold text-sm transition bg-[#5865F2] text-white shadow-lg shadow-[#5865F2]/25">
+                <i class="fa-solid fa-layer-group mr-2"></i> Todos
+            </button>
+            <button onclick="filterCategory('discord')" class="cat-btn px-6 py-3 rounded-2xl font-bold text-sm transition bg-[#1e1f22] text-gray-300 hover:bg-[#2b2d31] hover:text-white border border-gray-800">
+                <i class="fa-brands fa-discord mr-2 text-[#5865F2]"></i> Discord
+            </button>
+            <button onclick="filterCategory('sites')" class="cat-btn px-6 py-3 rounded-2xl font-bold text-sm transition bg-[#1e1f22] text-gray-300 hover:bg-[#2b2d31] hover:text-white border border-gray-800">
+                <i class="fa-solid fa-globe mr-2 text-sky-400"></i> Sites
+            </button>
+            <button onclick="filterCategory('marketing')" class="cat-btn px-6 py-3 rounded-2xl font-bold text-sm transition bg-[#1e1f22] text-gray-300 hover:bg-[#2b2d31] hover:text-white border border-gray-800">
+                <i class="fa-solid fa-bullhorn mr-2 text-pink-500"></i> Marketing
+            </button>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamic Injection via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Testimonials / Avaliações -->
+    <section id="avaliacoes" class="py-20 bg-[#111214]/60 border-t border-b border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-indigo-400 text-xs font-bold uppercase tracking-widest block mb-2">FEEDBACK DOS CLIENTES</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">O que dizem sobre a TL Studio</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-8 rounded-3xl relative">
+                    <div class="flex text-amber-400 mb-4 space-x-1 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">"Comprei o Discord Profissional e o atendimento foi surreal de rápido! Servidor entregue perfeito, cheio de bots configurados e design impecável."</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center font-bold text-indigo-400">M</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-white">Matheus R.</h4>
+                            <span class="text-xs text-gray-500">Dono de Servidor RP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel p-8 rounded-3xl relative">
+                    <div class="flex text-amber-400 mb-4 space-x-1 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">"O site institucional ficou extremamente profissional e rápido. Meus clientes adoraram a navegação. Recomendo demais o trabalho da TL Studio!"</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-pink-600/30 flex items-center justify-center font-bold text-pink-400">G</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-white">Gabriel S.</h4>
+                            <span class="text-xs text-gray-500">Empreendedor Digital</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel p-8 rounded-3xl relative">
+                    <div class="flex text-amber-400 mb-4 space-x-1 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">"Artes e banners de divulgação com um nível de detalhe impressionante. O suporte tirou todas as minhas dúvidas com muita educação."</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-600/30 flex items-center justify-center font-bold text-purple-400">L</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-white">Lucas M.</h4>
+                            <span class="text-xs text-gray-500">Streamer & Criador</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purchase Modal -->
+    <div id="purchase-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-8 relative border border-gray-700 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white bg-[#1e1f22] p-2.5 rounded-full transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mt-2">
+                <div class="w-16 h-16 rounded-2xl bg-[#5865F2]/20 border border-[#5865F2]/30 text-[#5865F2] flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <h3 id="modal-title" class="text-xl font-bold text-white mb-1">Nome do Produto</h3>
+                <p id="modal-price" class="text-3xl font-black text-indigo-400 mb-4">R$ 0,00</p>
+                <p class="text-sm text-gray-300 mb-6 leading-relaxed">Para adquirir este produto com segurança e atendimento imediato, entre em nosso Discord oficial e abra um ticket!</p>
+                <div class="space-y-3">
+                    <a id="modal-discord-btn" href="https://discord.gg/G7qT7aW745" target="_blank" class="w-full py-4 px-4 bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold rounded-2xl transition flex items-center justify-center space-x-3 shadow-lg shadow-[#5865F2]/30 text-base">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                        <span>Comprar no Discord</span>
+                    </a>
+                    <button onclick="closeModal()" class="w-full py-3.5 px-4 bg-[#1e1f22] hover:bg-[#2b2d31] text-gray-300 font-semibold rounded-2xl transition text-sm">
+                        Continuar Navegando
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="sobre" class="bg-[#0b0c0e] border-t border-gray-800 text-gray-400 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#5865F2] to-indigo-400 flex items-center justify-center text-white font-bold shadow-md">
+                            TL
+                        </div>
+                        <span class="text-2xl font-black text-white tracking-wider">TL STUDIO</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Sua loja digital de confiança especializada em servidores Discord, desenvolvimento web profissional e campanhas de marketing de alta conversão.
+                    </p>
+                </div>
+                <div class="flex flex-col md:items-center">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Redes Sociais Oficiais</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://discord.gg/G7qT7aW745" target="_blank" class="w-12 h-12 rounded-2xl bg-[#5865F2]/10 border border-[#5865F2]/30 text-[#5865F2] flex items-center justify-center hover:bg-[#5865F2] hover:text-white transition shadow-md">
+                            <i class="fa-brands fa-discord text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="w-12 h-12 rounded-2xl bg-pink-500/10 border border-pink-500/30 text-pink-400 flex items-center justify-center hover:bg-pink-600 hover:text-white transition shadow-md">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:text-right">
+                    <p class="text-sm font-bold text-white mb-1">TL STUDIO © 2026</p>
+                    <p class="text-xs text-gray-500">Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Toggle mobile menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Products database based on user image & requests
+        const products = [
+            // DISCORD
+            { id: 1, category: 'discord', name: 'configuração', price: 'R$ 7', subtitle: 'Configuração básica inicial para seu servidor', icon: 'fa-screwdriver-wrench', image: 'https://placehold.co/600x400/1e1f22/5865F2?text=Configuração+Discord' },
+            { id: 2, category: 'discord', name: 'discord-básico', price: 'R$ 15', subtitle: 'Servidor Discord básico estruturado e pronto', icon: 'fa-server', image: 'https://placehold.co/600x400/1e1f22/5865F2?text=Discord+Básico' },
+            { id: 3, category: 'discord', name: 'discord-profissional', price: 'R$ 30', subtitle: 'Servidor completo com cargos, bots e segurança', icon: 'fa-shield-halved', image: 'https://placehold.co/600x400/1e1f22/5865F2?text=Discord+Profissional' },
+            { id: 4, category: 'discord', name: 'discord-premium', price: 'R$ 50', subtitle: 'Servidor avançado com design visual exclusivo', icon: 'fa-crown', image: 'https://placehold.co/600x400/1e1f22/5865F2?text=Discord+Premium' },
+            { id: 5, category: 'discord', name: 'discord-personalizado', price: 'R$ 70', subtitle: 'Setup 100% sob medida para seu projeto/guilda', icon: 'fa-star', image: 'https://placehold.co/600x400/1e1f22/5865F2?text=Discord+Personalizado' },
+
+            // SITES
+            { id: 6, category: 'sites', name: 'link-na-bio', price: 'R$ 15', subtitle: 'Página de links estilizada, rápida e responsiva', icon: 'fa-link', image: 'https://placehold.co/600x400/1e1f22/0ea5e9?text=Link+na+Bio' },
+            { id: 7, category: 'sites', name: 'página-divulgação', price: 'R$ 25', subtitle: 'Página focada em conversão e anúncios', icon: 'fa-bullhorn', image: 'https://placehold.co/600x400/1e1f22/0ea5e9?text=Página+Divulgação' },
+            { id: 8, category: 'sites', name: 'portfólio', price: 'R$ 30', subtitle: 'Mostre seus trabalhos e serviços com elegância', icon: 'fa-briefcase', image: 'https://placehold.co/600x400/1e1f22/0ea5e9?text=Portfólio' },
+            { id: 9, category: 'sites', name: 'landing-page', price: 'R$ 35', subtitle: 'Landing page moderna de alta performance', icon: 'fa-window-maximize', image: 'https://placehold.co/600x400/1e1f22/0ea5e9?text=Landing+Page' },
+            { id: 10, category: 'sites', name: 'site-institucional', price: 'R$ 50', subtitle: 'Site corporativo profissional completo', icon: 'fa-building', image: 'https://placehold.co/600x400/1e1f22/0ea5e9?text=Site+Institucional' },
+            { id: 11, category: 'sites', name: 'site-gta-rp', price: 'R$ 50', subtitle: 'Painel ou site dedicado para servidores GTA RP', icon: 'fa-car', image: 'https://placehold.co/600x400/1e1f22/0ea5e9?text=Site+GTA+RP' },
+            { id: 12, category: 'sites', name: 'site-personalizado', price: 'A partir de R$ 70', subtitle: 'Desenvolvimento web customizado do zero', icon: 'fa-code', image: 'https://placehold.co/600x400/1e1f22/0ea5e9?text=Site+Personalizado' },
+
+            // MARKETING
+            { id: 13, category: 'marketing', name: 'post-design', price: 'A partir de R$ 5', subtitle: 'Artes criativas e profissionais para redes sociais', icon: 'fa-palette', image: 'https://placehold.co/600x400/1e1f22/ec4899?text=Post+Design' },
+            { id: 14, category: 'marketing', name: 'arte-divulgação', price: 'A partir de R$ 10', subtitle: 'Banners e flyers promocionais de alto impacto', icon: 'fa-rectangle-ad', image: 'https://placehold.co/600x400/1e1f22/ec4899?text=Arte+Divulgação' },
+            { id: 15, category: 'marketing', name: 'edição-short', price: 'A partir de R$ 15', subtitle: 'Edição dinâmica de vídeos curtos / Reels / TikTok', icon: 'fa-clapperboard', image: 'https://placehold.co/600x400/1e1f22/ec4899?text=Edição+Short' },
+            { id: 16, category: 'marketing', name: 'campanha-divulgação', price: 'A partir de R$ 30', subtitle: 'Estratégia e material completo de marketing', icon: 'fa-rocket', image: 'https://placehold.co/600x400/1e1f22/ec4899?text=Campanha+Divulgação' }
+        ];
+
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+            filtered.forEach(product => {
+                const badgeColor = product.category === 'discord' ? 'bg-[#5865F2]/10 text-[#5865F2] border-[#5865F2]/20' :
+                                   product.category === 'sites' ? 'bg-sky-500/10 text-sky-400 border-sky-500/20' :
+                                   'bg-pink-500/10 text-pink-400 border-pink-500/20';
+
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-3xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-300 flex flex-col group hover:-translate-y-1';
+                card.innerHTML = `
+                    <div class="relative overflow-hidden aspect-video bg-gray-900">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/1e1f22/ffffff?text=TL+STUDIO'">
+                        <div class="absolute top-3 left-3 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${badgeColor} backdrop-blur-md bg-black/50">
+                            ${product.category}
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between">
+                        <div>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-[#1e1f22] flex items-center justify-center text-gray-300 border border-gray-800">
+                                    <i class="fa-solid ${product.icon}"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-white capitalize">${product.name.replace(/-/g, ' ')}</h3>
+                            </div>
+                            <p class="text-sm text-gray-400 mb-6 leading-relaxed">${product.subtitle}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-800/80">
+                            <div>
+                                <span class="text-[11px] text-gray-500 block uppercase font-bold">Investimento</span>
+                                <span class="text-lg font-black text-indigo-400">${product.price}</span>
+                            </div>
+                            <button onclick="openModal('${product.name}', '${product.price}')" class="px-5 py-2.5 bg-[#5865F2] hover:bg-[#4752C4] text-white text-sm font-bold rounded-xl transition shadow-md shadow-[#5865F2]/25 flex items-center space-x-2">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span>Adquirir</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(category) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-[#5865F2]', 'text-white', 'shadow-lg', 'shadow-[#5865F2]/25');
+                btn.classList.add('bg-[#1e1f22]', 'text-gray-300', 'border', 'border-gray-800');
+            });
+            event.currentTarget.classList.remove('bg-[#1e1f22]', 'text-gray-300', 'border', 'border-gray-800');
+            event.currentTarget.classList.add('bg-[#5865F2]', 'text-white', 'shadow-lg', 'shadow-[#5865F2]/25');
+            renderProducts(category);
+        }
+
+        function openModal(name, price) {
+            document.getElementById('modal-title').innerText = name.replace(/-/g, ' ').toUpperCase();
+            document.getElementById('modal-price').innerText = price;
+            document.getElementById('purchase-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('purchase-modal').classList.add('hidden');
+        }
+
+        // Initialize application on load
+        window.onload = function() {
+            renderProducts('all');
+        }
+    </script>
+</body>
+</html>
