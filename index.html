@@ -88,17 +88,30 @@
 </head>
 <body class="bg-[#07080a] text-gray-200 min-h-screen flex flex-col selection:bg-white selection:text-black">
 
-    <!-- Modal de Termos / Aceite Obrigatório (Sempre que abrir o site) -->
+    <!-- Modal de Termos / Aceite Obrigatório (Com o texto detalhado dos termos) -->
     <div id="modal-termos" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
-        <div class="glass-panel w-full max-w-md rounded-3xl p-8 relative border border-white/20 shadow-2xl text-center">
-            <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg shadow-white/20">
-                <i class="fa-solid fa-shield-check"></i>
+        <div class="glass-panel w-full max-w-lg rounded-3xl p-8 relative border border-white/20 shadow-2xl text-left flex flex-col max-h-[90vh]">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center text-xl shadow-lg shadow-white/20 shrink-0">
+                    <i class="fa-solid fa-shield-check"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Termos de Uso e Políticas</h3>
+                    <p class="text-xs text-gray-400">TL STUDIO • Leia atentamente antes de continuar</p>
+                </div>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2">Bem-vindo ao TL STUDIO</h3>
-            <p class="text-sm text-gray-300 mb-6 leading-relaxed">Para continuar navegando e acessar nossa loja, por favor, aceite nossos termos de uso e política de atendimento[cite: 2].</p>
-            <button id="btn-aceitar-termos" class="w-full py-4 px-4 btn-neon rounded-2xl flex items-center justify-center space-x-3 text-base">
+
+            <!-- Caixa de Texto com a Rolagem dos Termos -->
+            <div class="bg-[#07080a]/80 border border-white/10 rounded-2xl p-4 text-xs text-gray-300 space-y-3 overflow-y-auto my-4 flex-grow leading-relaxed">
+                <p><strong class="text-white">1. Política de Atendimento:</strong> Todas as negociações, vendas, entregas de produtos, servidores Discord e suporte são realizados exclusivamente através de tickets abertos em nosso servidor oficial do Discord[cite: 2].</p>
+                <p><strong class="text-white">2. Prazos e Entregas:</strong> Os produtos digitais, artes, sites e estruturas Discord possuem prazos de entrega combinados no ato da compra. Certifique-se de enviar o comprovante correto do PIX no canal de atendimento.</p>
+                <p><strong class="text-white">3. Suporte e Alterações:</strong> Oferecemos suporte e ajustes necessários dentro do prazo estipulado após a entrega final do projeto. Alterações estruturais fora do escopo inicial poderão ser cobradas à parte.</p>
+                <p><strong class="text-white">4. Reembolsos:</strong> Devido à natureza digital e personalizada dos serviços prestados (desenvolvimento web e configuração de servidores), não realizamos reembolsos após o início ou conclusão da entrega do projeto.</p>
+            </div>
+
+            <button id="btn-aceitar-termos" class="w-full py-3.5 px-4 btn-neon rounded-2xl flex items-center justify-center space-x-3 text-sm shrink-0">
                 <i class="fa-solid fa-check"></i>
-                <span>Aceitar e Continuar</span>
+                <span>Li e Aceito os Termos para Continuar</span>
             </button>
         </div>
     </div>
@@ -335,7 +348,7 @@
                     <h3 class="text-base font-bold text-white flex items-center justify-between">
                         <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como funciona a entrega dos produtos?</span>
                     </h3>
-                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Você deve abrir um ticket no discord e enviar o comprovante. Você será atendido via ticket em nosso Discord oficial para receber seu servidor, site ou arte pronta.</p>
+                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Você deve abrir um ticket no discord e enviar o comprovante. Você será atendido via ticket em nosso Discord oficial para receber seu servidor, site ou arte pronta[cite: 2].</p>
                 </div>
 
                 <div class="glass-panel p-6 rounded-2xl border border-white/10">
@@ -532,7 +545,7 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Lógica do Modal de Termos com sessionStorage (Aparece toda vez que reabre a aba)
+        // Lógica do Modal de Termos com sessionStorage
         document.addEventListener("DOMContentLoaded", function() {
             const modalTermos = document.getElementById("modal-termos");
             const btnAceitarTermos = document.getElementById("btn-aceitar-termos");
@@ -540,6 +553,8 @@
             // Verifica se já aceitou nesta sessão (nesta aba aberta)
             if (sessionStorage.getItem("tlStudioAceito") === "true") {
                 modalTermos.classList.add("hidden");
+            } else {
+                modalTermos.classList.remove("hidden");
             }
 
             // Quando clicar no botão de aceitar
