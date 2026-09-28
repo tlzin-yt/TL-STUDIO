@@ -90,8 +90,107 @@
 </head>
 <body class="bg-[#07080a] text-gray-200 min-h-screen flex flex-col selection:bg-white selection:text-black">
 
+    <!-- MODAL DE TERMOS DE SERVIÇO OBRIGATÓRIO -->
+    <div id="terms-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative border border-white/20 shadow-2xl flex flex-col max-h-[90vh]">
+            
+            <div class="text-center pb-4 border-b border-white/10 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center mx-auto mb-3 text-xl shadow-lg shadow-white/20">
+                    <i class="fa-solid fa-scroll"></i>
+                </div>
+                <h3 class="text-xl font-black text-white tracking-wider">TERMOS DE SERVIÇO — TL STUDIO</h3>
+                <p class="text-xs text-gray-400 mt-1">Você deve ler e aceitar os termos abaixo para continuar navegando.</p>
+            </div>
+
+            <!-- Caixa de Texto com Rolagem -->
+            <div class="overflow-y-auto pr-2 space-y-4 text-xs sm:text-sm text-gray-300 custom-scrollbar flex-grow bg-[#07080a]/60 p-4 rounded-2xl border border-white/10 leading-relaxed">
+                <div>
+                    <strong class="text-white block mb-1">1. ACEITAÇÃO</strong>
+                    Ao realizar uma compra na TL STUDIO, o cliente declara estar de acordo com estes termos.
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">2. PAGAMENTO</strong>
+                    <p>• O pagamento deve ser realizado antes do início do serviço.</p>
+                    <p>• O pedido só será iniciado após a confirmação do pagamento.</p>
+                    <p>• Valores promocionais ou personalizados serão informados antes da contratação.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">3. PRAZO</strong>
+                    <p>• O prazo varia conforme o serviço e a complexidade do pedido.</p>
+                    <p>• O cliente será informado sobre o prazo estimado no momento da contratação.</p>
+                    <p>• Atrasos causados pela falta de informações, arquivos ou respostas do cliente não serão considerados atraso da TL STUDIO.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">4. ALTERAÇÕES</strong>
+                    <p>• O cliente poderá solicitar alterações relacionadas ao pedido original.</p>
+                    <p>• Alterações que mudem completamente a proposta inicial poderão gerar cobrança adicional.</p>
+                    <p>• Novos serviços devem ser contratados separadamente.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">5. SITES</strong>
+                    <p>• Os sites são desenvolvidos de acordo com as informações e materiais fornecidos pelo cliente.</p>
+                    <p>• O cliente é responsável por fornecer textos, imagens, links e demais informações necessárias.</p>
+                    <p>• Alterações estruturais ou novas funcionalidades que não estavam incluídas no pedido poderão ter custo adicional.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">6. DISCORD</strong>
+                    <p>• A configuração será realizada conforme o serviço contratado.</p>
+                    <p>• Recursos adicionais que não estejam incluídos no pacote poderão ser cobrados separadamente.</p>
+                    <p>• O cliente deve fornecer as informações e permissões necessárias para a configuração.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">7. MARKETING E DESIGN</strong>
+                    <p>• O material será desenvolvido de acordo com o briefing fornecido pelo cliente.</p>
+                    <p>• O cliente deve enviar as informações necessárias para a produção.</p>
+                    <p>• Mudanças que alterem completamente o conceito aprovado poderão ser consideradas um novo pedido.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">8. REEMBOLSO</strong>
+                    <p>• Solicitações de reembolso serão analisadas individualmente.</p>
+                    <p>• Após o início da produção, não há garantia de reembolso, especialmente quando uma parte significativa do serviço já tiver sido realizada.</p>
+                    <p>• Em caso de erro comprovadamente causado pela TL STUDIO, será buscada uma solução adequada, como correção ou, quando aplicável, reembolso.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">9. RESPONSABILIDADE DO CLIENTE</strong>
+                    <p>• O cliente é responsável pela veracidade das informações fornecidas.</p>
+                    <p>• A TL STUDIO não se responsabiliza por problemas causados por informações, arquivos, contas ou acessos fornecidos incorretamente pelo cliente.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">10. ENTREGA</strong>
+                    <p>• O serviço será considerado entregue quando o material ou acesso contratado for disponibilizado ao cliente.</p>
+                    <p>• Após a entrega, o cliente deve verificar o serviço e comunicar eventuais problemas relacionados ao pedido.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">11. CONTEÚDO</strong>
+                    <p>• A TL STUDIO não é responsável pelo conteúdo fornecido pelo cliente.</p>
+                    <p>• O cliente deve possuir autorização para utilizar imagens, textos, marcas e demais materiais enviados para o projeto.</p>
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">12. ATUALIZAÇÃO DOS TERMOS</strong>
+                    A TL STUDIO poderá atualizar estes termos quando necessário. A versão vigente estará disponível no servidor oficial.
+                </div>
+                <div>
+                    <strong class="text-white block mb-1">13. CONTATO</strong>
+                    Em caso de dúvidas, problemas ou solicitações relacionadas a um pedido, o cliente deverá entrar em contato através do sistema oficial de atendimento da TL STUDIO.
+                </div>
+                <div class="pt-2 text-white font-semibold text-center border-t border-white/10">
+                    Ao contratar qualquer serviço da TL STUDIO, você confirma que leu e concorda com estes termos.
+                </div>
+            </div>
+
+            <!-- Botão de Aceitar -->
+            <div class="pt-4 border-t border-white/10 mt-4">
+                <button onclick="acceptTerms()" class="w-full py-4 px-4 btn-neon rounded-2xl flex items-center justify-center space-x-2 text-sm uppercase tracking-wider">
+                    <i class="fa-solid fa-check-circle text-base"></i>
+                    <span>Li e Aceito os Termos</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-white/10">
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-white to-gray-400 flex items-center justify-center shadow-lg shadow-white/20 animate-float text-black overflow-hidden border border-white/30">
@@ -349,7 +448,7 @@
         </div>
     </section>
 
-<!-- Portfolio Section com Fundo Customizado -->
+    <!-- Portfolio Section com Fundo Customizado -->
     <section id="portfolio" class="section-custom-bg relative py-16 w-full">
         <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -372,7 +471,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Projeto 2 (Exemplo estruturado com imagem) -->
+                <!-- Card 2: Projeto 2 -->
                 <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
                     <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
                         <img src="img/projetos/projeto2.jpg" alt="Projeto 2" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Projeto+2'">
@@ -385,7 +484,7 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Projeto 3 (Exemplo estruturado com imagem) -->
+                <!-- Card 3: Projeto 3 -->
                 <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
                     <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
                         <img src="img/projetos/projeto3.jpg" alt="Projeto 3" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Projeto+3'">
@@ -482,7 +581,7 @@
         </div>
     </div>
 
-    <!-- Footer com fundo customizado (img/tl_studio.jpg) -->
+    <!-- Footer com fundo customizado -->
     <footer id="sobre" class="footer-custom-bg relative border-t border-white/10 text-gray-300 py-16 overflow-hidden">
         <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -528,16 +627,27 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Products database with exact image mappings requested
+        // Controle dos Termos de Serviço ao carregar a página
+        window.addEventListener('DOMContentLoaded', () => {
+            const acceptedTerms = localStorage.getItem('tl_studio_terms_accepted');
+            if (!acceptedTerms) {
+                document.getElementById('terms-modal').classList.remove('hidden');
+            }
+        });
+
+        function acceptTerms() {
+            localStorage.setItem('tl_studio_terms_accepted', 'true');
+            document.getElementById('terms-modal').classList.add('hidden');
+        }
+
+        // Products database
         const products = [
-            // Discord (img/discord.png)
             { id: 1, category: 'discord', name: 'configuração', price: 'R$ 6,99', subtitle: 'Configuração básica inicial para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
             { id: 2, category: 'discord', name: 'discord-básico', price: 'R$ 15,49', subtitle: 'Servidor Discord básico estruturado e pronto', icon: 'fa-server', image: 'img/dc_base.jpg' },
             { id: 3, category: 'discord', name: 'discord-profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos, bots e segurança', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
             { id: 4, category: 'discord', name: 'discord-premium', price: 'R$ 49,49', subtitle: 'Servidor avançado com design visual exclusivo', icon: 'fa-crown', image: 'img/dc_premiun.jpg' },
             { id: 5, category: 'discord', name: 'discord-personalizado', price: 'R$ 69,90', subtitle: 'Setup 100% sob medida para seu projeto/guilda', icon: 'fa-star', image: 'img/dc_pers.jpg' },
 
-            // Sites (img/site.png)
             { id: 6, category: 'sites', name: 'link-na-bio', price: 'R$ 14,49', subtitle: 'Página de links estilizada, rápida e responsiva', icon: 'fa-link', image: 'img/link_na_bio.jpg' },
             { id: 7, category: 'sites', name: 'página-divulgação', price: 'R$ 24,99', subtitle: 'Página focada em conversão e anúncios', icon: 'fa-bullhorn', image: 'img/divulgacao.jpg' },
             { id: 8, category: 'sites', name: 'portfólio', price: 'R$ 29,99', subtitle: 'Mostre seus trabalhos e serviços com elegância', icon: 'fa-briefcase', image: 'img/portfolio.jpg' },
@@ -546,7 +656,6 @@
             { id: 11, category: 'sites', name: 'site-gta-rp', price: 'R$ 49,99', subtitle: 'Painel ou site dedicado para servidores GTA RP', icon: 'fa-car', image: 'img/gtarp.jpg' },
             { id: 12, category: 'sites', name: 'site-personalizado', price: 'A partir de R$ 69,90', subtitle: 'Desenvolvimento web customizado do zero', icon: 'fa-code', image: 'img/site_personalizado.jpg' },
 
-            // Marketing (img/marketing.png)
             { id: 13, category: 'marketing', name: 'post-design', price: 'A partir de R$ 5,49', subtitle: 'Artes criativas e profissionais para redes sociais', icon: 'fa-palette', image: 'img/post.jpg' },
             { id: 14, category: 'marketing', name: 'arte-divulgação', price: 'A partir de R$ 9,99', subtitle: 'Banners e flyers promocionais de alto impacto', icon: 'fa-rectangle-ad', image: 'img/arte.jpg' },
             { id: 15, category: 'marketing', name: 'edição-short', price: 'A partir de R$ 14,99', subtitle: 'Edição dinâmica de vídeos curtos / Reels / TikTok', icon: 'fa-clapperboard', image: 'img/short.jpg' },
