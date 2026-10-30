@@ -205,9 +205,6 @@
             <a href="#portfolio" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-white py-2 px-3 rounded-xl hover:bg-white/5 font-medium text-sm flex items-center space-x-2">
                 <i class="fa-solid fa-briefcase text-emerald-400"></i> <span>Portfólio</span>
             </a>
-            <a href="#galeria" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-white py-2 px-3 rounded-xl hover:bg-white/5 font-medium text-sm flex items-center space-x-2">
-                <i class="fa-solid fa-image text-pink-400"></i> <span>Galeria</span>
-            </a>
             <a href="#parcerias" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-white py-2 px-3 rounded-xl hover:bg-white/5 font-medium text-sm flex items-center space-x-2">
                 <i class="fa-solid fa-handshake text-sky-400"></i> <span>Parcerias</span>
             </a>
@@ -323,23 +320,6 @@
 
             <!-- Dynamic Portfolio Grid -->
             <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Injected via JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Galeria Section -->
-    <section id="galeria" class="section-custom-bg relative py-16 border-t border-white/10">
-        <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-10">
-                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-1">VISUAL SHOWCASE</span>
-                <h2 class="text-3xl font-extrabold text-white">Galeria de Artes e Setups</h2>
-                <p class="text-xs text-gray-400 mt-1">Conheça alguns dos melhores trabalhos visuais desenvolvidos pela TL STUDIO.</p>
-            </div>
-
-            <!-- Totalmente Dinâmico (Renderizado do Banco/LocalStorage) -->
-            <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <!-- Injected via JS -->
             </div>
         </div>
@@ -623,9 +603,6 @@
                 <button onclick="switchAdminTab('tab-projects')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
                     <i class="fa-solid fa-briefcase mr-1"></i> Projetos
                 </button>
-                <button onclick="switchAdminTab('tab-gallery')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
-                    <i class="fa-solid fa-image mr-1"></i> Galeria
-                </button>
                 <button onclick="switchAdminTab('tab-partners')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
                     <i class="fa-solid fa-handshake mr-1"></i> Parcerias
                 </button>
@@ -713,30 +690,6 @@
                     </div>
 
                     <div id="admin-projects-list" class="space-y-3">
-                        <!-- JS Injected -->
-                    </div>
-                </div>
-
-                <!-- TAB: GALLERY -->
-                <div id="tab-gallery" class="admin-tab-content space-y-4 hidden">
-                    <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
-                        <h4 class="font-bold text-white text-sm">Adicionar / Editar Imagens da Galeria</h4>
-                        <input type="hidden" id="admin-gal-id">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <input type="text" id="admin-gal-title" placeholder="Título / Legenda da Imagem" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
-                            <input type="text" id="admin-gal-imgurl" placeholder="Link da Imagem (URL)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
-                        </div>
-                        <label class="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl cursor-pointer block text-center border border-white/20">
-                            <i class="fa-solid fa-image mr-1"></i> Upload da Galeria do Dispositivo
-                            <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-gal-imgurl')">
-                        </label>
-                        <div class="flex space-x-2">
-                            <button onclick="saveAdminGallery()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar na Galeria</button>
-                            <button onclick="clearGalleryForm()" class="bg-gray-800 text-gray-300 px-4 py-2.5 rounded-xl font-bold">Limpar</button>
-                        </div>
-                    </div>
-
-                    <div id="admin-gallery-list" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <!-- JS Injected -->
                     </div>
                 </div>
@@ -853,7 +806,6 @@
         const ADMIN_EMAIL = 'tuliofonseca00@gmail.com';
         const PRODUCTS_PATH = ['artifacts', appId, 'public', 'data', 'products'];
         const PROJECTS_PATH = ['artifacts', appId, 'public', 'data', 'projects'];
-        const GALLERY_PATH  = ['artifacts', appId, 'public', 'data', 'gallery'];
         const PARTNERS_PATH = ['artifacts', appId, 'public', 'data', 'partners'];
         const COMMENTS_PATH = ['artifacts', appId, 'public', 'data', 'comments'];
         const ORDERS_PATH   = ['artifacts', appId, 'public', 'data', 'orders'];
@@ -861,7 +813,6 @@
         let currentUser = null;
         let productsData = [];
         let projectsData = [];
-        let galleryData  = [];
         let partnersData = [];
         let commentsData = [];
         let ordersData   = [];
@@ -1013,7 +964,6 @@
             function updateLocalData(key, data, renderFn, renderAdminFn) {
                 if (key === 'products') productsData = data;
                 if (key === 'projects') projectsData = data;
-                if (key === 'gallery') galleryData = data;
                 if (key === 'partners') partnersData = data;
                 if (key === 'comments') commentsData = data;
                 if (key === 'orders') ordersData = data;
@@ -1035,11 +985,6 @@
                 { id: 'pj2', title: 'Comunidade Gamer RP', client: 'GTA Server', desc: 'Discord com mais de 500 membros e bot exclusivo', image: 'img/dc_premiun.jpg' }
             ];
 
-            const defaultGallery = [
-                { id: 'g1', title: 'Discord Pro', image: 'img/dc_pro.jpg' },
-                { id: 'g2', title: 'Sites', image: 'img/institucional.jpg' }
-            ];
-
             const defaultPartners = [
                 { id: 'pt1', name: 'Rede Discord BR', link: 'https://discord.gg/mAPuzShdWp', image: 'img/tl_studio.jpg' },
                 { id: 'pt2', name: 'Marketing Pro', link: 'https://instagram.com/tlzin.ofc', image: 'img/arte.jpg' }
@@ -1047,34 +992,10 @@
 
             safeSubscribe(PRODUCTS_PATH, 'products', defaultProducts, renderProducts, renderAdminProducts);
             safeSubscribe(PROJECTS_PATH, 'projects', defaultProjects, renderProjects, renderAdminProjects);
-            safeSubscribe(GALLERY_PATH, 'gallery', defaultGallery, renderGallery, renderAdminGallery);
             safeSubscribe(PARTNERS_PATH, 'partners', defaultPartners, renderPartners, renderAdminPartners);
             safeSubscribe(COMMENTS_PATH, 'comments', [], renderComments, renderAdminComments);
             safeSubscribe(ORDERS_PATH, 'orders', [], renderUserOrders, renderAdminOrders);
         }
-
-        window.renderGallery = () => {
-            const grid = document.getElementById('gallery-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            if (galleryData.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 glass-panel rounded-2xl">Nenhuma imagem na galeria no momento.</div>`;
-                return;
-            }
-
-            galleryData.forEach(g => {
-                const item = document.createElement('div');
-                item.className = 'glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group relative';
-                item.innerHTML = `
-                    <img src="${g.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/0f1115/ffffff?text=Galeria'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
-                        <span class="text-[11px] font-bold text-white truncate">${g.title || ''}</span>
-                    </div>
-                `;
-                grid.appendChild(item);
-            });
-        };
 
         window.renderPartners = () => {
             const grid = document.getElementById('parcerias-grid');
@@ -1314,116 +1235,6 @@
             renderAdminProjects();
             try { await deleteDoc(doc(db, ...PROJECTS_PATH, id)); } catch(e){}
             showToast("Projeto removido", "info");
-        };
-
-        window.renderAdminGallery = () => {
-            const list = document.getElementById('admin-gallery-list');
-            if (!list) return;
-            list.innerHTML = '';
-
-            galleryData.forEach(g => {
-                const item = document.createElement('div');
-                item.className = 'p-2 bg-[#07080a] rounded-xl border border-white/10 flex flex-col items-center space-y-2';
-                item.innerHTML = `
-                    <img src="${g.image}" class="w-full h-24 object-cover rounded-lg border border-white/10">
-                    <span class="text-[10px] text-gray-300 font-bold truncate w-full text-center">${g.title || 'Sem título'}</span>
-                    <div class="flex space-x-1 w-full">
-                        <button onclick="editAdminGallery('${g.id}')" class="w-1/2 py-1 bg-sky-500/20 text-sky-400 rounded-lg font-bold text-[10px]"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="deleteAdminGallery('${g.id}')" class="w-1/2 py-1 bg-red-500/20 text-red-400 rounded-lg font-bold text-[10px]"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-        };
-
-        window.editAdminGallery = (id) => {
-            const g = galleryData.find(x => x.id === id);
-            if (!g) return;
-            document.getElementById('admin-gal-id').value = g.id;
-            document.getElementById('admin-gal-title').value = g.title || '';
-            document.getElementById('admin-gal-imgurl').value = g.image || '';
-            showToast("Imagem da galeria carregada para edição", "info");
-        };
-
-        window.clearGalleryForm = () => {
-            document.getElementById('admin-gal-id').value = '';
-            document.getElementById('admin-gal-title').value = '';
-            document.getElementById('admin-gal-imgurl').value = '';
-        };
-
-        window.saveAdminGallery = async () => {
-            if (!confirm("Tem certeza que deseja salvar esta imagem na galeria?")) return;
-
-            const id = document.getElementById('admin-gal-id').value;
-            const title = document.getElementById('admin-gal-title').value;
-            const image = document.getElementById('admin-gal-imgurl').value;
-
-            if (!image) return showToast("Informe o link ou imagem da galeria", "error");
-
-            const docId = id || 'g_' + Date.now();
-            const itemData = { id: docId, title, image };
-
-            const idx = galleryData.findIndex(x => x.id === docId);
-            if (idx !== -1) galleryData[idx] = itemData;
-            else galleryData.push(itemData);
-
-            // Marca que o usuário alterou ativamente a galeria
-            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
-            localStorage.setItem('tlstudio_gallery_user_modified', 'true');
-
-            renderGallery();
-            renderAdminGallery();
-
-            try {
-                await setDoc(doc(db, ...GALLERY_PATH, docId), itemData);
-                showToast("Imagem salva na galeria!", "success");
-            } catch(e) {
-                console.error(e);
-            }
-
-            clearGalleryForm();
-            closeModal('admin-modal');
-        };
-
-        window.deleteAdminGallery = async (id) => {
-            if (!confirm("Deseja remover esta imagem da galeria?")) return;
-
-            galleryData = galleryData.filter(x => x.id !== id);
-
-            // Marca que a galeria foi modificada pelo usuário
-            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
-            localStorage.setItem('tlstudio_gallery_user_modified', 'true');
-
-            renderGallery();
-            renderAdminGallery();
-
-            try { 
-                await deleteDoc(doc(db, ...GALLERY_PATH, id)); 
-                showToast("Imagem removida permanentemente!", "info");
-            } catch(e){
-                console.error(e);
-            }
-        };
-
-        window.deleteAdminGallery = async (id) => {
-            if (!confirm("Deseja remover esta imagem da galeria?")) return;
-            galleryData = galleryData.filter(x => x.id !== id);
-            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
-            localStorage.setItem('tlstudio_gallery_user_modified', 'true');
-            renderGallery();
-            renderAdminGallery();
-            try { await deleteDoc(doc(db, ...GALLERY_PATH, id)); } catch(e){}
-            showToast("Imagem removida permanentemente!", "info");
-        };
-
-        window.deleteAdminGallery = async (id) => {
-            if (!confirm("Deseja remover esta imagem da galeria?")) return;
-            galleryData = galleryData.filter(x => x.id !== id);
-            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
-            renderGallery();
-            renderAdminGallery();
-            try { await deleteDoc(doc(db, ...GALLERY_PATH, id)); } catch(e){}
-            showToast("Imagem removida", "info");
         };
 
         window.renderAdminPartners = () => {
