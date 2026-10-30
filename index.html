@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TL STUDIO | Soluções Digitais</title>
+  <title>TL STUDIO | Soluções Digitais & Desenvolvimento</title>
   
   <!-- Fontes e Ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,8 +41,8 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .glass-panel {
-      background: rgba(18, 18, 23, 0.7);
-      backdrop-filter: blur(12px);
+      background: rgba(18, 18, 23, 0.75);
+      backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .neon-border {
@@ -58,7 +58,7 @@
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
-      opacity: 0.5;
+      opacity: 0.6;
       transition: opacity 0.3s ease;
     }
     .neon-border:hover::before {
@@ -92,18 +92,19 @@
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24 flex-1 w-full">
 
     <!-- Seção Sobre a TL STUDIO -->
     <section id="sobre" class="glass-panel p-8 md:p-12 rounded-2xl relative overflow-hidden">
-      <div class="max-w-3xl space-y-4">
+      <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="max-w-3xl space-y-4 relative z-10">
         <span class="text-xs font-bold tracking-widest text-brand-neon uppercase">Quem Somos</span>
         <h2 class="text-3xl md:text-4xl font-extrabold text-white">Sobre a TL STUDIO</h2>
         <p class="text-slate-300 leading-relaxed text-base">
-          A <strong class="text-white">TL STUDIO</strong> nasceu com o propósito de elevar o nível de projetos digitais na internet. Especializada em estruturação avançada de servidores no Discord, desenvolvimento de páginas web profissionais e campanhas de marketing de alta conversão, nossa equipe entrega soluções sob medida para criadores, empresas e comunidades.
+          A <strong class="text-white">TL STUDIO</strong> é uma agência especializada no desenvolvimento de páginas web profissionais, estruturação avançada de servidores no Discord e soluções digitais sob medida para criadores, empresas e comunidades que buscam destaque na internet.
         </p>
         <p class="text-slate-400 leading-relaxed text-sm">
-          Nosso compromisso é aliar design moderno, segurança e agilidade no atendimento através de canais oficiais e estruturados. Cada projeto é tratado com dedicação exclusiva para garantir a satisfação total de nossos clientes.
+          Nosso foco é entregar performance, design moderno e total segurança. Cada projeto é executado com rigor técnico para proporcionar a melhor experiência e conversão aos nossos clientes.
         </p>
       </div>
     </section>
@@ -112,12 +113,12 @@
     <section id="produtos" class="space-y-6">
       <div class="flex items-center justify-between">
         <div>
+          <span class="text-xs font-bold tracking-widest text-brand-accent uppercase">Catálogo</span>
           <h2 class="text-2xl font-bold text-white">Nossos Produtos</h2>
-          <p class="text-xs text-slate-400">Páginas web, bots e serviços digitais prontos</p>
         </div>
       </div>
       <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Renderizado dinamicamente via JS -->
+        <!-- Renderizado dinamicamente via JS/Firebase -->
       </div>
     </section>
 
@@ -125,23 +126,23 @@
     <section id="projetos" class="space-y-6">
       <div class="flex items-center justify-between">
         <div>
+          <span class="text-xs font-bold tracking-widest text-brand-purple uppercase">Portfólio</span>
           <h2 class="text-2xl font-bold text-white">Projetos Recentes</h2>
-          <p class="text-xs text-slate-400">Trabalhos desenvolvidos para clientes e comunidades</p>
         </div>
       </div>
       <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Renderizado dinamicamente via JS -->
+        <!-- Renderizado dinamicamente via JS/Firebase -->
       </div>
     </section>
 
     <!-- Seção Parcerias -->
     <section id="parcerias" class="space-y-6">
       <div class="text-center max-w-xl mx-auto space-y-2">
-        <span class="text-xs font-bold tracking-widest text-brand-accent uppercase">Rede de Apoio Exclusiva</span>
+        <span class="text-xs font-bold tracking-widest text-brand-neon uppercase">Rede de Apoio Exclusiva</span>
         <h2 class="text-2xl font-bold text-white">Parcerias Oficiais</h2>
       </div>
       <div id="partnerships-container" class="flex flex-wrap justify-center gap-6">
-        <!-- Renderizado dinamicamente via JS -->
+        <!-- Renderizado dinamicamente via JS/Firebase -->
       </div>
     </section>
 
@@ -163,10 +164,10 @@
       </div>
 
       <!-- Tabs -->
-      <div class="flex border-b border-brand-border bg-black/20 px-6">
-        <button onclick="switchTab('produtos')" id="tab-btn-produtos" class="px-4 py-3 text-sm font-semibold border-b-2 border-brand-accent text-brand-accent">Produtos</button>
-        <button onclick="switchTab('projetos')" id="tab-btn-projetos" class="px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200">Projetos</button>
-        <button onclick="switchTab('parcerias')" id="tab-btn-parcerias" class="px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200">Parcerias</button>
+      <div class="flex border-b border-brand-border bg-black/20 px-6 overflow-x-auto">
+        <button onclick="switchTab('produtos')" id="tab-btn-produtos" class="px-4 py-3 text-sm font-semibold border-b-2 border-brand-accent text-brand-accent whitespace-nowrap">Produtos</button>
+        <button onclick="switchTab('projetos')" id="tab-btn-projetos" class="px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">Projetos</button>
+        <button onclick="switchTab('parcerias')" id="tab-btn-parcerias" class="px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">Parcerias</button>
       </div>
 
       <!-- Conteúdo das Tabs -->
@@ -336,9 +337,9 @@
       ['produtos', 'projetos', 'parcerias'].forEach(t => {
         const btn = document.getElementById('tab-btn-' + t);
         if (t === tab) {
-          btn.className = "px-4 py-3 text-sm font-semibold border-b-2 border-brand-accent text-brand-accent";
+          btn.className = "px-4 py-3 text-sm font-semibold border-b-2 border-brand-accent text-brand-accent whitespace-nowrap";
         } else {
-          btn.className = "px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200";
+          btn.className = "px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap";
         }
       });
     }
@@ -399,7 +400,7 @@
     function renderProductsUI(items) {
       const container = document.getElementById('products-container');
       if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">Nenhum produto cadastrado.</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">Nenhum produto cadastrado no momento.</p>`;
         return;
       }
       container.innerHTML = items.map(item => `
@@ -411,7 +412,7 @@
           </div>
           <div class="flex items-center justify-between pt-2 border-t border-brand-border">
             <span class="text-brand-neon font-extrabold text-sm">${item.preco}</span>
-            <button class="px-3 py-1.5 text-xs bg-brand-accent text-white font-bold rounded-lg hover:bg-blue-600">Adquirir</button>
+            <button class="px-3 py-1.5 text-xs bg-brand-accent text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">Adquirir</button>
           </div>
         </div>
       `).join('');
@@ -420,7 +421,7 @@
     function renderProjectsUI(items) {
       const container = document.getElementById('projects-container');
       if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">Nenhum projeto cadastrado.</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">Nenhum projeto cadastrado no momento.</p>`;
         return;
       }
       container.innerHTML = items.map(item => `
@@ -438,13 +439,13 @@
     function renderPartnershipsUI(items) {
       const container = document.getElementById('partnerships-container');
       if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500">Nenhuma parceria cadastrada.</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-500">Nenhuma parceria cadastrada no momento.</p>`;
         return;
       }
       container.innerHTML = items.map(item => `
         <div class="neon-border glass-panel p-4 rounded-xl flex flex-col items-center gap-3 w-48">
           <img src="${item.img}" class="w-16 h-16 rounded-full object-cover" alt="${item.nome}">
-          <span class="text-xs font-bold text-white">${item.nome}</span>
+          <span class="text-xs font-bold text-white text-center">${item.nome}</span>
           <a href="${item.link}" target="_blank" class="text-[10px] text-brand-neon hover:underline">Acessar Canal Oficial</a>
         </div>
       `).join('');
