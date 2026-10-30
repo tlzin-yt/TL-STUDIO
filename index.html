@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TL STUDIO - Loja Digital & Marketing Digital</title>
+    <title>TL STUDIO - Loja Digital, Marketing & Dashboard</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,6 +16,7 @@
                         carddark: '#0f1115',
                         borderdark: '#1a1d24',
                         neonwhite: '#f8fafc',
+                        nubank: '#820AD1'
                     },
                     animation: {
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -28,8 +29,8 @@
                             '50%': { transform: 'translateY(-10px)' },
                         },
                         neonGlow: {
-                            '0%': { textShadow: '0 0 5px rgba(255,255,255,0.4), 0 0 10px rgba(255,255,255,0.2), 0 0 20px rgba(255,255,255,0.1)' },
-                            '100%': { textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5), 0 0 30px rgba(255,255,255,0.3), 0 0 40px rgba(255,255,255,0.2)' }
+                            '0%': { textShadow: '0 0 5px rgba(255,255,255,0.4), 0 0 10px rgba(255,255,255,0.2)' },
+                            '100%': { textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5)' }
                         }
                     }
                 }
@@ -40,6 +41,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- QRCode JS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .glass-panel {
@@ -54,19 +57,29 @@
         }
         .text-neon {
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4);
         }
         .btn-neon {
             background: #ffffff;
             color: #07080a;
             font-weight: 800;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.35), 0 0 40px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.35);
             transition: all 0.3s ease;
         }
         .btn-neon:hover {
             background: #f1f5f9;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
             transform: translateY(-2px);
+        }
+        .btn-nubank {
+            background: #820AD1;
+            color: #ffffff;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .btn-nubank:hover {
+            background: #9b12f5;
+            box-shadow: 0 0 20px rgba(130, 10, 209, 0.5);
         }
         .hero-custom-bg {
             background-image: url('img/tl_studio.png');
@@ -79,20 +92,18 @@
             background-position: center;
             background-attachment: fixed;
         }
-        .footer-custom-bg {
-            background-image: url('img/tl_studio.jpg');
-            background-size: cover;
-            background-position: center;
-        }
     </style>
 </head>
 <body class="bg-[#07080a] text-gray-200 min-h-screen flex flex-col selection:bg-white selection:text-black">
 
-    <!-- Modal de Termos / Aceite Obrigatório com a logo img/tl_studio.jpg -->
+    <!-- Modal Notification Alert System -->
+    <div id="toast-container" class="fixed top-24 right-5 z-50 space-y-3 pointer-events-none"></div>
+
+    <!-- Modal Terms of Service -->
     <div id="modal-termos" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden">
         <div class="glass-panel w-full max-w-lg rounded-3xl p-8 relative border border-white/20 shadow-2xl text-left flex flex-col max-h-[90vh]">
             <div class="flex items-center space-x-3 mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center text-xl shadow-lg shadow-white/20 shrink-0 overflow-hidden">
+                <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center text-xl shadow-lg shrink-0 overflow-hidden">
                     <img src="img/tl_studio.jpg" alt="Logo TL STUDIO" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
                 </div>
                 <div>
@@ -101,21 +112,12 @@
                 </div>
             </div>
 
-            <!-- Caixa de Texto com a Rolagem dos Termos Oficiais -->
             <div class="bg-[#07080a]/80 border border-white/10 rounded-2xl p-4 text-xs text-gray-300 space-y-3 overflow-y-auto my-4 flex-grow leading-relaxed">
                 <p class="font-bold text-white uppercase tracking-wider text-[11px] mb-1">📦 Compras e Entregas</p>
-                <p>• Todas as compras da TL STUDIO devem ser realizadas exclusivamente através do sistema oficial de tickets no Discord.</p>
-                <p>• Todo atendimento relacionado a pedidos deverá ocorrer pelo ticket correspondente.</p>
-                <p>• As entregas dos serviços e produtos serão realizadas através do ticket do Discord, salvo quando for necessário utilizar outro meio para disponibilizar o arquivo, acesso ou serviço.</p>
-                <p>• A TL STUDIO não se responsabiliza por compras realizadas fora dos canais oficiais.</p>
-                <p>• Nunca realize pagamentos ou negociações com pessoas que se passem pela equipe fora do atendimento oficial.</p>
-                <p>• Antes de realizar qualquer pagamento, confirme se está sendo atendido pelo canal oficial da TL STUDIO.</p>
-                <p>• Após a conclusão do pedido, o cliente deverá verificar a entrega e informar qualquer problema dentro do próprio ticket.</p>
-                
-                <div class="pt-2 border-t border-white/10 mt-3">
-                    <p class="font-bold text-white uppercase tracking-wider text-[11px] mb-1">🔒 Segurança</p>
-                    <p>• Para sua segurança, mantenha toda a negociação, confirmação de pagamento e histórico do pedido dentro do ticket oficial da TL STUDIO.</p>
-                </div>
+                <p>• Compras podem ser feitas via PIX com QR Code automático ou pelos canais oficiais de ticket no Discord.</p>
+                <p>• Após o pagamento via Nubank PIX, o status será atualizado no seu painel ou no Discord.</p>
+                <p>• A TL STUDIO não realiza reembolso após o download ou entrega dos produtos digitais customizados.</p>
+                <p>• E-mail oficial de suporte e administração: <strong>tuliofonseca00@gmail.com</strong></p>
             </div>
 
             <button id="btn-aceitar-termos" class="w-full py-3.5 px-4 btn-neon rounded-2xl flex items-center justify-center space-x-3 text-sm shrink-0">
@@ -128,7 +130,7 @@
     <!-- Header / Navbar -->
     <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-white to-gray-400 flex items-center justify-center shadow-lg shadow-white/20 animate-float text-black overflow-hidden border border-white/30">
                     <img src="img/tl_studio.jpg" alt="Logo TL STUDIO" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
                 </div>
@@ -139,40 +141,39 @@
             </div>
 
             <!-- Search Bar -->
-            <div class="hidden lg:flex items-center space-x-3 bg-[#0f1115] px-4 py-2 rounded-2xl border border-white/10 w-80">
+            <div class="hidden lg:flex items-center space-x-3 bg-[#0f1115] px-4 py-2 rounded-2xl border border-white/10 w-72">
                 <i class="fa-solid fa-search text-gray-400 text-sm"></i>
-                <input type="text" id="site-search" placeholder="Buscar produtos, discord, sites..." class="bg-transparent text-sm text-white focus:outline-none w-full placeholder-gray-500" oninput="handleSearch(this.value)">
+                <input type="text" id="site-search" placeholder="Buscar no site..." class="bg-transparent text-sm text-white focus:outline-none w-full placeholder-gray-500" oninput="handleSearch(this.value)">
             </div>
 
             <!-- Desktop Nav Links -->
-            <div class="hidden md:flex items-center space-x-5">
-                <a href="#produtos" class="text-sm font-semibold text-gray-300 hover:text-white transition">Produtos</a>
-                <a href="#faq" class="text-sm font-semibold text-gray-300 hover:text-white transition">Dúvidas (FAQ)</a>
-                <a href="#portfolio" class="text-sm font-semibold text-gray-300 hover:text-white transition">Portfólio</a>
-                <a href="#avaliacoes" class="text-sm font-semibold text-gray-300 hover:text-white transition">Avaliações</a>
-                <div class="h-5 w-[1px] bg-gray-800"></div>
-                <!-- Botão Discord -->
-                <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="flex items-center space-x-1.5 bg-[#5865F2] hover:bg-[#4752C4] text-white px-3.5 py-2 rounded-xl font-semibold text-xs transition shadow-lg shadow-[#5865F2]/25">
-                    <i class="fa-brands fa-discord text-base"></i>
-                    <span>Discord</span>
-                </a>
-                <!-- Botão Instagram -->
-                <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="flex items-center space-x-1.5 bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] hover:opacity-90 text-white px-3.5 py-2 rounded-xl font-semibold text-xs transition shadow-lg shadow-pink-500/20">
-                    <i class="fa-brands fa-instagram text-base"></i>
-                    <span>Instagram</span>
-                </a>
-                <!-- Botão YouTube -->
-                <a href="https://youtube.com/@tlzin5773?si=zB7f8nTNqvfe-jGr" target="_blank" class="flex items-center space-x-1.5 bg-[#FF0000] hover:bg-[#CC0000] text-white px-3.5 py-2 rounded-xl font-semibold text-xs transition shadow-lg shadow-red-500/20">
-                    <i class="fa-brands fa-youtube text-base"></i>
-                    <span>YouTube</span>
-                </a>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#produtos" class="text-xs font-semibold text-gray-300 hover:text-white transition">Produtos</a>
+                <a href="#portfolio" class="text-xs font-semibold text-gray-300 hover:text-white transition">Portfólio</a>
+                <a href="#parcerias" class="text-xs font-semibold text-gray-300 hover:text-white transition">Parcerias</a>
+                <a href="#avaliacoes" class="text-xs font-semibold text-gray-300 hover:text-white transition">Avaliações</a>
+                <a href="#faq" class="text-xs font-semibold text-gray-300 hover:text-white transition">FAQ</a>
+                
+                <!-- Admin Dashboard Link (Dynamically Shown) -->
+                <button id="admin-nav-btn" onclick="openAdminModal()" class="hidden px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-xs shadow-lg flex items-center space-x-1.5 hover:opacity-90">
+                    <i class="fa-solid fa-crown"></i>
+                    <span>Dashboard Admin</span>
+                </button>
+
+                <!-- Auth Button & User Profile -->
+                <div id="auth-container">
+                    <button id="btn-login-trigger" onclick="openAuthModal()" class="btn-neon px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-user-lock"></i>
+                        <span>Entrar</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Mobile Menu Toggle -->
             <div class="flex md:hidden items-center space-x-2">
-                <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="bg-[#5865F2] text-white p-2.5 rounded-xl font-bold text-sm">
-                    <i class="fa-brands fa-discord"></i>
-                </a>
+                <button id="mobile-auth-btn" onclick="openAuthModal()" class="bg-white text-black font-bold p-2.5 rounded-xl text-xs">
+                    <i class="fa-solid fa-user"></i>
+                </button>
                 <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
@@ -181,130 +182,70 @@
 
         <!-- Mobile Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden px-4 pt-3 pb-5 border-t border-gray-800 space-y-3 bg-[#161719]">
-            <input type="text" placeholder="Buscar produtos..." class="w-full bg-[#07080a] px-3 py-2 rounded-xl text-sm border border-white/10 text-white" oninput="handleSearch(this.value)">
-            <a href="#produtos" class="block text-gray-300 hover:text-white py-1.5 font-medium">Produtos</a>
-            <a href="#faq" class="block text-gray-300 hover:text-white py-1.5 font-medium">Dúvidas (FAQ)</a>
-            <a href="#portfolio" class="block text-gray-300 hover:text-white py-1.5 font-medium">Portfólio</a>
-            <a href="#avaliacoes" class="block text-gray-300 hover:text-white py-1.5 font-medium">Avaliações</a>
-            <div class="grid grid-cols-3 gap-2 pt-2">
-                <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="flex items-center justify-center space-x-1 bg-[#5865F2] text-white py-2.5 rounded-xl text-xs font-semibold">
-                    <i class="fa-brands fa-discord"></i> <span>Discord</span>
-                </a>
-                <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="flex items-center justify-center space-x-1 bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white py-2.5 rounded-xl text-xs font-semibold">
-                    <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
-                </a>
-                <a href="https://youtube.com/@tlzin5773?si=zB7f8nTNqvfe-jGr" target="_blank" class="flex items-center justify-center space-x-1 bg-[#FF0000] text-white py-2.5 rounded-xl text-xs font-semibold">
-                    <i class="fa-brands fa-youtube"></i> <span>YouTube</span>
-                </a>
-            </div>
+            <input type="text" placeholder="Buscar no site..." class="w-full bg-[#07080a] px-3 py-2 rounded-xl text-sm border border-white/10 text-white" oninput="handleSearch(this.value)">
+            <a href="#produtos" class="block text-gray-300 hover:text-white py-1 font-medium text-sm">Produtos</a>
+            <a href="#portfolio" class="block text-gray-300 hover:text-white py-1 font-medium text-sm">Portfólio</a>
+            <a href="#parcerias" class="block text-gray-300 hover:text-white py-1 font-medium text-sm">Parcerias</a>
+            <a href="#avaliacoes" class="block text-gray-300 hover:text-white py-1 font-medium text-sm">Avaliações</a>
+            <button id="admin-nav-btn-mobile" onclick="openAdminModal()" class="hidden w-full text-left py-2 px-3 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-xs flex items-center space-x-2">
+                <i class="fa-solid fa-crown"></i>
+                <span>Painel Dashboard Admin</span>
+            </button>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="relative overflow-hidden py-20 lg:py-28 hero-custom-bg">
+    <section class="relative overflow-hidden py-16 lg:py-24 hero-custom-bg">
         <div class="absolute inset-0 bg-gradient-to-r from-[#07080a] via-[#07080a]/90 to-[#07080a]/75 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/10 border border-white/25 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-white/10">
-                        <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
-                        <span>NOVO CONTEÚDO • ENTREGA VIA DISCORD</span>
+                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/10 border border-white/25 text-white text-xs font-bold uppercase tracking-wider">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>PAGAMENTO ONLINE VIA NUBANK PIX • SUPORTE ONLINE</span>
                     </div>
                     
                     <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                        SUA PRÓXIMA <br>
-                        <span class="text-neon">EVOLUÇÃO NO SEUS PROJETOS.</span>
+                        SUA EVOLUÇÃO <br>
+                        <span class="text-neon">EM PROJETOS DIGITAIS.</span>
                     </h1>
                     
-                    <p class="text-base sm:text-lg text-gray-300 max-w-xl leading-relaxed">
-                        Servidores Discord completos, sites profissionais iniciais e estratégias avançadas de marketing. Tudo em um ecossistema premium.
+                    <p class="text-base text-gray-300 max-w-xl leading-relaxed">
+                        Servidores Discord completos, desenvolvimento de sites modernos e estratégias de marketing digital. Adquira instantaneamente via PIX Nubank ou atendimento no Discord.
                     </p>
 
                     <div class="flex flex-wrap items-center gap-4 pt-2">
-                        <a href="#produtos" class="px-8 py-4 rounded-2xl btn-neon flex items-center space-x-3 text-base">
+                        <a href="#produtos" class="px-7 py-3.5 rounded-2xl btn-neon flex items-center space-x-3 text-sm">
                             <i class="fa-solid fa-rocket"></i>
                             <span>Explorar Catálogo</span>
                         </a>
-                        <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="px-8 py-4 rounded-2xl bg-[#0f1115] hover:bg-[#1a1d24] text-gray-200 font-bold transition border border-white/20 flex items-center space-x-3 text-base shadow-lg shadow-white/5">
-                            <i class="fa-brands fa-discord text-xl text-[#5865F2]"></i>
-                            <span>Abrir Ticket no Discord</span>
+                        <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="px-7 py-3.5 rounded-2xl bg-[#0f1115] hover:bg-[#1a1d24] text-gray-200 font-bold border border-white/20 flex items-center space-x-3 text-sm">
+                            <i class="fa-brands fa-discord text-lg text-[#5865F2]"></i>
+                            <span>Ticket no Discord</span>
                         </a>
                     </div>
-
-                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold border border-white/20">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-                            <div>
-                                <span class="block text-xs font-bold text-white">+10 Clientes</span>
-                                <span class="text-[10px] text-emerald-400 font-semibold">Avaliação 5.0 ★</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold border border-white/20">
-                                <i class="fa-solid fa-shield-halved"></i>
-                            </div>
-                            <div>
-                                <span class="block text-xs font-bold text-white">100% Seguro</span>
-                                <span class="text-[10px] text-gray-400">Prazo De Entrega curto</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold border border-white/20">
-                                <i class="fa-solid fa-bolt"></i>
-                            </div>
-                            <div>
-                                <span class="block text-xs font-bold text-white">PIX</span>
-                                <span class="text-[10px] text-gray-400">Entrega via ticket</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Interactive Showcase Grid -->
-                <div class="lg:col-span-5 grid grid-cols-3 gap-3">
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/dc_pro.jpg" alt="Discord" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=Discord'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Discord Pro</span>
+                <!-- Showcase Image Cards -->
+                <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                    <div class="glass-panel p-3 rounded-2xl border border-white/10 text-center">
+                        <img src="img/dc_pro.jpg" class="w-full h-24 object-cover rounded-xl mb-2" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=Discord'">
+                        <span class="text-xs font-bold text-white block">Servidores Discord</span>
                     </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/institucional.jpg" alt="Site" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Sites'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Site institucional</span>
+                    <div class="glass-panel p-3 rounded-2xl border border-white/10 text-center">
+                        <img src="img/institucional.jpg" class="w-full h-24 object-cover rounded-xl mb-2" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Websites'">
+                        <span class="text-xs font-bold text-white block">Sites Profissionais</span>
                     </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/short.jpg" alt="Marketing" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/1a1d24/ffffff?text=Marketing'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Edição de shorts</span>
+                    <div class="glass-panel p-3 rounded-2xl border border-white/10 text-center">
+                        <img src="img/short.jpg" class="w-full h-24 object-cover rounded-xl mb-2" onerror="this.src='https://placehold.co/300x200/1a1d24/ffffff?text=Marketing'">
+                        <span class="text-xs font-bold text-white block">Edição de Shorts</span>
                     </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/config.jpg" alt="Setup" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=Setup'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Configuração Discord</span>
-                    </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/pages.jpg" alt="Landing" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Landing'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Landing Page</span>
-                    </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/arte.jpg" alt="Banners" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Artes'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Artes & Shorts</span>
-                    </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/gtarp.jpg" alt="GTA RP" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=GTA+RP'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Site GTA RP</span>
-                    </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/dc_premiun.jpg" alt="Premium" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Premium'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Discord Premium</span>
-                    </div>
-                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
-                        <img src="img/divulgacao.jpg" alt="Campanhas" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Campanha'">
-                        <span class="text-xs font-bold text-white mt-2 truncate">Campanha de divulgação</span>
+                    <div class="glass-panel p-3 rounded-2xl border border-white/10 text-center">
+                        <img src="img/gtarp.jpg" class="w-full h-24 object-cover rounded-xl mb-2" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=GTA+RP'">
+                        <span class="text-xs font-bold text-white block">Sistemas GTA RP</span>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -313,248 +254,1293 @@
     <main id="produtos" class="section-custom-bg relative py-16 w-full">
         <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
                 <div>
-                    <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">LOJA OFICIAL</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Catálogo de Serviços & Produtos</h2>
+                    <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-1">LOJA DE SERVIÇOS</span>
+                    <h2 class="text-3xl font-extrabold text-white">Catálogo de Produtos</h2>
                 </div>
                 <!-- Category Tabs -->
-                <div class="flex flex-wrap gap-2 mt-6 md:mt-0">
-                    <button onclick="filterCategory('all')" class="cat-btn active px-5 py-2.5 rounded-xl font-bold text-xs transition btn-neon">
-                        <i class="fa-solid fa-layer-group mr-1.5"></i> Todos
+                <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
+                    <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl font-bold text-xs transition btn-neon">
+                        Todos
                     </button>
-                    <button onclick="filterCategory('discord')" class="cat-btn px-5 py-2.5 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:bg-[#1a1d24] hover:text-white border border-white/10">
-                        <i class="fa-brands fa-discord mr-1.5 text-indigo-400"></i> Discord
+                    <button onclick="filterCategory('discord')" class="cat-btn px-4 py-2 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                        <i class="fa-brands fa-discord mr-1 text-indigo-400"></i> Discord
                     </button>
-                    <button onclick="filterCategory('sites')" class="cat-btn px-5 py-2.5 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:bg-[#1a1d24] hover:text-white border border-white/10">
-                        <i class="fa-solid fa-globe mr-1.5 text-sky-400"></i> Sites
+                    <button onclick="filterCategory('sites')" class="cat-btn px-4 py-2 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                        <i class="fa-solid fa-globe mr-1 text-sky-400"></i> Sites
                     </button>
-                    <button onclick="filterCategory('marketing')" class="cat-btn px-5 py-2.5 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:bg-[#1a1d24] hover:text-white border border-white/10">
-                        <i class="fa-solid fa-bullhorn mr-1.5 text-pink-400"></i> Marketing
+                    <button onclick="filterCategory('marketing')" class="cat-btn px-4 py-2 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                        <i class="fa-solid fa-bullhorn mr-1 text-pink-400"></i> Marketing
                     </button>
                 </div>
             </div>
 
-            <!-- Products Grid -->
-            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Dynamic Injection via JavaScript -->
+            <!-- Dynamic Products Grid -->
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected via JavaScript -->
             </div>
         </div>
     </main>
 
-    <!-- FAQ Section -->
-    <section id="faq" class="section-custom-bg py-16 border-t border-b border-white/10 relative overflow-hidden">
+    <!-- Portfolio Projects Section -->
+    <section id="portfolio" class="section-custom-bg relative py-16 w-full border-t border-white/10">
         <div class="absolute inset-0 bg-[#07080a]/92 pointer-events-none"></div>
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">TIRE SUAS DÚVIDAS</span>
-                <h2 class="text-3xl font-black text-white">Perguntas Frequentes (FAQ)</h2>
-                <p class="text-sm text-gray-400 mt-2">Tudo o que você precisa saber sobre nossos serviços e entregas.</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-10">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-1">PORTFÓLIO DE PROJETOS</span>
+                <h2 class="text-3xl font-extrabold text-white">Projetos Realizados</h2>
             </div>
 
-            <div class="space-y-4">
-                <div class="glass-panel p-6 rounded-2xl border border-white/10">
-                    <h3 class="text-base font-bold text-white flex items-center justify-between">
-                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como funciona a entrega dos produtos?</span>
-                    </h3>
-                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">As entregas são realizadas exclusivamente através do ticket oficial em nosso Discord.</p>
-                </div>
-
-                <div class="glass-panel p-6 rounded-2xl border border-white/10">
-                    <h3 class="text-base font-bold text-white flex items-center justify-between">
-                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Quais são as formas de pagamento aceitas?</span>
-                    </h3>
-                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Aceitamos PIX. Toda a confirmação de pagamento e envio de comprovante deve ser tratada dentro do ticket oficial.</p>
-                </div>
-
-                <div class="glass-panel p-6 rounded-2xl border border-white/10">
-                    <h3 class="text-base font-bold text-white flex items-center justify-between">
-                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Onde devo realizar minhas negociações?</span>
-                    </h3>
-                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Para sua segurança, mantenha toda a negociação, confirmação de pagamento e histórico do pedido dentro do ticket oficial da TL STUDIO.</p>
-                </div>
-
-                <div class="glass-panel p-6 rounded-2xl border border-white/10">
-                    <h3 class="text-base font-bold text-white flex items-center justify-between">
-                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como faço para abrir um orçamento personalizado?</span>
-                    </h3>
-                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Basta entrar em nosso Discord oficial e abrir um ticket de atendimento com nossa equipe.</p>
-                </div>
+            <!-- Dynamic Portfolio Grid -->
+            <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Injected via JS -->
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section-custom-bg relative py-16 w-full">
+    <!-- Parcerias Section -->
+    <section id="parcerias" class="section-custom-bg relative py-16 border-t border-white/10">
         <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">PORTFÓLIO DE SUCESSO</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Projetos Recentes Entregues</h2>
+            <div class="text-center mb-10">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-1">NOSSA REDE</span>
+                <h2 class="text-3xl font-extrabold text-white">Parcerias de Sucesso</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-                    <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
-                        <img src="img/projetos/ale_naildesigner.jpg" alt="Ale_naildesigner" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Ale+Nail+Designer'">
-                    </div>
-                    <h3 class="text-lg font-bold text-white">Ale_naildesigner</h3>
-                    <p class="text-sm text-gray-400">Um Site institucional preparado para atender clientes e agendar unhas na Ale_naildesigner</p>
-                    <div class="flex items-center justify-between pt-2 text-xs text-emerald-400 font-bold">
-                        <span><i class="fa-solid fa-circle-check"></i> Status: Entregue</span>
-                        <span class="text-gray-400">Ale_naildesigner</span>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-                    <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
-                        <img src="img/projetos/projeto2.jpg" alt="Projeto 2" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Projeto+2'">
-                    </div>
-                    <h3 class="text-lg font-bold text-white">[ Título do Projeto 2 ]</h3>
-                    <p class="text-sm text-gray-400">[ Descrição detalhada do projeto entregue para o cliente. ]</p>
-                    <div class="flex items-center justify-between pt-2 text-xs text-emerald-400 font-bold">
-                        <span><i class="fa-solid fa-circle-check"></i> Status: Entregue</span>
-                        <span class="text-gray-400">[ Cliente ]</span>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-                    <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
-                        <img src="img/projetos/projeto3.jpg" alt="Projeto 3" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Projeto+3'">
-                    </div>
-                    <h3 class="text-lg font-bold text-white">[ Título do Projeto 3 ]</h3>
-                    <p class="text-sm text-gray-400">[ Descrição detalhada do projeto entregue para o cliente. ]</p>
-                    <div class="flex items-center justify-between pt-2 text-xs text-emerald-400 font-bold">
-                        <span><i class="fa-solid fa-circle-check"></i> Status: Entregue</span>
-                        <span class="text-gray-400">[ Cliente ]</span>
-                    </div>
-                </div>
+            <!-- Dynamic Partnerships Grid -->
+            <div id="parcerias-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Injected via JS -->
             </div>
         </div>
     </section>
 
-    <!-- Testimonials / Avaliações -->
+    <!-- Reviews & Online Comments Section -->
     <section id="avaliacoes" class="section-custom-bg relative py-16 border-t border-white/10">
         <div class="absolute inset-0 bg-[#07080a]/92 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">AVALIAÇÕES REAIS</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">O que Nossos Clientes Dizem</h2>
+            <div class="flex flex-col md:flex-row justify-between items-center mb-10">
+                <div>
+                    <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-1">COMUNIDADE</span>
+                    <h2 class="text-3xl font-extrabold text-white">Avaliações e Comentários Online</h2>
+                </div>
+                <button onclick="openCommentModal()" class="mt-4 md:mt-0 btn-neon px-5 py-2.5 rounded-xl text-xs flex items-center space-x-2">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Deixar Avaliação</span>
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-                    <div class="flex text-yellow-400 space-x-1">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-sm text-gray-300 italic">"[ Digite aqui o depoimento ou feedback do cliente... ]"</p>
-                    <div class="flex items-center space-x-3 pt-2">
-                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">?</div>
-                        <div>
-                            <span class="block text-xs font-bold text-white">[ Nome do Cliente ]</span>
-                            <span class="text-[10px] text-gray-400">Comprador Verificado</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Dynamic Comments Grid -->
+            <div id="comments-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
 
-                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-                    <div class="flex text-yellow-400 space-x-1">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-sm text-gray-300 italic">"[ Digite aqui o depoimento ou feedback do cliente... ]"</p>
-                    <div class="flex items-center space-x-3 pt-2">
-                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">?</div>
-                        <div>
-                            <span class="block text-xs font-bold text-white">[ Nome do Cliente ]</span>
-                            <span class="text-[10px] text-gray-400">Comprador Verificado</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- FAQ Section -->
+    <section id="faq" class="section-custom-bg py-16 border-t border-white/10 relative">
+        <div class="absolute inset-0 bg-[#07080a]/92 pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-10">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-1">SUPORTE</span>
+                <h2 class="text-3xl font-black text-white">Perguntas Frequentes</h2>
+            </div>
 
-                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-                    <div class="flex text-yellow-400 space-x-1">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-sm text-gray-300 italic">"[ Digite aqui o depoimento ou feedback do cliente... ]"</p>
-                    <div class="flex items-center space-x-3 pt-2">
-                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">?</div>
-                        <div>
-                            <span class="block text-xs font-bold text-white">[ Nome do Cliente ]</span>
-                            <span class="text-[10px] text-gray-400">Comprador Verificado</span>
-                        </div>
-                    </div>
+            <div class="space-y-4 text-sm">
+                <div class="glass-panel p-5 rounded-2xl">
+                    <h3 class="font-bold text-white mb-1"><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como é gerado o pagamento Nubank PIX?</h3>
+                    <p class="text-gray-400">O sistema gera um código Copia e Cola e QR Code instantâneo. Após o pagamento, o registro fica gravado para o admin.</p>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl">
+                    <h3 class="font-bold text-white mb-1"><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como recebo o meu produto ou serviço?</h3>
+                    <p class="text-gray-400">Através do suporte em nosso Discord ou envio direto no e-mail cadastrado em seu login.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Purchase Modal -->
-    <div id="purchase-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
-        <div class="glass-panel w-full max-w-md rounded-3xl p-8 relative border border-white/20 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white bg-[#0f1115] border border-white/10 p-2.5 rounded-full transition">
+    <!-- Footer -->
+    <footer class="footer-custom-bg relative border-t border-white/10 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-black overflow-hidden">
+                    <img src="img/tl_studio.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
+                </div>
+                <span class="text-xl font-black text-white text-neon">TL STUDIO</span>
+            </div>
+
+            <div class="flex space-x-4">
+                <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="w-10 h-10 rounded-xl bg-[#5865F2] text-white flex items-center justify-center hover:opacity-90">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+                <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white flex items-center justify-center hover:opacity-90">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://youtube.com/@tlzin5773?si=zB7f8nTNqvfe-jGr" target="_blank" class="w-10 h-10 rounded-xl bg-[#FF0000] text-white flex items-center justify-center hover:opacity-90">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
+
+            <p class="text-xs text-gray-400">TL STUDIO © 2026 • Painel Admin: tuliofonseca00@gmail.com</p>
+        </div>
+    </footer>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- Auth Modal (Login / Register / User Profile) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/20 shadow-2xl">
+            <button onclick="closeModal('auth-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-            <div class="text-center mt-2">
-                <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg shadow-white/20">
-                    <i class="fa-solid fa-cart-shopping"></i>
+            
+            <div id="auth-unlogged" class="space-y-4">
+                <div class="text-center">
+                    <h3 class="text-xl font-extrabold text-white">Minha Conta TL STUDIO</h3>
+                    <p class="text-xs text-gray-400 mt-1">Acesse para realizar compras e fazer avaliações</p>
                 </div>
-                <h3 id="modal-title" class="text-xl font-bold text-white mb-1">Nome do Produto</h3>
-                <p id="modal-price" class="text-3xl font-black text-white text-neon mb-4">R$ 0,00</p>
-                <p class="text-sm text-gray-300 mb-6 leading-relaxed">Para adquirir este produto com segurança e atendimento imediato, entre em nosso Discord oficial e abra um ticket!</p>
+
                 <div class="space-y-3">
-                    <a id="modal-discord-btn" href="https://discord.gg/mAPuzShdWp" target="_blank" class="w-full py-4 px-4 btn-neon rounded-2xl flex items-center justify-center space-x-3 text-base">
-                        <i class="fa-brands fa-discord text-xl"></i>
-                        <span>Comprar no Discord</span>
-                    </a>
-                    <button onclick="closeModal()" class="w-full py-3.5 px-4 bg-[#0f1115] hover:bg-[#1a1d24] text-gray-300 font-semibold rounded-2xl transition text-sm border border-white/10">
-                        Continuar Navegando
+                    <button onclick="loginWithGoogle()" class="w-full py-3 bg-white text-black font-bold rounded-xl text-xs flex items-center justify-center space-x-2 hover:bg-gray-200">
+                        <i class="fa-brands fa-google text-base text-red-500"></i>
+                        <span>Entrar com Google</span>
+                    </button>
+                    <div class="text-center text-[10px] text-gray-500 uppercase tracking-widest font-bold">ou E-mail</div>
+                    
+                    <input type="email" id="auth-email" placeholder="Seu E-mail" class="w-full bg-[#07080a] p-3 rounded-xl border border-white/10 text-xs text-white focus:outline-none focus:border-white">
+                    <input type="password" id="auth-pass" placeholder="Sua Senha" class="w-full bg-[#07080a] p-3 rounded-xl border border-white/10 text-xs text-white focus:outline-none focus:border-white">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="loginWithEmail()" class="py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs">
+                            Entrar
+                        </button>
+                        <button onclick="registerWithEmail()" class="py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-xs border border-white/20">
+                            Cadastrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logged View -->
+            <div id="auth-logged" class="hidden space-y-4">
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 rounded-full bg-white/10 mx-auto flex items-center justify-center text-2xl text-white border border-white/20" id="user-avatar-display">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 id="user-email-display" class="text-sm font-bold text-white break-all">user@example.com</h3>
+                    <span id="user-role-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold uppercase">Cliente Verificado</span>
+                </div>
+
+                <!-- User Purchase History -->
+                <div class="border-t border-white/10 pt-4">
+                    <h4 class="text-xs font-bold text-white mb-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-bag-shopping text-emerald-400 mr-1"></i> Minhas Compras</span>
+                    </h4>
+                    <div id="user-orders-list" class="max-h-40 overflow-y-auto space-y-2 text-xs text-gray-300">
+                        <!-- Loaded JS -->
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="logoutUser()" class="w-full py-2.5 bg-red-600/80 hover:bg-red-700 text-white font-bold rounded-xl text-xs">
+                        Sair da Conta
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer id="sobre" class="footer-custom-bg relative border-t border-white/10 text-gray-300 py-16 overflow-hidden">
-        <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+    <!-- Nubank PIX Payment Modal -->
+    <div id="payment-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/20 shadow-2xl">
+            <button onclick="closeModal('payment-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-4">
+                <div class="w-12 h-12 bg-nubank text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-bold shadow-lg">
+                    <span>Nu</span>
+                </div>
                 <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-black font-bold shadow-md shadow-white/30 overflow-hidden border border-white/20">
-                            <img src="img/tl_studio.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
-                        </div>
-                        <span class="text-2xl font-black text-white tracking-wider text-neon">TL STUDIO</span>
-                    </div>
-                    <p class="text-sm text-gray-300 leading-relaxed">
-                        Sua loja digital de confiança especializada em servidores Discord, desenvolvimento web profissional e campanhas de marketing de alta conversão.
-                    </p>
+                    <h3 class="text-lg font-bold text-white">Pagamento via Nubank PIX</h3>
+                    <p id="pix-product-title" class="text-xs text-gray-400">Produto Selecionado</p>
+                    <p id="pix-product-price" class="text-2xl font-black text-white mt-1 text-neon">R$ 0,00</p>
                 </div>
-                <div class="flex flex-col md:items-center">
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Redes Sociais Oficiais</h4>
-                    <div class="flex space-x-4">
-                        <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="w-12 h-12 rounded-2xl bg-[#5865F2] text-white flex items-center justify-center hover:opacity-90 transition shadow-md shadow-[#5865F2]/30">
-                            <i class="fa-brands fa-discord text-xl"></i>
-                        </a>
-                        <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white flex items-center justify-center hover:opacity-90 transition shadow-md shadow-pink-500/30">
-                            <i class="fa-brands fa-instagram text-xl"></i>
-                        </a>
-                        <a href="https://youtube.com/@tlzin5773?si=zB7f8nTNqvfe-jGr" target="_blank" class="w-12 h-12 rounded-2xl bg-[#FF0000] text-white flex items-center justify-center hover:opacity-90 transition shadow-md shadow-red-500/30">
-                            <i class="fa-brands fa-youtube text-xl"></i>
-                        </a>
+
+                <!-- QR Code Box -->
+                <div class="bg-white p-4 rounded-2xl w-48 h-48 mx-auto flex items-center justify-center border-2 border-nubank shadow-xl" id="qrcode-container"></div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase text-gray-400 font-bold block">Código PIX Copia e Cola:</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="pix-code-input" readonly class="w-full bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-xs text-gray-300 select-all">
+                        <button onclick="copyPixCode()" class="btn-nubank px-4 py-2.5 rounded-xl text-xs shrink-0">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="md:text-right">
-                    <p class="text-sm font-bold text-white mb-1">TL STUDIO © 2026</p>
-                    <p class="text-xs text-gray-400">Todos os direitos reservados.</p>
+
+                <div class="bg-emerald-950/40 border border-emerald-500/30 p-3 rounded-xl text-xs text-emerald-300 text-left space-y-1">
+                    <p class="font-bold"><i class="fa-solid fa-circle-check"></i> Registro Instantâneo</p>
+                    <p class="text-[11px] text-emerald-200/80">Ao clicar em "Confirmar Pagamento", o recibo é registrado no painel admin para o e-mail: <strong>tuliofonseca00@gmail.com</strong>.</p>
                 </div>
+
+                <button onclick="confirmPixPayment()" class="w-full py-3.5 btn-nubank rounded-xl text-xs font-bold shadow-lg flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Confirmar Pagamento Simulado</span>
+                </button>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- JavaScript Application Logic -->
+    <!-- Create Online Comment Modal -->
+    <div id="comment-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/20 shadow-2xl">
+            <button onclick="closeModal('comment-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-white">Nova Avaliação</h3>
+                
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Nota (1 a 5 Estrelas)</label>
+                    <select id="comment-stars" class="w-full bg-[#07080a] p-3 rounded-xl border border-white/10 text-xs text-white">
+                        <option value="5">★★★★★ (5/5) - Excelente</option>
+                        <option value="4">★★★★☆ (4/5) - Muito Bom</option>
+                        <option value="3">★★★☆☆ (3/5) - Bom</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Seu Comentário / Feedback</label>
+                    <textarea id="comment-text" rows="4" placeholder="Escreva sobre o serviço contratado..." class="w-full bg-[#07080a] p-3 rounded-xl border border-white/10 text-xs text-white focus:outline-none focus:border-white"></textarea>
+                </div>
+
+                <button onclick="submitComment()" class="w-full py-3.5 btn-neon rounded-xl text-xs font-bold">
+                    Publicar Avaliação Online
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD MODAL (Restricted to tuliofonseca00@gmail.com) -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/95 backdrop-blur-md hidden overflow-y-auto">
+        <div class="glass-panel w-full max-w-5xl rounded-3xl p-6 relative border border-amber-500/30 shadow-2xl my-auto text-left max-h-[92vh] flex flex-col">
+            
+            <!-- Header Dashboard -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-extrabold text-white">Painel Dashboard Admin</h2>
+                        <p class="text-xs text-amber-400">Admin Oficial: tuliofonseca00@gmail.com</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('admin-modal')" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Dashboard Navigation Tabs -->
+            <div class="flex flex-wrap gap-2 py-3 border-b border-white/10 shrink-0 text-xs font-bold">
+                <button onclick="switchAdminTab('tab-products')" class="admin-tab-btn active px-4 py-2 rounded-xl bg-white text-black">
+                    <i class="fa-solid fa-box mr-1"></i> Produtos
+                </button>
+                <button onclick="switchAdminTab('tab-projects')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                    <i class="fa-solid fa-briefcase mr-1"></i> Projetos
+                </button>
+                <button onclick="switchAdminTab('tab-partners')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                    <i class="fa-solid fa-handshake mr-1"></i> Parcerias
+                </button>
+                <button onclick="switchAdminTab('tab-comments')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                    <i class="fa-solid fa-comments mr-1"></i> Comentários
+                </button>
+                <button onclick="switchAdminTab('tab-orders')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                    <i class="fa-solid fa-receipt mr-1"></i> Clientes / Compras
+                </button>
+            </div>
+
+            <!-- Tab Contents Scrollable -->
+            <div class="overflow-y-auto py-4 space-y-6 flex-grow text-xs">
+                
+                <!-- TAB: PRODUCTS -->
+                <div id="tab-products" class="admin-tab-content space-y-4">
+                    <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
+                        <h4 class="font-bold text-white text-sm" id="prod-form-title">Adicionar Novo Produto</h4>
+                        <input type="hidden" id="admin-prod-id">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <input type="text" id="admin-prod-name" placeholder="Nome do Produto" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <input type="text" id="admin-prod-price" placeholder="Preço (ex: R$ 29,90)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <select id="admin-prod-cat" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                                <option value="discord">Discord</option>
+                                <option value="sites">Sites</option>
+                                <option value="marketing">Marketing</option>
+                            </select>
+                        </div>
+                        <input type="text" id="admin-prod-sub" placeholder="Subtítulo / Descrição Curta" class="w-full bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                        
+                        <!-- Image Source: Link or Gallery -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="admin-prod-imgurl" placeholder="Link da Imagem (URL Externa)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <div class="flex items-center space-x-2">
+                                <label class="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl cursor-pointer w-full text-center border border-white/20">
+                                    <i class="fa-solid fa-image mr-1"></i> Upload da Galeria
+                                    <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-prod-imgurl')">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-2 pt-2">
+                            <button onclick="saveAdminProduct()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Produto</button>
+                            <button onclick="clearProductForm()" class="bg-gray-800 text-gray-300 px-4 py-2.5 rounded-xl font-bold">Limpar</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto border border-white/10 rounded-2xl">
+                        <table class="w-full text-left text-gray-300">
+                            <thead class="bg-[#0f1115] text-white uppercase text-[10px] border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Imagem</th>
+                                    <th class="p-3">Produto</th>
+                                    <th class="p-3">Categoria</th>
+                                    <th class="p-3">Preço</th>
+                                    <th class="p-3 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-table">
+                                <!-- JS Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB: PROJECTS -->
+                <div id="tab-projects" class="admin-tab-content space-y-4 hidden">
+                    <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
+                        <h4 class="font-bold text-white text-sm">Adicionar / Editar Projeto Realizado</h4>
+                        <input type="hidden" id="admin-proj-id">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="admin-proj-title" placeholder="Título do Projeto" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <input type="text" id="admin-proj-client" placeholder="Nome do Cliente" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                        </div>
+                        <input type="text" id="admin-proj-desc" placeholder="Descrição do Projeto Entregue" class="w-full bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="admin-proj-imgurl" placeholder="Link da Imagem" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <label class="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl cursor-pointer text-center border border-white/20">
+                                <i class="fa-solid fa-image mr-1"></i> Upload da Galeria
+                                <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-proj-imgurl')">
+                            </label>
+                        </div>
+
+                        <button onclick="saveAdminProject()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Projeto</button>
+                    </div>
+
+                    <div id="admin-projects-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- JS Injected -->
+                    </div>
+                </div>
+
+                <!-- TAB: PARTNERSHIPS -->
+                <div id="tab-partners" class="admin-tab-content space-y-4 hidden">
+                    <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
+                        <h4 class="font-bold text-white text-sm">Adicionar Parceria</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="admin-part-name" placeholder="Nome do Parceiro/Guilda" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <input type="text" id="admin-part-link" placeholder="Link (Discord/Instagram)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="admin-part-imgurl" placeholder="Logo/Imagem URL" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <label class="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl cursor-pointer text-center border border-white/20">
+                                <i class="fa-solid fa-image mr-1"></i> Upload Logo
+                                <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-part-imgurl')">
+                            </label>
+                        </div>
+                        <button onclick="saveAdminPartner()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Parceria</button>
+                    </div>
+
+                    <div id="admin-partners-list" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- JS Injected -->
+                    </div>
+                </div>
+
+                <!-- TAB: COMMENT MODERATION -->
+                <div id="tab-comments" class="admin-tab-content space-y-4 hidden">
+                    <h4 class="font-bold text-white text-sm">Moderação de Avaliações / Comentários</h4>
+                    <div id="admin-comments-list" class="space-y-3">
+                        <!-- JS Injected -->
+                    </div>
+                </div>
+
+                <!-- TAB: ORDERS & PURCHASES -->
+                <div id="tab-orders" class="admin-tab-content space-y-4 hidden">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-white text-sm">Histórico Global de Vendas e PIX</h4>
+                        <input type="text" id="admin-order-search" placeholder="Buscar por e-mail..." class="bg-[#07080a] p-2 rounded-xl border border-white/10 text-white text-xs w-60" oninput="filterAdminOrders(this.value)">
+                    </div>
+
+                    <div class="overflow-x-auto border border-white/10 rounded-2xl">
+                        <table class="w-full text-left text-gray-300">
+                            <thead class="bg-[#0f1115] text-white uppercase text-[10px] border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Data</th>
+                                    <th class="p-3">E-mail Cliente</th>
+                                    <th class="p-3">Produto</th>
+                                    <th class="p-3">Valor</th>
+                                    <th class="p-3">Status PIX</th>
+                                    <th class="p-3 text-right">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-orders-table">
+                                <!-- JS Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Script Integrations -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithCustomToken, 
+            signInAnonymously, 
+            onAuthStateChanged,
+            GoogleAuthProvider,
+            signInWithPopup,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            setDoc, 
+            addDoc, 
+            deleteDoc, 
+            onSnapshot, 
+            updateDoc 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase Configuration Guardrails
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'tl-studio-prod';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : {
+                apiKey: "AIzaSyDemoDummyKeyTLStudio2026",
+                authDomain: "tlstudio-demo.firebaseapp.com",
+                projectId: "tlstudio-demo",
+                storageBucket: "tlstudio-demo.appspot.com",
+                messagingSenderId: "1234567890",
+                appId: "1:1234567890:web:abcdef123456"
+            };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.auth = auth;
+        window.appId = appId;
+
+        // Collections Firestore Paths
+        const ADMIN_EMAIL = 'tuliofonseca00@gmail.com';
+        const PRODUCTS_PATH = ['artifacts', appId, 'public', 'data', 'products'];
+        const PROJECTS_PATH = ['artifacts', appId, 'public', 'data', 'projects'];
+        const PARTNERS_PATH = ['artifacts', appId, 'public', 'data', 'partners'];
+        const COMMENTS_PATH = ['artifacts', appId, 'public', 'data', 'comments'];
+        const ORDERS_PATH   = ['artifacts', appId, 'public', 'data', 'orders'];
+
+        let currentUser = null;
+        let productsData = [];
+        let projectsData = [];
+        let partnersData = [];
+        let commentsData = [];
+        let ordersData   = [];
+
+        // Auth Authentication Initialization
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.warn("Auth init fallback local mode active");
+            }
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            updateAuthUI(user);
+            setupFirestoreListeners();
+        });
+
+        initAuth();
+
+        // UI Auth Updater
+        function updateAuthUI(user) {
+            const adminNavBtn = document.getElementById('admin-nav-btn');
+            const adminNavBtnMobile = document.getElementById('admin-nav-btn-mobile');
+            const authTriggerBtn = document.getElementById('btn-login-trigger');
+            const authUnlogged = document.getElementById('auth-unlogged');
+            const authLogged = document.getElementById('auth-logged');
+            const userEmailDisplay = document.getElementById('user-email-display');
+
+            if (user && !user.isAnonymous && user.email) {
+                authTriggerBtn.innerHTML = `<i class="fa-solid fa-user-check text-emerald-400"></i> <span class="truncate max-w-[100px]">${user.email.split('@')[0]}</span>`;
+                authUnlogged.classList.add('hidden');
+                authLogged.classList.remove('hidden');
+                userEmailDisplay.innerText = user.email;
+
+                if (user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                    adminNavBtn.classList.remove('hidden');
+                    adminNavBtnMobile.classList.remove('hidden');
+                } else {
+                    adminNavBtn.classList.add('hidden');
+                    adminNavBtnMobile.classList.add('hidden');
+                }
+            } else {
+                authTriggerBtn.innerHTML = `<i class="fa-solid fa-user-lock"></i> <span>Entrar</span>`;
+                authUnlogged.classList.remove('hidden');
+                authLogged.classList.add('hidden');
+                adminNavBtn.classList.add('hidden');
+                adminNavBtnMobile.classList.add('hidden');
+            }
+        }
+
+        // Global Auth Functions
+        window.loginWithGoogle = async () => {
+            try {
+                const provider = new GoogleAuthProvider();
+                await signInWithPopup(auth, provider);
+                showToast("Login realizado com sucesso!", "success");
+                closeModal('auth-modal');
+            } catch (err) {
+                showToast("Erro no login com Google: " + err.message, "error");
+            }
+        };
+
+        window.loginWithEmail = async () => {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            if (!email || !pass) return showToast("Preencha e-mail e senha", "error");
+
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                showToast("Bem-vindo de volta!", "success");
+                closeModal('auth-modal');
+            } catch (err) {
+                showToast("Erro de login: " + err.message, "error");
+            }
+        };
+
+        window.registerWithEmail = async () => {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            if (!email || !pass) return showToast("Preencha e-mail e senha", "error");
+
+            try {
+                await createUserWithEmailAndPassword(auth, email, pass);
+                showToast("Conta criada com sucesso!", "success");
+                closeModal('auth-modal');
+            } catch (err) {
+                showToast("Erro no cadastro: " + err.message, "error");
+            }
+        };
+
+        window.logoutUser = async () => {
+            await signOut(auth);
+            await signInAnonymously(auth);
+            showToast("Você desconectou.", "info");
+            closeModal('auth-modal');
+        };
+
+        // Realtime Firestore Sync with Fallback Handlers
+        function setupFirestoreListeners() {
+            // Helper function to safely subscribe or fallback to local storage
+            function safeSubscribe(path, key, defaultData, renderFn, renderAdminFn) {
+                try {
+                    onSnapshot(collection(db, ...path), (snap) => {
+                        let data = [];
+                        snap.forEach(docSnap => data.push({ id: docSnap.id, ...docSnap.data() }));
+                        if (data.length === 0) {
+                            const saved = localStorage.getItem('tlstudio_' + key);
+                            data = saved ? JSON.parse(saved) : defaultData;
+                        } else {
+                            localStorage.setItem('tlstudio_' + key, JSON.stringify(data));
+                        }
+                        updateLocalData(key, data, renderFn, renderAdminFn);
+                    }, (err) => {
+                        console.warn(`${key} permission/network fallback:`, err.message);
+                        const saved = localStorage.getItem('tlstudio_' + key);
+                        const data = saved ? JSON.parse(saved) : defaultData;
+                        updateLocalData(key, data, renderFn, renderAdminFn);
+                    });
+                } catch (e) {
+                    const saved = localStorage.getItem('tlstudio_' + key);
+                    const data = saved ? JSON.parse(saved) : defaultData;
+                    updateLocalData(key, data, renderFn, renderAdminFn);
+                }
+            }
+
+            function updateLocalData(key, data, renderFn, renderAdminFn) {
+                if (key === 'products') productsData = data;
+                if (key === 'projects') projectsData = data;
+                if (key === 'partners') partnersData = data;
+                if (key === 'comments') commentsData = data;
+                if (key === 'orders') ordersData = data;
+
+                if (renderFn) renderFn();
+                if (renderAdminFn) renderAdminFn();
+            }
+
+            // Defaults
+            const defaultProducts = [
+                { id: 'p1', category: 'discord', name: 'Configuração Inicial', price: 'R$ 6,99', subtitle: 'Configuração básica para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
+                { id: 'p2', category: 'discord', name: 'Discord Profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos e bots', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
+                { id: 'p3', category: 'sites', name: 'Site Institucional', price: 'R$ 49,99', subtitle: 'Site corporativo profissional completo', icon: 'fa-building', image: 'img/institucional.jpg' },
+                { id: 'p4', category: 'sites', name: 'Site GTA RP', price: 'R$ 49,99', subtitle: 'Painel e site para servidores GTA RP', icon: 'fa-car', image: 'img/gtarp.jpg' },
+                { id: 'p5', category: 'marketing', name: 'Edição de Shorts', price: 'R$ 14,99', subtitle: 'Edição dinâmica de vídeos curtos', icon: 'fa-clapperboard', image: 'img/short.jpg' }
+            ];
+
+            const defaultProjects = [
+                { id: 'pj1', title: 'Ale_naildesigner', client: 'Ale Nail', desc: 'Site institucional moderno para agendamento de unhas', image: 'img/projetos/ale_naildesigner.jpg' },
+                { id: 'pj2', title: 'Comunidade Gamer RP', client: 'GTA Server', desc: 'Discord com mais de 500 membros e bot exclusivo', image: 'img/dc_premiun.jpg' }
+            ];
+
+            const defaultPartners = [
+                { id: 'pt1', name: 'Rede Discord BR', link: 'https://discord.gg/mAPuzShdWp', image: 'img/tl_studio.jpg' },
+                { id: 'pt2', name: 'Marketing Pro', link: 'https://instagram.com/tlzin.ofc', image: 'img/arte.jpg' }
+            ];
+
+            safeSubscribe(PRODUCTS_PATH, 'products', defaultProducts, renderProducts, renderAdminProducts);
+            safeSubscribe(PROJECTS_PATH, 'projects', defaultProjects, renderProjects, renderAdminProjects);
+            safeSubscribe(PARTNERS_PATH, 'partners', defaultPartners, renderPartners, renderAdminPartners);
+            safeSubscribe(COMMENTS_PATH, 'comments', [], renderComments, renderAdminComments);
+            safeSubscribe(ORDERS_PATH, 'orders', [], renderUserOrders, renderAdminOrders);
+        }
+
+        // Render Functions
+        window.renderProducts = () => {
+            const grid = document.getElementById('products-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const filter = window.currentFilter || 'all';
+            const search = (window.searchQuery || '').toLowerCase();
+
+            const filtered = productsData.filter(p => {
+                const matchCat = filter === 'all' || p.category === filter;
+                const matchSearch = p.name.toLowerCase().includes(search) || (p.subtitle && p.subtitle.toLowerCase().includes(search));
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-400 glass-panel rounded-2xl">Nenhum produto cadastrado nesta categoria.</div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-3xl overflow-hidden border border-white/10 hover:border-white/30 transition flex flex-col justify-between p-5';
+                card.innerHTML = `
+                    <div>
+                        <div class="relative aspect-video rounded-2xl overflow-hidden mb-4 bg-black/40">
+                            <img src="${p.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x250/0f1115/ffffff?text=TL+STUDIO'">
+                            <span class="absolute top-2 left-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-black/80 text-white border border-white/20">${p.category}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white capitalize">${p.name}</h3>
+                        <p class="text-xs text-gray-400 mt-1 mb-4 leading-relaxed">${p.subtitle || ''}</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <div>
+                            <span class="text-[10px] uppercase text-gray-500 block font-bold">Investimento</span>
+                            <span class="text-base font-extrabold text-white text-neon">${p.price}</span>
+                        </div>
+                        <button onclick="openPaymentModal('${p.name}', '${p.price}')" class="btn-nubank px-4 py-2 rounded-xl text-xs flex items-center space-x-1.5">
+                            <i class="fa-solid fa-pix"></i>
+                            <span>Comprar PIX</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.renderProjects = () => {
+            const grid = document.getElementById('portfolio-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            projectsData.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel p-5 rounded-3xl border border-white/10 space-y-3';
+                card.innerHTML = `
+                    <div class="aspect-video rounded-2xl overflow-hidden bg-black/40 border border-white/10">
+                        <img src="${p.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/500x300/0f1115/ffffff?text=Projeto'">
+                    </div>
+                    <h3 class="text-base font-bold text-white">${p.title}</h3>
+                    <p class="text-xs text-gray-400">${p.desc}</p>
+                    <div class="text-[10px] text-emerald-400 font-bold flex items-center justify-between pt-2">
+                        <span><i class="fa-solid fa-circle-check"></i> Entregue</span>
+                        <span class="text-gray-500">${p.client || 'Cliente'}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.renderPartners = () => {
+            const grid = document.getElementById('parcerias-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            partnersData.forEach(p => {
+                const card = document.createElement('a');
+                card.href = p.link || '#';
+                card.target = '_blank';
+                card.className = 'glass-panel p-4 rounded-2xl border border-white/10 text-center flex flex-col items-center justify-center hover:border-white/30 transition space-y-2';
+                card.innerHTML = `
+                    <div class="w-16 h-16 rounded-full overflow-hidden border border-white/20">
+                        <img src="${p.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=Parceiro'">
+                    </div>
+                    <h4 class="text-xs font-bold text-white">${p.name}</h4>
+                    <span class="text-[10px] text-indigo-400 flex items-center space-x-1"><i class="fa-solid fa-link"></i> <span>Acessar</span></span>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.renderComments = () => {
+            const grid = document.getElementById('comments-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (commentsData.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 glass-panel rounded-2xl">Seja o primeiro a avaliar a TL STUDIO!</div>`;
+                return;
+            }
+
+            commentsData.forEach(c => {
+                const stars = '★'.repeat(c.stars || 5) + '☆'.repeat(5 - (c.stars || 5));
+                const card = document.createElement('div');
+                card.className = 'glass-panel p-5 rounded-3xl border border-white/10 space-y-3';
+                card.innerHTML = `
+                    <div class="text-yellow-400 text-xs">${stars}</div>
+                    <p class="text-xs text-gray-300 italic">"${c.text}"</p>
+                    <div class="flex items-center space-x-2 pt-2 border-t border-white/10">
+                        <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center font-bold text-[10px] text-white">
+                            ${(c.userEmail || 'U')[0].toUpperCase()}
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-white">${c.userEmail || 'Usuário'}</span>
+                            <span class="text-[9px] text-gray-500">${c.date || 'Recente'}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.renderUserOrders = () => {
+            const list = document.getElementById('user-orders-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            if (!currentUser || currentUser.isAnonymous) {
+                list.innerHTML = `<p class="text-gray-500">Faça login para ver seu histórico de pedidos.</p>`;
+                return;
+            }
+
+            const myOrders = ordersData.filter(o => o.userEmail === currentUser.email);
+            if (myOrders.length === 0) {
+                list.innerHTML = `<p class="text-gray-500">Nenhum pedido realizado ainda.</p>`;
+                return;
+            }
+
+            myOrders.forEach(o => {
+                const item = document.createElement('div');
+                item.className = 'p-2.5 rounded-xl bg-[#07080a] border border-white/10 flex justify-between items-center';
+                item.innerHTML = `
+                    <div>
+                        <span class="font-bold text-white block">${o.productName}</span>
+                        <span class="text-[10px] text-gray-400">${o.date} • PIX Nubank</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${o.status === 'Pago' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-yellow-500/20 text-yellow-400'}">
+                        ${o.status}
+                    </span>
+                `;
+                list.appendChild(item);
+            });
+        };
+
+        // ==================== ADMIN DASHBOARD RENDERS & ACTIONS ====================
+
+        window.renderAdminProducts = () => {
+            const table = document.getElementById('admin-products-table');
+            if (!table) return;
+            table.innerHTML = '';
+
+            productsData.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-white/5 hover:bg-white/5';
+                tr.innerHTML = `
+                    <td class="p-3"><img src="${p.image}" class="w-10 h-7 object-cover rounded"></td>
+                    <td class="p-3 font-bold text-white">${p.name}</td>
+                    <td class="p-3 uppercase text-[10px]">${p.category}</td>
+                    <td class="p-3 font-bold text-emerald-400">${p.price}</td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick="editAdminProduct('${p.id}')" class="text-sky-400 hover:text-sky-300"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteAdminProduct('${p.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                table.appendChild(tr);
+            });
+        };
+
+        window.saveAdminProduct = async () => {
+            const id = document.getElementById('admin-prod-id').value;
+            const name = document.getElementById('admin-prod-name').value;
+            const price = document.getElementById('admin-prod-price').value;
+            const category = document.getElementById('admin-prod-cat').value;
+            const subtitle = document.getElementById('admin-prod-sub').value;
+            const image = document.getElementById('admin-prod-imgurl').value || 'img/tl_studio.jpg';
+
+            if (!name || !price) return showToast("Preencha Nome e Preço", "error");
+
+            const data = { id: id || 'p_' + Date.now(), name, price, category, subtitle, image, icon: 'fa-box' };
+
+            try {
+                if (id) {
+                    await updateDoc(doc(db, ...PRODUCTS_PATH, id), data);
+                } else {
+                    await addDoc(collection(db, ...PRODUCTS_PATH), data);
+                }
+            } catch (e) {
+                if (id) {
+                    const idx = productsData.findIndex(x => x.id === id);
+                    if (idx !== -1) productsData[idx] = data;
+                } else {
+                    productsData.push(data);
+                }
+                localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
+                renderProducts();
+                renderAdminProducts();
+            }
+
+            showToast("Produto salvo com sucesso!", "success");
+            clearProductForm();
+        };
+
+        window.deleteAdminProduct = async (id) => {
+            try {
+                await deleteDoc(doc(db, ...PRODUCTS_PATH, id));
+            } catch (e) {
+                productsData = productsData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
+                renderProducts();
+                renderAdminProducts();
+            }
+            showToast("Produto excluído", "info");
+        };
+
+        window.editAdminProduct = (id) => {
+            const p = productsData.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('admin-prod-id').value = p.id;
+            document.getElementById('admin-prod-name').value = p.name;
+            document.getElementById('admin-prod-price').value = p.price;
+            document.getElementById('admin-prod-cat').value = p.category;
+            document.getElementById('admin-prod-sub').value = p.subtitle || '';
+            document.getElementById('admin-prod-imgurl').value = p.image || '';
+        };
+
+        window.clearProductForm = () => {
+            document.getElementById('admin-prod-id').value = '';
+            document.getElementById('admin-prod-name').value = '';
+            document.getElementById('admin-prod-price').value = '';
+            document.getElementById('admin-prod-sub').value = '';
+            document.getElementById('admin-prod-imgurl').value = '';
+        };
+
+        // ADMIN PROJECTS
+        window.renderAdminProjects = () => {
+            const list = document.getElementById('admin-projects-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            projectsData.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'p-3 bg-[#07080a] rounded-xl border border-white/10 flex justify-between items-center';
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <img src="${p.image}" class="w-12 h-12 object-cover rounded-xl">
+                        <div>
+                            <span class="font-bold text-white block">${p.title}</span>
+                            <span class="text-[10px] text-gray-400">${p.client || ''}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteAdminProject('${p.id}')" class="text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>
+                `;
+                list.appendChild(card);
+            });
+        };
+
+        window.saveAdminProject = async () => {
+            const title = document.getElementById('admin-proj-title').value;
+            const client = document.getElementById('admin-proj-client').value;
+            const desc = document.getElementById('admin-proj-desc').value;
+            const image = document.getElementById('admin-proj-imgurl').value || 'img/projetos/ale_naildesigner.jpg';
+
+            if (!title) return showToast("Título obrigatório", "error");
+
+            const data = { id: 'pj_' + Date.now(), title, client, desc, image };
+
+            try {
+                await addDoc(collection(db, ...PROJECTS_PATH), data);
+            } catch (e) {
+                projectsData.push(data);
+                localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
+                renderProjects();
+                renderAdminProjects();
+            }
+
+            showToast("Projeto adicionado!", "success");
+            document.getElementById('admin-proj-title').value = '';
+            document.getElementById('admin-proj-client').value = '';
+            document.getElementById('admin-proj-desc').value = '';
+            document.getElementById('admin-proj-imgurl').value = '';
+        };
+
+        window.deleteAdminProject = async (id) => {
+            try {
+                await deleteDoc(doc(db, ...PROJECTS_PATH, id));
+            } catch (e) {
+                projectsData = projectsData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
+                renderProjects();
+                renderAdminProjects();
+            }
+            showToast("Projeto removido", "info");
+        };
+
+        // ADMIN PARTNERS
+        window.renderAdminPartners = () => {
+            const list = document.getElementById('admin-partners-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            partnersData.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'p-3 bg-[#07080a] rounded-xl border border-white/10 flex justify-between items-center';
+                card.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <img src="${p.image}" class="w-8 h-8 rounded-full object-cover">
+                        <span class="font-bold text-white text-xs">${p.name}</span>
+                    </div>
+                    <button onclick="deleteAdminPartner('${p.id}')" class="text-red-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                `;
+                list.appendChild(card);
+            });
+        };
+
+        window.saveAdminPartner = async () => {
+            const name = document.getElementById('admin-part-name').value;
+            const link = document.getElementById('admin-part-link').value;
+            const image = document.getElementById('admin-part-imgurl').value || 'img/tl_studio.jpg';
+
+            if (!name) return showToast("Nome do parceiro obrigatório", "error");
+
+            const data = { id: 'pt_' + Date.now(), name, link, image };
+
+            try {
+                await addDoc(collection(db, ...PARTNERS_PATH), data);
+            } catch (e) {
+                partnersData.push(data);
+                localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
+                renderPartners();
+                renderAdminPartners();
+            }
+
+            showToast("Parceria salva!", "success");
+            document.getElementById('admin-part-name').value = '';
+            document.getElementById('admin-part-link').value = '';
+            document.getElementById('admin-part-imgurl').value = '';
+        };
+
+        window.deleteAdminPartner = async (id) => {
+            try {
+                await deleteDoc(doc(db, ...PARTNERS_PATH, id));
+            } catch (e) {
+                partnersData = partnersData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
+                renderPartners();
+                renderAdminPartners();
+            }
+            showToast("Parceria deletada", "info");
+        };
+
+        // ADMIN COMMENTS MODERATION
+        window.renderAdminComments = () => {
+            const list = document.getElementById('admin-comments-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            commentsData.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-[#07080a] rounded-xl border border-white/10 flex justify-between items-center';
+                item.innerHTML = `
+                    <div>
+                        <span class="font-bold text-white block">${c.userEmail} (${c.stars}★)</span>
+                        <p class="text-gray-400 text-xs">${c.text}</p>
+                    </div>
+                    <button onclick="deleteAdminComment('${c.id}')" class="btn-neon px-3 py-1 text-red-500 rounded-lg"><i class="fa-solid fa-trash"></i> Deletar</button>
+                `;
+                list.appendChild(item);
+            });
+        };
+
+        window.deleteAdminComment = async (id) => {
+            try {
+                await deleteDoc(doc(db, ...COMMENTS_PATH, id));
+            } catch (e) {
+                commentsData = commentsData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_comments', JSON.stringify(commentsData));
+                renderComments();
+                renderAdminComments();
+            }
+            showToast("Comentário apagado", "info");
+        };
+
+        // ADMIN ORDERS
+        window.renderAdminOrders = (filterText = '') => {
+            const table = document.getElementById('admin-orders-table');
+            if (!table) return;
+            table.innerHTML = '';
+
+            const list = ordersData.filter(o => (o.userEmail || '').toLowerCase().includes(filterText.toLowerCase()));
+
+            list.forEach(o => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-white/5 hover:bg-white/5';
+                tr.innerHTML = `
+                    <td class="p-3 text-[10px]">${o.date}</td>
+                    <td class="p-3 font-bold text-white">${o.userEmail}</td>
+                    <td class="p-3">${o.productName}</td>
+                    <td class="p-3 font-bold text-emerald-400">${o.price}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[9px] bg-emerald-500/20 text-emerald-300 font-bold">${o.status}</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="toggleOrderStatus('${o.id}', '${o.status}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-[10px]">Alterar Status</button>
+                    </td>
+                `;
+                table.appendChild(tr);
+            });
+        };
+
+        window.toggleOrderStatus = async (id, currentStatus) => {
+            const nextStatus = currentStatus === 'Pago' ? 'Entregue' : 'Pago';
+            try {
+                await updateDoc(doc(db, ...ORDERS_PATH, id), { status: nextStatus });
+            } catch (e) {
+                const order = ordersData.find(x => x.id === id);
+                if (order) order.status = nextStatus;
+                localStorage.setItem('tlstudio_orders', JSON.stringify(ordersData));
+                renderUserOrders();
+                renderAdminOrders();
+            }
+            showToast("Status alterado para " + nextStatus, "success");
+        };
+
+        window.filterAdminOrders = (text) => {
+            renderAdminOrders(text);
+        };
+
+        // Submit Comment
+        window.submitComment = async () => {
+            if (!currentUser || currentUser.isAnonymous) {
+                showToast("Faça login para publicar uma avaliação", "error");
+                openAuthModal();
+                return;
+            }
+
+            const text = document.getElementById('comment-text').value;
+            const stars = parseInt(document.getElementById('comment-stars').value);
+
+            if (!text) return showToast("Escreva seu comentário", "error");
+
+            const date = new Date().toLocaleDateString('pt-BR');
+            const newComment = {
+                id: 'cm_' + Date.now(),
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                stars,
+                text,
+                date
+            };
+
+            try {
+                await addDoc(collection(db, ...COMMENTS_PATH), newComment);
+            } catch (e) {
+                commentsData.push(newComment);
+                localStorage.setItem('tlstudio_comments', JSON.stringify(commentsData));
+                renderComments();
+                renderAdminComments();
+            }
+
+            showToast("Avaliação publicada online!", "success");
+            document.getElementById('comment-text').value = '';
+            closeModal('comment-modal');
+        };
+
+        // PIX Payment Confirmation
+        window.confirmPixPayment = async () => {
+            if (!currentUser || currentUser.isAnonymous) {
+                showToast("Faça login antes de concluir o PIX", "error");
+                openAuthModal();
+                return;
+            }
+
+            const name = document.getElementById('pix-product-title').innerText;
+            const price = document.getElementById('pix-product-price').innerText;
+            const date = new Date().toLocaleString('pt-BR');
+
+            const newOrder = {
+                id: 'ord_' + Date.now(),
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                productName: name,
+                price: price,
+                status: 'Pago',
+                date: date
+            };
+
+            try {
+                await addDoc(collection(db, ...ORDERS_PATH), newOrder);
+            } catch (e) {
+                ordersData.push(newOrder);
+                localStorage.setItem('tlstudio_orders', JSON.stringify(ordersData));
+                renderUserOrders();
+                renderAdminOrders();
+            }
+
+            showToast("Pagamento registrado! Verifique no seu perfil ou Discord.", "success");
+            closeModal('payment-modal');
+        };
+
+        // Helper Image Conversion to Base64
+        window.convertImageToBase64 = (input, targetInputId) => {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(targetInputId).value = e.target.result;
+                showToast("Imagem convertida com sucesso!", "info");
+            };
+            reader.readAsDataURL(file);
+        };
+
+    </script>
+
+    <!-- Standard UI Helper Script -->
     <script>
-        // Lógica do Modal de Termos com sessionStorage (aparece 1 vez por sessão)
+        // Modal Handlers
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function openAdminModal() {
+            if (window.auth && window.auth.currentUser && window.auth.currentUser.email === 'tuliofonseca00@gmail.com') {
+                document.getElementById('admin-modal').classList.remove('hidden');
+            } else {
+                showToast("Acesso restrito ao e-mail admin: tuliofonseca00@gmail.com", "error");
+            }
+        }
+
+        function openCommentModal() {
+            document.getElementById('comment-modal').classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function openPaymentModal(title, price) {
+            document.getElementById('pix-product-title').innerText = title;
+            document.getElementById('pix-product-price').innerText = price;
+            
+            const randomPixCode = "00020126580014BR.GOV.BCB.PIX0136tuliofonseca00@gmail.com520400005303986540" + (Math.random() * 100).toFixed(2) + "5802BR5910TLSTUDIO6009CAETE62070503***6304";
+            document.getElementById('pix-code-input').value = randomPixCode;
+
+            // Generate QRCode
+            const qrContainer = document.getElementById('qrcode-container');
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: randomPixCode,
+                width: 160,
+                height: 160,
+                colorDark: "#820AD1",
+                colorLight: "#ffffff"
+            });
+
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function copyPixCode() {
+            const input = document.getElementById('pix-code-input');
+            input.select();
+            document.execCommand('copy');
+            showToast("Código Nubank PIX copiado!", "success");
+        }
+
+        function filterCategory(cat) {
+            window.currentFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('btn-neon');
+                btn.classList.add('bg-[#0f1115]', 'text-gray-300');
+            });
+            event.currentTarget.classList.remove('bg-[#0f1115]', 'text-gray-300');
+            event.currentTarget.classList.add('btn-neon');
+            if (window.renderProducts) window.renderProducts();
+        }
+
+        function handleSearch(q) {
+            window.searchQuery = q;
+            if (window.renderProducts) window.renderProducts();
+        }
+
+        function switchAdminTab(tabId) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-black');
+                btn.classList.add('bg-[#0f1115]', 'text-gray-300');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            event.currentTarget.classList.remove('bg-[#0f1115]', 'text-gray-300');
+            event.currentTarget.classList.add('bg-white', 'text-black');
+        }
+
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const color = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-indigo-600';
+            toast.className = `${color} text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transition-all duration-300 border border-white/20`;
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        // Terms of service logic
         document.addEventListener("DOMContentLoaded", function() {
             const modalTermos = document.getElementById("modal-termos");
             const btnAceitarTermos = document.getElementById("btn-aceitar-termos");
@@ -569,119 +1555,15 @@
                 sessionStorage.setItem("tlStudioAceito", "true");
                 modalTermos.classList.add("hidden");
             });
-        });
 
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Products database
-        const products = [
-            { id: 1, category: 'discord', name: 'configuração', price: 'R$ 6,99', subtitle: 'Configuração básica inicial para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
-            { id: 2, category: 'discord', name: 'discord-básico', price: 'R$ 15,49', subtitle: 'Servidor Discord básico estruturado e pronto', icon: 'fa-server', image: 'img/dc_base.jpg' },
-            { id: 3, category: 'discord', name: 'discord-profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos, bots e segurança', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
-            { id: 4, category: 'discord', name: 'discord-premium', price: 'R$ 49,49', subtitle: 'Servidor avançado com design visual exclusivo', icon: 'fa-crown', image: 'img/dc_premiun.jpg' },
-            { id: 5, category: 'discord', name: 'discord-personalizado', price: 'R$ 69,90', subtitle: 'Setup 100% sob medida para seu projeto/guilda', icon: 'fa-star', image: 'img/dc_pers.jpg' },
-
-            { id: 6, category: 'sites', name: 'link-na-bio', price: 'R$ 14,49', subtitle: 'Página de links estilizada, rápida e responsiva', icon: 'fa-link', image: 'img/link_na_bio.jpg' },
-            { id: 7, category: 'sites', name: 'página-divulgação', price: 'R$ 24,99', subtitle: 'Página focada em conversão e anúncios', icon: 'fa-bullhorn', image: 'img/divulgacao.jpg' },
-            { id: 8, category: 'sites', name: 'portfólio', price: 'R$ 29,99', subtitle: 'Mostre seus trabalhos e serviços com elegância', icon: 'fa-briefcase', image: 'img/portfolio.jpg' },
-            { id: 9, category: 'sites', name: 'landing-page', price: 'R$ 34,99', subtitle: 'Landing page moderna de alta performance', icon: 'fa-window-maximize', image: 'img/pages.jpg' },
-            { id: 10, category: 'sites', name: 'site-institucional', price: 'R$ 49,99', subtitle: 'Site corporativo profissional completo', icon: 'fa-building', image: 'img/institucional.jpg' },
-            { id: 11, category: 'sites', name: 'site-gta-rp', price: 'R$ 49,99', subtitle: 'Painel ou site dedicado para servidores GTA RP', icon: 'fa-car', image: 'img/gtarp.jpg' },
-            { id: 12, category: 'sites', name: 'site-personalizado', price: 'A partir de R$ 69,90', subtitle: 'Desenvolvimento web customizado do zero', icon: 'fa-code', image: 'img/site_personalizado.jpg' },
-
-            { id: 13, category: 'marketing', name: 'post-design', price: 'A partir de R$ 5,49', subtitle: 'Artes criativas e profissionais para redes sociais', icon: 'fa-palette', image: 'img/post.jpg' },
-            { id: 14, category: 'marketing', name: 'arte-divulgação', price: 'A partir de R$ 9,99', subtitle: 'Banners e flyers promocionais de alto impacto', icon: 'fa-rectangle-ad', image: 'img/arte.jpg' },
-            { id: 15, category: 'marketing', name: 'edição-short', price: 'A partir de R$ 14,99', subtitle: 'Edição dinâmica de vídeos curtos / Reels / TikTok', icon: 'fa-clapperboard', image: 'img/short.jpg' },
-            { id: 16, category: 'marketing', name: 'campanha-divulgação', price: 'A partir de R$ 29,90', subtitle: 'Estratégia e material completo de marketing', icon: 'fa-rocket', image: 'img/divulgacao.jpg' }
-        ];
-
-        let currentFilter = 'all';
-        let searchQuery = '';
-
-        function renderProducts() {
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = '';
-
-            const filtered = products.filter(p => {
-                const matchCat = currentFilter === 'all' || p.category === currentFilter;
-                const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.subtitle.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchCat && matchSearch;
-            });
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400 glass-panel rounded-3xl border border-white/10">Nenhum produto encontrado para sua busca.</div>`;
-                return;
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
             }
-
-            filtered.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'rounded-3xl overflow-hidden border border-white/20 hover:border-white/50 transition-all duration-300 flex flex-col group hover:-translate-y-1 bg-transparent backdrop-blur-md shadow-2xl shadow-black/80';
-                card.innerHTML = `
-                    <div class="relative overflow-hidden aspect-video bg-transparent">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-95" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=TL+STUDIO'">
-                        <div class="absolute top-3 left-3 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-white/25 text-white backdrop-blur-md bg-black/70 shadow-lg shadow-white/10">
-                            ${product.category}
-                        </div>
-                    </div>
-                    <div class="p-6 flex flex-col flex-grow justify-between bg-transparent">
-                        <div>
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-inner backdrop-blur-md">
-                                    <i class="fa-solid ${product.icon}"></i>
-                                </div>
-                                <h3 class="text-lg font-bold text-white capitalize">${product.name.replace(/-/g, ' ')}</h3>
-                            </div>
-                            <p class="text-sm text-gray-200 mb-6 leading-relaxed">${product.subtitle}</p>
-                        </div>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/15">
-                            <div>
-                                <span class="text-[11px] text-gray-300 block uppercase font-bold">Investimento</span>
-                                <span class="text-lg font-black text-white text-neon">${product.price}</span>
-                            </div>
-                            <button onclick="openModal('${product.name}', '${product.price}')" class="px-5 py-2.5 btn-neon text-xs rounded-xl transition flex items-center space-x-2">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                                <span>Adquirir</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function filterCategory(category) {
-            currentFilter = category;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('btn-neon');
-                btn.classList.add('bg-[#0f1115]', 'text-gray-300', 'border', 'border-white/10');
-            });
-            event.currentTarget.classList.remove('bg-[#0f1115]', 'text-gray-300', 'border', 'border-white/10');
-            event.currentTarget.classList.add('btn-neon');
-            renderProducts();
-        }
-
-        function handleSearch(query) {
-            searchQuery = query;
-            renderProducts();
-        }
-
-        function openModal(name, price) {
-            document.getElementById('modal-title').innerText = name.replace(/-/g, ' ').toUpperCase();
-            document.getElementById('modal-price').innerText = price;
-            document.getElementById('purchase-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('purchase-modal').classList.add('hidden');
-        }
-
-        window.onload = function() {
-            renderProducts();
-        }
+        });
     </script>
 </body>
 </html>
