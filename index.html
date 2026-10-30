@@ -338,31 +338,9 @@
                 <p class="text-xs text-gray-400 mt-1">Conheça alguns dos melhores trabalhos visuais desenvolvidos pela TL STUDIO.</p>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/dc_pro.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/0f1115/ffffff?text=Discord+Pro'">
-                </div>
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/institucional.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/141720/ffffff?text=Sites'">
-                </div>
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/short.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/1a1d24/ffffff?text=Shorts'">
-                </div>
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/arte.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/0f1115/ffffff?text=Artes'">
-                </div>
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/gtarp.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/141720/ffffff?text=GTA+RP'">
-                </div>
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/divulgacao.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/0f1115/ffffff?text=Campanha'">
-                </div>
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/dc_premiun.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/141720/ffffff?text=Premium'">
-                </div>
-                <div class="glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group">
-                    <img src="img/pages.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/0f1115/ffffff?text=Landing'">
-                </div>
+            <!-- Totalmente Dinâmico (Renderizado do Banco/LocalStorage) -->
+            <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Injected via JS -->
             </div>
         </div>
     </section>
@@ -999,21 +977,32 @@
                     onSnapshot(collection(db, ...path), (snap) => {
                         let data = [];
                         snap.forEach(docSnap => data.push({ id: docSnap.id, ...docSnap.data() }));
-                        if (data.length === 0) {
+                        
+                        const isModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
+
+                        if (data.length === 0 && !isModified) {
                             const saved = localStorage.getItem('tlstudio_' + key);
                             data = saved ? JSON.parse(saved) : defaultData;
-                        } else {
+                        } else if (data.length > 0) {
                             localStorage.setItem('tlstudio_' + key, JSON.stringify(data));
+                            localStorage.setItem('tlstudio_' + key + '_user_modified', 'true');
+                        } else {
+                            // Se data.length === 0 e isModified é true, significa que o usuário deletou tudo de propósito!
+                            data = [];
+                            localStorage.setItem('tlstudio_' + key, JSON.stringify([]));
                         }
+
                         updateLocalData(key, data, renderFn, renderAdminFn);
                     }, (err) => {
                         const saved = localStorage.getItem('tlstudio_' + key);
-                        const data = saved ? JSON.parse(saved) : defaultData;
+                        const isModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
+                        let data = saved ? JSON.parse(saved) : (isModified ? [] : defaultData);
                         updateLocalData(key, data, renderFn, renderAdminFn);
                     });
                 } catch (e) {
                     const saved = localStorage.getItem('tlstudio_' + key);
-                    const data = saved ? JSON.parse(saved) : defaultData;
+                    const isModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
+                    let data = saved ? JSON.parse(saved) : (isModified ? [] : defaultData);
                     updateLocalData(key, data, renderFn, renderAdminFn);
                 }
             }
@@ -1045,9 +1034,7 @@
 
             const defaultGallery = [
                 { id: 'g1', title: 'Discord Pro', image: 'img/dc_pro.jpg' },
-                { id: 'g2', title: 'Sites', image: 'img/institucional.jpg' },
-                { id: 'g3', title: 'Shorts', image: 'img/short.jpg' },
-                { id: 'g4', title: 'Artes', image: 'img/arte.jpg' }
+                { id: 'g2', title: 'Sites', image: 'img/institucional.jpg' }
             ];
 
             const defaultPartners = [
@@ -1063,79 +1050,15 @@
             safeSubscribe(ORDERS_PATH, 'orders', [], renderUserOrders, renderAdminOrders);
         }
 
-        window.renderProducts = () => {
-            const grid = document.getElementById('products-grid');
+        window.renderGallery = () => {
+            const grid = document.getElementById('gallery-grid');
             if (!grid) return;
             grid.innerHTML = '';
 
-            const filter = window.currentFilter || 'all';
-            const search = (window.searchQuery || '').toLowerCase();
-
-            const filtered = productsData.filter(p => {
-                const matchCat = filter === 'all' || p.category === filter;
-                const matchSearch = p.name.toLowerCase().includes(search) || (p.subtitle && p.subtitle.toLowerCase().includes(search));
-                return matchCat && matchSearch;
-            });
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-400 glass-panel rounded-2xl">Nenhum produto cadastrado nesta categoria.</div>`;
+            if (galleryData.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 glass-panel rounded-2xl">Nenhuma imagem na galeria no momento.</div>`;
                 return;
             }
-
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'glass-panel rounded-3xl overflow-hidden border border-white/10 hover:border-white/30 transition flex flex-col justify-between p-5';
-                card.innerHTML = `
-                    <div>
-                        <div class="relative aspect-video rounded-2xl overflow-hidden mb-4 bg-black/40">
-                            <img src="${p.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x250/0f1115/ffffff?text=TL+STUDIO'">
-                            <span class="absolute top-2 left-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-black/80 text-white border border-white/20">${p.category}</span>
-                        </div>
-                        <h3 class="text-base font-bold text-white capitalize">${p.name}</h3>
-                        <p class="text-xs text-gray-400 mt-1 mb-4 leading-relaxed">${p.subtitle || ''}</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <div>
-                            <span class="text-[10px] uppercase text-gray-500 block font-bold">Investimento</span>
-                            <span class="text-base font-extrabold text-white text-neon">${p.price}</span>
-                        </div>
-                        <button onclick="openDiscordModal('${p.name}', '${p.price}')" class="btn-neon px-4 py-2 rounded-xl text-xs flex items-center space-x-1.5">
-                            <i class="fa-brands fa-discord text-indigo-600"></i>
-                            <span>Encomendar</span>
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        };
-
-        window.renderProjects = () => {
-            const grid = document.getElementById('portfolio-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            projectsData.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'glass-panel p-5 rounded-3xl border border-white/10 space-y-3';
-                card.innerHTML = `
-                    <div class="aspect-video rounded-2xl overflow-hidden bg-black/40 border border-white/10">
-                        <img src="${p.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/500x300/0f1115/ffffff?text=Projeto'">
-                    </div>
-                    <h3 class="text-base font-bold text-white">${p.title}</h3>
-                    <p class="text-xs text-gray-400">${p.desc}</p>
-                    <div class="text-[10px] text-emerald-400 font-bold flex items-center justify-between pt-2">
-                        <span><i class="fa-solid fa-circle-check"></i> Entregue</span>
-                        <span class="text-gray-500">${p.client || 'Cliente'}</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        };
-
-        window.renderGallery = () => {
-            const grid = document.querySelector('#galeria .grid');
-            if (!grid) return;
-            grid.innerHTML = '';
 
             galleryData.forEach(g => {
                 const item = document.createElement('div');
@@ -1442,6 +1365,7 @@
             else galleryData.push(itemData);
 
             localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+            localStorage.setItem('tlstudio_gallery_user_modified', 'true');
             renderGallery();
             renderAdminGallery();
 
@@ -1452,6 +1376,17 @@
 
             clearGalleryForm();
             closeModal('admin-modal');
+        };
+
+        window.deleteAdminGallery = async (id) => {
+            if (!confirm("Deseja remover esta imagem da galeria?")) return;
+            galleryData = galleryData.filter(x => x.id !== id);
+            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+            localStorage.setItem('tlstudio_gallery_user_modified', 'true');
+            renderGallery();
+            renderAdminGallery();
+            try { await deleteDoc(doc(db, ...GALLERY_PATH, id)); } catch(e){}
+            showToast("Imagem removida permanentemente!", "info");
         };
 
         window.deleteAdminGallery = async (id) => {
@@ -1614,6 +1549,87 @@
         initAuth().then(() => {
             setupFirestoreListeners();
         });
+
+        // Main Page Dynamic Rendering
+        window.renderProducts = () => {
+            const grid = document.getElementById('products-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            let filtered = productsData;
+
+            if (window.currentFilter && window.currentFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === window.currentFilter);
+            }
+
+            if (window.searchQuery && window.searchQuery.trim() !== '') {
+                const q = window.searchQuery.toLowerCase().trim();
+                filtered = filtered.filter(p => 
+                    (p.name && p.name.toLowerCase().includes(q)) || 
+                    (p.subtitle && p.subtitle.toLowerCase().includes(q))
+                );
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-400 glass-panel rounded-2xl">Nenhum produto encontrado.</div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-3xl p-5 border border-white/10 flex flex-col justify-between hover:border-white/30 transition duration-300';
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black/40 border border-white/10 relative">
+                            <img src="${p.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x250/0f1115/ffffff?text=Produto'">
+                            <span class="absolute top-2 right-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md text-[10px] font-extrabold text-white uppercase border border-white/20">${p.category}</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-extrabold text-white">${p.name}</h3>
+                            <p class="text-xs text-gray-400 mt-1 line-clamp-2">${p.subtitle || 'Serviço profissional TL STUDIO'}</p>
+                        </div>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-400 font-bold block uppercase">Valor</span>
+                            <span class="text-lg font-black text-white text-neon">${p.price}</span>
+                        </div>
+                        <button onclick="openDiscordModal('${p.name.replace(/'/g, "\\'")}', '${p.price}')" class="btn-neon px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-1.5">
+                            <i class="fa-brands fa-discord"></i>
+                            <span>Encomendar</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.renderProjects = () => {
+            const grid = document.getElementById('portfolio-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (projectsData.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-400 glass-panel rounded-2xl">Nenhum projeto no portfólio no momento.</div>`;
+                return;
+            }
+
+            projectsData.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel p-5 rounded-3xl border border-white/10 space-y-3 hover:border-white/30 transition duration-300';
+                card.innerHTML = `
+                    <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black/40 border border-white/10">
+                        <img src="${p.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x250/0f1115/ffffff?text=Projeto'">
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider block">${p.client || 'Cliente Oficial'}</span>
+                        <h3 class="text-base font-extrabold text-white">${p.title}</h3>
+                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">${p.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
     </script>
 
     <!-- Global Helper Logic and UI Event Handlers -->
