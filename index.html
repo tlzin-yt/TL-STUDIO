@@ -713,7 +713,7 @@
                 <!-- TAB: PROJECTS -->
                 <div id="tab-projects" class="admin-tab-content space-y-4 hidden">
                     <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
-                        <h4 class="font-bold text-white text-sm">Adicionar / Editar Projeto Realizado</h4>
+                        <h4 class="font-bold text-white text-sm" id="proj-form-title">Adicionar / Editar Projeto Realizado</h4>
                         <input type="hidden" id="admin-proj-id">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <input type="text" id="admin-proj-title" placeholder="Título do Projeto" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
@@ -728,7 +728,10 @@
                                 <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-proj-imgurl')">
                             </label>
                         </div>
-                        <button onclick="saveAdminProject()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Projeto</button>
+                        <div class="flex space-x-2">
+                            <button onclick="saveAdminProject()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Projeto</button>
+                            <button onclick="clearProjectForm()" class="bg-gray-800 text-gray-300 px-4 py-2.5 rounded-xl font-bold">Limpar</button>
+                        </div>
                     </div>
 
                     <div id="admin-projects-list" class="space-y-3">
@@ -739,7 +742,8 @@
                 <!-- TAB: GALLERY -->
                 <div id="tab-gallery" class="admin-tab-content space-y-4 hidden">
                     <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
-                        <h4 class="font-bold text-white text-sm">Adicionar / Remover Imagens da Galeria</h4>
+                        <h4 class="font-bold text-white text-sm">Adicionar / Editar Imagens da Galeria</h4>
+                        <input type="hidden" id="admin-gal-id">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <input type="text" id="admin-gal-title" placeholder="Título / Legenda da Imagem" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
                             <input type="text" id="admin-gal-imgurl" placeholder="Link da Imagem (URL)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
@@ -748,7 +752,10 @@
                             <i class="fa-solid fa-image mr-1"></i> Upload da Galeria do Dispositivo
                             <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-gal-imgurl')">
                         </label>
-                        <button onclick="saveAdminGallery()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar na Galeria</button>
+                        <div class="flex space-x-2">
+                            <button onclick="saveAdminGallery()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar na Galeria</button>
+                            <button onclick="clearGalleryForm()" class="bg-gray-800 text-gray-300 px-4 py-2.5 rounded-xl font-bold">Limpar</button>
+                        </div>
                     </div>
 
                     <div id="admin-gallery-list" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -759,7 +766,8 @@
                 <!-- TAB: PARTNERSHIPS -->
                 <div id="tab-partners" class="admin-tab-content space-y-4 hidden">
                     <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
-                        <h4 class="font-bold text-white text-sm">Adicionar Parceria</h4>
+                        <h4 class="font-bold text-white text-sm">Adicionar / Editar Parceria</h4>
+                        <input type="hidden" id="admin-part-id">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <input type="text" id="admin-part-name" placeholder="Nome do Parceiro/Guilda" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
                             <input type="text" id="admin-part-link" placeholder="Link (Discord/Instagram)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
@@ -771,7 +779,10 @@
                                 <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-part-imgurl')">
                             </label>
                         </div>
-                        <button onclick="saveAdminPartner()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Parceria</button>
+                        <div class="flex space-x-2">
+                            <button onclick="saveAdminPartner()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Parceria</button>
+                            <button onclick="clearPartnerForm()" class="bg-gray-800 text-gray-300 px-4 py-2.5 rounded-xl font-bold">Limpar</button>
+                        </div>
                     </div>
 
                     <div id="admin-partners-list" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1216,48 +1227,246 @@
                     <td class="p-3 uppercase text-[10px]">${p.category}</td>
                     <td class="p-3 font-bold text-emerald-400">${p.price}</td>
                     <td class="p-3 text-right space-x-2">
-                        <button onclick="editAdminProduct('${p.id}')" class="text-sky-400 hover:text-sky-300"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="deleteAdminProduct('${p.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="editAdminProduct('${p.id}')" class="px-2 py-1 bg-sky-500/20 text-sky-400 rounded-lg hover:bg-sky-500/30 font-bold"><i class="fa-solid fa-pen mr-1"></i>Editar</button>
+                        <button onclick="deleteAdminProduct('${p.id}')" class="px-2 py-1 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 font-bold"><i class="fa-solid fa-trash mr-1"></i>Excluir</button>
                     </td>
                 `;
                 table.appendChild(tr);
             });
         };
 
-        window.saveAdminProduct = async () => {
-            if (!confirm("Tem certeza que deseja salvar as alterações deste produto?")) return;
+        window.editAdminProduct = (id) => {
+            const p = productsData.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('admin-prod-id').value = p.id;
+            document.getElementById('admin-prod-name').value = p.name;
+            document.getElementById('admin-prod-price').value = p.price;
+            document.getElementById('admin-prod-cat').value = p.category;
+            document.getElementById('admin-prod-sub').value = p.subtitle || '';
+            document.getElementById('admin-prod-imgurl').value = p.image || '';
+            document.getElementById('prod-form-title').innerText = 'Editar Produto';
+            showToast("Modo de edição do produto carregado", "info");
+        };
 
-            const id = document.getElementById('admin-prod-id').value;
-            const name = document.getElementById('admin-prod-name').value;
-            const price = document.getElementById('admin-prod-price').value;
-            const category = document.getElementById('admin-prod-cat').value;
-            const subtitle = document.getElementById('admin-prod-sub').value;
-            const image = document.getElementById('admin-prod-imgurl').value || 'img/tl_studio.jpg';
+        window.clearProductForm = () => {
+            document.getElementById('admin-prod-id').value = '';
+            document.getElementById('admin-prod-name').value = '';
+            document.getElementById('admin-prod-price').value = '';
+            document.getElementById('admin-prod-cat').value = 'discord';
+            document.getElementById('admin-prod-sub').value = '';
+            document.getElementById('admin-prod-imgurl').value = '';
+            const t = document.getElementById('prod-form-title');
+            if (t) t.innerText = 'Adicionar Novo Produto';
+        };
 
-            if (!name || !price) return showToast("Preencha Nome e Preço", "error");
+        window.renderAdminProjects = () => {
+            const list = document.getElementById('admin-projects-list');
+            if (!list) return;
+            list.innerHTML = '';
 
-            const docId = id || 'p_' + Date.now();
-            const itemData = { id: docId, name, price, category, subtitle, image };
+            projectsData.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-[#07080a] rounded-xl border border-white/10 flex justify-between items-center space-x-3';
+                item.innerHTML = `
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <img src="${p.image}" class="w-12 h-12 object-cover rounded-lg border border-white/10 shrink-0">
+                        <div class="overflow-hidden">
+                            <span class="font-bold text-white block truncate">${p.title} (${p.client || 'Cliente'})</span>
+                            <p class="text-gray-400 text-xs truncate">${p.desc}</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 shrink-0">
+                        <button onclick="editAdminProject('${p.id}')" class="px-2 py-1 bg-sky-500/20 text-sky-400 rounded-lg hover:bg-sky-500/30 font-bold"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteAdminProject('${p.id}')" class="px-2 py-1 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 font-bold"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        };
 
-            // Grava no estado local e no localStorage imediatamente para garantir persistência no F5
-            const idx = productsData.findIndex(x => x.id === docId);
-            if (idx !== -1) productsData[idx] = itemData;
-            else productsData.push(itemData);
-            localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
-            
-            renderProducts();
-            renderAdminProducts();
+        window.editAdminProject = (id) => {
+            const p = projectsData.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('admin-proj-id').value = p.id;
+            document.getElementById('admin-proj-title').value = p.title;
+            document.getElementById('admin-proj-client').value = p.client || '';
+            document.getElementById('admin-proj-desc').value = p.desc || '';
+            document.getElementById('admin-proj-imgurl').value = p.image || '';
+            showToast("Dados do projeto carregados para edição", "info");
+        };
+
+        window.clearProjectForm = () => {
+            document.getElementById('admin-proj-id').value = '';
+            document.getElementById('admin-proj-title').value = '';
+            document.getElementById('admin-proj-client').value = '';
+            document.getElementById('admin-proj-desc').value = '';
+            document.getElementById('admin-proj-imgurl').value = '';
+        };
+
+        window.renderAdminGallery = () => {
+            const list = document.getElementById('admin-gallery-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            galleryData.forEach(g => {
+                const item = document.createElement('div');
+                item.className = 'p-2 bg-[#07080a] rounded-xl border border-white/10 flex flex-col items-center space-y-2';
+                item.innerHTML = `
+                    <img src="${g.image}" class="w-full h-24 object-cover rounded-lg border border-white/10">
+                    <span class="text-[10px] text-gray-300 font-bold truncate w-full text-center">${g.title || 'Sem título'}</span>
+                    <div class="flex space-x-1 w-full">
+                        <button onclick="editAdminGallery('${g.id}')" class="w-1/2 py-1 bg-sky-500/20 text-sky-400 rounded-lg font-bold text-[10px]"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteAdminGallery('${g.id}')" class="w-1/2 py-1 bg-red-500/20 text-red-400 rounded-lg font-bold text-[10px]"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        };
+
+        window.editAdminGallery = (id) => {
+            const g = galleryData.find(x => x.id === id);
+            if (!g) return;
+            document.getElementById('admin-gal-id').value = g.id;
+            document.getElementById('admin-gal-title').value = g.title || '';
+            document.getElementById('admin-gal-imgurl').value = g.image || '';
+            showToast("Imagem da galeria carregada para edição", "info");
+        };
+
+        window.clearGalleryForm = () => {
+            document.getElementById('admin-gal-id').value = '';
+            document.getElementById('admin-gal-title').value = '';
+            document.getElementById('admin-gal-imgurl').value = '';
+        };
+
+        window.renderAdminPartners = () => {
+            const list = document.getElementById('admin-partners-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            partnersData.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-[#07080a] rounded-xl border border-white/10 flex items-center justify-between space-x-2';
+                item.innerHTML = `
+                    <div class="flex items-center space-x-2 overflow-hidden">
+                        <img src="${p.image}" class="w-10 h-10 object-cover rounded-lg border border-white/10 shrink-0">
+                        <div class="overflow-hidden">
+                            <span class="font-bold text-white block text-xs truncate">${p.name}</span>
+                            <span class="text-sky-400 text-[10px] truncate block">${p.link}</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-1 shrink-0">
+                        <button onclick="editAdminPartner('${p.id}')" class="p-1.5 bg-sky-500/20 text-sky-400 rounded-lg font-bold"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteAdminPartner('${p.id}')" class="p-1.5 bg-red-500/20 text-red-400 rounded-lg font-bold"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        };
+
+        window.editAdminPartner = (id) => {
+            const p = partnersData.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('admin-part-id').value = p.id;
+            document.getElementById('admin-part-name').value = p.name;
+            document.getElementById('admin-part-link').value = p.link || '';
+            document.getElementById('admin-part-imgurl').value = p.image || '';
+            showToast("Dados da parceria carregados para edição", "info");
+        };
+
+        window.clearPartnerForm = () => {
+            document.getElementById('admin-part-id').value = '';
+            document.getElementById('admin-part-name').value = '';
+            document.getElementById('admin-part-link').value = '';
+            document.getElementById('admin-part-imgurl').value = '';
+        };
+
+        window.saveAdminProject = async () => {
+            if (!confirm("Tem certeza que deseja salvar as alterações deste projeto?")) return;
+
+            const id = document.getElementById('admin-proj-id').value;
+            const title = document.getElementById('admin-proj-title').value;
+            const client = document.getElementById('admin-proj-client').value;
+            const desc = document.getElementById('admin-proj-desc').value;
+            const image = document.getElementById('admin-proj-imgurl').value || 'img/projetos/ale_naildesigner.jpg';
+
+            if (!title) return showToast("Título obrigatório", "error");
+
+            const docId = id || 'pj_' + Date.now();
+            const itemData = { id: docId, title, client, desc, image };
+
+            const idx = projectsData.findIndex(x => x.id === docId);
+            if (idx !== -1) projectsData[idx] = itemData;
+            else projectsData.push(itemData);
+
+            localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
+            renderProjects();
+            renderAdminProjects();
 
             try {
-                // Sincroniza em tempo real no banco Firebase
-                await setDoc(doc(db, ...PRODUCTS_PATH, docId), itemData);
-                showToast("Produto salvo com sucesso!", "success");
-            } catch (err) {
-                console.warn("Sincronização offline ativa:", err);
-                showToast("Salvo localmente com sucesso!", "info");
-            }
+                await setDoc(doc(db, ...PROJECTS_PATH, docId), itemData);
+                showToast("Projeto salvo com sucesso!", "success");
+            } catch(e){}
 
-            clearProductForm();
+            clearProjectForm();
+            closeModal('admin-modal');
+        };
+
+        window.saveAdminGallery = async () => {
+            if (!confirm("Tem certeza que deseja salvar esta imagem na galeria?")) return;
+
+            const id = document.getElementById('admin-gal-id').value;
+            const title = document.getElementById('admin-gal-title').value;
+            const image = document.getElementById('admin-gal-imgurl').value;
+
+            if (!image) return showToast("Informe o link ou imagem da galeria", "error");
+
+            const docId = id || 'g_' + Date.now();
+            const itemData = { id: docId, title, image };
+
+            const idx = galleryData.findIndex(x => x.id === docId);
+            if (idx !== -1) galleryData[idx] = itemData;
+            else galleryData.push(itemData);
+
+            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+            renderGallery();
+            renderAdminGallery();
+
+            try {
+                await setDoc(doc(db, ...GALLERY_PATH, docId), itemData);
+                showToast("Imagem salva na galeria!", "success");
+            } catch(e){}
+
+            clearGalleryForm();
+            closeModal('admin-modal');
+        };
+
+        window.saveAdminPartner = async () => {
+            if (!confirm("Tem certeza que deseja salvar esta parceria?")) return;
+
+            const id = document.getElementById('admin-part-id').value;
+            const name = document.getElementById('admin-part-name').value;
+            const link = document.getElementById('admin-part-link').value;
+            const image = document.getElementById('admin-part-imgurl').value || 'img/tl_studio.jpg';
+
+            if (!name) return showToast("Nome do parceiro obrigatório", "error");
+
+            const docId = id || 'pt_' + Date.now();
+            const itemData = { id: docId, name, link, image };
+
+            const idx = partnersData.findIndex(x => x.id === docId);
+            if (idx !== -1) partnersData[idx] = itemData;
+            else partnersData.push(itemData);
+
+            localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
+            renderPartners();
+            renderAdminPartners();
+
+            try {
+                await setDoc(doc(db, ...PARTNERS_PATH, docId), itemData);
+                showToast("Parceria salva com sucesso!", "success");
+            } catch(e){}
+
+            clearPartnerForm();
             closeModal('admin-modal');
         };
 
