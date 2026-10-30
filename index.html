@@ -1263,6 +1263,8 @@
         };
 
         window.saveAdminProduct = async () => {
+            if (!confirm("Tem certeza que deseja salvar as alterações deste produto?")) return;
+
             const id = document.getElementById('admin-prod-id').value;
             const name = document.getElementById('admin-prod-name').value;
             const price = document.getElementById('admin-prod-price').value;
@@ -1294,6 +1296,7 @@
 
             showToast("Produto salvo com sucesso!", "success");
             clearProductForm();
+            closeModal('admin-modal');
         };
 
         window.deleteAdminProduct = async (id) => {
@@ -1369,6 +1372,8 @@
         };
 
         window.saveAdminGallery = async () => {
+            if (!confirm("Tem certeza que deseja salvar esta imagem na galeria?")) return;
+
             const title = document.getElementById('admin-gal-title').value;
             const image = document.getElementById('admin-gal-imgurl').value;
 
@@ -1388,6 +1393,7 @@
             showToast("Imagem adicionada à Galeria!", "success");
             document.getElementById('admin-gal-title').value = '';
             document.getElementById('admin-gal-imgurl').value = '';
+            closeModal('admin-modal');
         };
 
         window.deleteAdminGallery = async (id) => {
@@ -1403,6 +1409,8 @@
         };
 
         window.saveAdminProject = async () => {
+            if (!confirm("Tem certeza que deseja salvar as alterações deste projeto?")) return;
+
             const title = document.getElementById('admin-proj-title').value;
             const client = document.getElementById('admin-proj-client').value;
             const desc = document.getElementById('admin-proj-desc').value;
@@ -1426,6 +1434,7 @@
             document.getElementById('admin-proj-client').value = '';
             document.getElementById('admin-proj-desc').value = '';
             document.getElementById('admin-proj-imgurl').value = '';
+            closeModal('admin-modal');
         };
 
         window.deleteAdminProject = async (id) => {
@@ -1460,6 +1469,8 @@
         };
 
         window.saveAdminPartner = async () => {
+            if (!confirm("Tem certeza que deseja salvar esta parceria?")) return;
+
             const name = document.getElementById('admin-part-name').value;
             const link = document.getElementById('admin-part-link').value;
             const image = document.getElementById('admin-part-imgurl').value || 'img/tl_studio.jpg';
@@ -1481,6 +1492,7 @@
             document.getElementById('admin-part-name').value = '';
             document.getElementById('admin-part-link').value = '';
             document.getElementById('admin-part-imgurl').value = '';
+            closeModal('admin-modal');
         };
 
         window.deleteAdminPartner = async (id) => {
