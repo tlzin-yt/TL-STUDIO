@@ -643,6 +643,9 @@
                 <button onclick="switchAdminTab('tab-projects')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
                     <i class="fa-solid fa-briefcase mr-1"></i> Projetos
                 </button>
+                <button onclick="switchAdminTab('tab-gallery')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
+                    <i class="fa-solid fa-image mr-1"></i> Galeria
+                </button>
                 <button onclick="switchAdminTab('tab-partners')" class="admin-tab-btn px-4 py-2 rounded-xl bg-[#0f1115] text-gray-300 hover:text-white border border-white/10">
                     <i class="fa-solid fa-handshake mr-1"></i> Parcerias
                 </button>
@@ -724,10 +727,22 @@
                             </label>
                         </div>
 
-                        <button onclick="saveAdminProject()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar Projeto</button>
+                <!-- TAB: GALLERY -->
+                <div id="tab-gallery" class="admin-tab-content space-y-4 hidden">
+                    <div class="bg-[#0f1115] p-4 rounded-2xl border border-white/10 space-y-3">
+                        <h4 class="font-bold text-white text-sm">Adicionar Imagem à Galeria</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="admin-gal-title" placeholder="Título / Legenda da Imagem" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                            <input type="text" id="admin-gal-imgurl" placeholder="Link da Imagem (URL)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
+                        </div>
+                        <label class="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl cursor-pointer block text-center border border-white/20">
+                            <i class="fa-solid fa-image mr-1"></i> Upload da Galeria do Dispositivo
+                            <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-gal-imgurl')">
+                        </label>
+                        <button onclick="saveAdminGallery()" class="btn-neon px-6 py-2.5 rounded-xl font-bold">Salvar na Galeria</button>
                     </div>
 
-                    <div id="admin-projects-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div id="admin-gallery-list" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <!-- JS Injected -->
                     </div>
                 </div>
@@ -840,6 +855,7 @@
         const ADMIN_EMAIL = 'tuliofonseca00@gmail.com';
         const PRODUCTS_PATH = ['artifacts', appId, 'public', 'data', 'products'];
         const PROJECTS_PATH = ['artifacts', appId, 'public', 'data', 'projects'];
+        const GALLERY_PATH  = ['artifacts', appId, 'public', 'data', 'gallery'];
         const PARTNERS_PATH = ['artifacts', appId, 'public', 'data', 'partners'];
         const COMMENTS_PATH = ['artifacts', appId, 'public', 'data', 'comments'];
         const ORDERS_PATH   = ['artifacts', appId, 'public', 'data', 'orders'];
@@ -847,6 +863,7 @@
         let currentUser = null;
         let productsData = [];
         let projectsData = [];
+        let galleryData  = [];
         let partnersData = [];
         let commentsData = [];
         let ordersData   = [];
@@ -1019,6 +1036,13 @@
                 { id: 'pj2', title: 'Comunidade Gamer RP', client: 'GTA Server', desc: 'Discord com mais de 500 membros e bot exclusivo', image: 'img/dc_premiun.jpg' }
             ];
 
+            const defaultGallery = [
+                { id: 'g1', title: 'Discord Pro', image: 'img/dc_pro.jpg' },
+                { id: 'g2', title: 'Sites', image: 'img/institucional.jpg' },
+                { id: 'g3', title: 'Shorts', image: 'img/short.jpg' },
+                { id: 'g4', title: 'Artes', image: 'img/arte.jpg' }
+            ];
+
             const defaultPartners = [
                 { id: 'pt1', name: 'Rede Discord BR', link: 'https://discord.gg/mAPuzShdWp', image: 'img/tl_studio.jpg' },
                 { id: 'pt2', name: 'Marketing Pro', link: 'https://instagram.com/tlzin.ofc', image: 'img/arte.jpg' }
@@ -1026,6 +1050,7 @@
 
             safeSubscribe(PRODUCTS_PATH, 'products', defaultProducts, renderProducts, renderAdminProducts);
             safeSubscribe(PROJECTS_PATH, 'projects', defaultProjects, renderProjects, renderAdminProjects);
+            safeSubscribe(GALLERY_PATH, 'gallery', defaultGallery, renderGallery, renderAdminGallery);
             safeSubscribe(PARTNERS_PATH, 'partners', defaultPartners, renderPartners, renderAdminPartners);
             safeSubscribe(COMMENTS_PATH, 'comments', [], renderComments, renderAdminComments);
             safeSubscribe(ORDERS_PATH, 'orders', [], renderUserOrders, renderAdminOrders);
@@ -1097,6 +1122,24 @@
                     </div>
                 `;
                 grid.appendChild(card);
+            });
+        };
+
+        window.renderGallery = () => {
+            const grid = document.querySelector('#galeria .grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            galleryData.forEach(g => {
+                const item = document.createElement('div');
+                item.className = 'glass-panel rounded-2xl overflow-hidden aspect-square border border-white/10 group relative';
+                item.innerHTML = `
+                    <img src="${g.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/0f1115/ffffff?text=Galeria'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+                        <span class="text-[11px] font-bold text-white truncate">${g.title || ''}</span>
+                    </div>
+                `;
+                grid.appendChild(item);
             });
         };
 
@@ -1273,6 +1316,59 @@
                 `;
                 list.appendChild(card);
             });
+        };
+
+        window.renderAdminGallery = () => {
+            const list = document.getElementById('admin-gallery-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            galleryData.forEach(g => {
+                const card = document.createElement('div');
+                card.className = 'bg-[#07080a] p-2 rounded-xl border border-white/10 space-y-2 text-center';
+                card.innerHTML = `
+                    <div class="aspect-square rounded-lg overflow-hidden border border-white/10">
+                        <img src="${g.image}" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-[10px] text-white block truncate">${g.title || 'Foto'}</span>
+                    <button onclick="deleteAdminGallery('${g.id}')" class="w-full py-1 bg-red-600/20 text-red-400 rounded-lg text-[10px] font-bold"><i class="fa-solid fa-trash"></i> Remover</button>
+                `;
+                list.appendChild(card);
+            });
+        };
+
+        window.saveAdminGallery = async () => {
+            const title = document.getElementById('admin-gal-title').value;
+            const image = document.getElementById('admin-gal-imgurl').value;
+
+            if (!image) return showToast("Informe o link ou imagem da galeria", "error");
+
+            const data = { id: 'g_' + Date.now(), title, image };
+
+            try {
+                await addDoc(collection(db, ...GALLERY_PATH), data);
+            } catch (e) {
+                galleryData.push(data);
+                localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+                renderGallery();
+                renderAdminGallery();
+            }
+
+            showToast("Imagem adicionada à Galeria!", "success");
+            document.getElementById('admin-gal-title').value = '';
+            document.getElementById('admin-gal-imgurl').value = '';
+        };
+
+        window.deleteAdminGallery = async (id) => {
+            try {
+                await deleteDoc(doc(db, ...GALLERY_PATH, id));
+            } catch (e) {
+                galleryData = galleryData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+                renderGallery();
+                renderAdminGallery();
+            }
+            showToast("Imagem removida da galeria", "info");
         };
 
         window.saveAdminProject = async () => {
