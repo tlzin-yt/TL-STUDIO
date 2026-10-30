@@ -730,18 +730,17 @@
             updateDoc 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Firebase Configuration Guardrails
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'tl-studio-prod';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "AIzaSyDemoDummyKeyTLStudio2026",
-                authDomain: "tlstudio-demo.firebaseapp.com",
-                projectId: "tlstudio-demo",
-                storageBucket: "tlstudio-demo.appspot.com",
-                messagingSenderId: "1234567890",
-                appId: "1:1234567890:web:abcdef123456"
-            };
+        // Global Firebase Configuration - Configurações Reais do Projeto loja-tl
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'loja-tl';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDr9noWC2gYRiuPHvI8NjP_ffi3BWSZIoE",
+            authDomain: "loja-tl.firebaseapp.com",
+            projectId: "loja-tl",
+            storageBucket: "loja-tl.firebasestorage.app",
+            messagingSenderId: "114882705505",
+            appId: "1:114882705505:web:cb1d375d343d120aaed220",
+            measurementId: "G-04YF1V2HWT"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
