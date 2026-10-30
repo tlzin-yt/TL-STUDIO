@@ -406,39 +406,21 @@
     <!-- Sobre a TL STUDIO Section -->
     <section id="sobre" class="section-custom-bg relative py-16 border-t border-white/10">
         <div class="absolute inset-0 bg-[#07080a]/92 pointer-events-none"></div>
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-white/10 space-y-6">
-                <div class="flex items-center space-x-4">
-                    <div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-black font-extrabold text-2xl shadow-xl overflow-hidden shrink-0">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-white/10 space-y-6 shadow-2xl">
+                <div class="flex items-center space-x-4 border-b border-white/10 pb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-black font-extrabold text-2xl shadow-xl overflow-hidden shrink-0 border border-white/30">
                         <img src="img/tl_studio.jpg" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
                     </div>
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-widest text-indigo-400">QUEM SOMOS</span>
-                        <h2 class="text-3xl font-black text-white">Sobre a TL STUDIO</h2>
+                        <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 block mb-0.5">QUEM SOMOS</span>
+                        <h2 class="text-3xl font-black text-white text-neon">Sobre a TL STUDIO</h2>
                     </div>
                 </div>
 
-                <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+                <div class="space-y-4 text-sm sm:text-base text-gray-300 leading-relaxed">
                     <p>A <strong class="text-white">TL STUDIO</strong> nasceu com o propósito de elevar o nível de projetos digitais na internet. Especializada em estruturação avançada de servidores no Discord, desenvolvimento de sites profissionais e campanhas de marketing de alta conversão, nossa equipe entrega soluções sob medida para criadores, empresas e comunidades.</p>
                     <p>Nosso compromisso é aliar design moderno, segurança e agilidade no atendimento através de canais oficiais e estruturados. Cada projeto é tratado com dedicação exclusiva para garantir a satisfação total de nossos clientes.</p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-white/10">
-                    <div class="bg-[#07080a]/60 p-4 rounded-2xl border border-white/10 text-center">
-                        <i class="fa-solid fa-shield-halved text-2xl text-indigo-400 mb-2"></i>
-                        <h4 class="font-bold text-white text-sm">Segurança Total</h4>
-                        <p class="text-xs text-gray-400 mt-1">Atendimento seguro e autenticado via Discord.</p>
-                    </div>
-                    <div class="bg-[#07080a]/60 p-4 rounded-2xl border border-white/10 text-center">
-                        <i class="fa-solid fa-bolt text-2xl text-emerald-400 mb-2"></i>
-                        <h4 class="font-bold text-white text-sm">Agilidade</h4>
-                        <p class="text-xs text-gray-400 mt-1">Prazos de entrega rápidos e eficientes.</p>
-                    </div>
-                    <div class="bg-[#07080a]/60 p-4 rounded-2xl border border-white/10 text-center">
-                        <i class="fa-solid fa-star text-2xl text-yellow-400 mb-2"></i>
-                        <h4 class="font-bold text-white text-sm">Qualidade 5 Estrelas</h4>
-                        <p class="text-xs text-gray-400 mt-1">Reconhecida por dezenas de clientes satisfeitos.</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1254,27 +1236,176 @@
 
             if (!name || !price) return showToast("Preencha Nome e Preço", "error");
 
-            const itemData = { id: id || 'p_' + Date.now(), name, price, category, subtitle, image };
+            const docId = id || 'p_' + Date.now();
+            const itemData = { id: docId, name, price, category, subtitle, image };
 
             try {
-                if (id) {
-                    const idx = productsData.findIndex(x => x.id === id);
-                    if (idx !== -1) productsData[idx] = itemData;
-                    else productsData.push(itemData);
-                } else {
-                    productsData.push(itemData);
-                }
+                // Sincronização direta no Firestore
+                await setDoc(doc(db, ...PRODUCTS_PATH, docId), itemData);
+                showToast("Produto salvo com sucesso no banco de dados!", "success");
+            } catch (err) {
+                console.error("Erro ao salvar produto:", err);
+                // Fallback local
+                const idx = productsData.findIndex(x => x.id === docId);
+                if (idx !== -1) productsData[idx] = itemData;
+                else productsData.push(itemData);
                 localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
                 renderProducts();
                 renderAdminProducts();
-                try {
-                    await setDoc(doc(db, ...PRODUCTS_PATH, itemData.id), itemData);
-                } catch(err) {}
-            } catch (e) {}
+                showToast("Produto salvo localmente!", "info");
+            }
 
-            showToast("Produto salvo com sucesso!", "success");
             clearProductForm();
             closeModal('admin-modal');
+        };
+
+        window.deleteAdminProduct = async (id) => {
+            if (!confirm("Tem certeza que deseja excluir este produto?")) return;
+            try { 
+                await deleteDoc(doc(db, ...PRODUCTS_PATH, id)); 
+                showToast("Produto excluído do banco!", "info");
+            } catch(e){
+                productsData = productsData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
+                renderProducts();
+                renderAdminProducts();
+            }
+        };
+
+        window.saveAdminProject = async () => {
+            if (!confirm("Tem certeza que deseja salvar as alterações deste projeto?")) return;
+
+            const title = document.getElementById('admin-proj-title').value;
+            const client = document.getElementById('admin-proj-client').value;
+            const desc = document.getElementById('admin-proj-desc').value;
+            const image = document.getElementById('admin-proj-imgurl').value || 'img/projetos/ale_naildesigner.jpg';
+
+            if (!title) return showToast("Título obrigatório", "error");
+
+            const docId = 'pj_' + Date.now();
+            const itemData = { id: docId, title, client, desc, image };
+
+            try {
+                await setDoc(doc(db, ...PROJECTS_PATH, docId), itemData);
+                showToast("Projeto salvo com sucesso!", "success");
+            } catch(e){
+                projectsData.push(itemData);
+                localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
+                renderProjects();
+                renderAdminProjects();
+            }
+
+            document.getElementById('admin-proj-title').value = '';
+            document.getElementById('admin-proj-client').value = '';
+            document.getElementById('admin-proj-desc').value = '';
+            document.getElementById('admin-proj-imgurl').value = '';
+            closeModal('admin-modal');
+        };
+
+        window.deleteAdminProject = async (id) => {
+            if (!confirm("Tem certeza que deseja excluir este projeto?")) return;
+            try { 
+                await deleteDoc(doc(db, ...PROJECTS_PATH, id)); 
+                showToast("Projeto removido", "info");
+            } catch(e){
+                projectsData = projectsData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
+                renderProjects();
+                renderAdminProjects();
+            }
+        };
+
+        window.saveAdminGallery = async () => {
+            if (!confirm("Tem certeza que deseja salvar esta imagem na galeria?")) return;
+
+            const title = document.getElementById('admin-gal-title').value;
+            const image = document.getElementById('admin-gal-imgurl').value;
+
+            if (!image) return showToast("Informe o link ou imagem da galeria", "error");
+
+            const docId = 'g_' + Date.now();
+            const itemData = { id: docId, title, image };
+
+            try {
+                await setDoc(doc(db, ...GALLERY_PATH, docId), itemData);
+                showToast("Imagem salva na galeria!", "success");
+            } catch(e){
+                galleryData.push(itemData);
+                localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+                renderGallery();
+                renderAdminGallery();
+            }
+
+            document.getElementById('admin-gal-title').value = '';
+            document.getElementById('admin-gal-imgurl').value = '';
+            closeModal('admin-modal');
+        };
+
+        window.deleteAdminGallery = async (id) => {
+            if (!confirm("Deseja remover esta imagem da galeria?")) return;
+            try { 
+                await deleteDoc(doc(db, ...GALLERY_PATH, id)); 
+                showToast("Imagem removida", "info");
+            } catch(e){
+                galleryData = galleryData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+                renderGallery();
+                renderAdminGallery();
+            }
+        };
+
+        window.saveAdminPartner = async () => {
+            if (!confirm("Tem certeza que deseja salvar esta parceria?")) return;
+
+            const name = document.getElementById('admin-part-name').value;
+            const link = document.getElementById('admin-part-link').value;
+            const image = document.getElementById('admin-part-imgurl').value || 'img/tl_studio.jpg';
+
+            if (!name) return showToast("Nome do parceiro obrigatório", "error");
+
+            const docId = 'pt_' + Date.now();
+            const itemData = { id: docId, name, link, image };
+
+            try {
+                await setDoc(doc(db, ...PARTNERS_PATH, docId), itemData);
+                showToast("Parceria salva com sucesso!", "success");
+            } catch(e){
+                partnersData.push(itemData);
+                localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
+                renderPartners();
+                renderAdminPartners();
+            }
+
+            document.getElementById('admin-part-name').value = '';
+            document.getElementById('admin-part-link').value = '';
+            document.getElementById('admin-part-imgurl').value = '';
+            closeModal('admin-modal');
+        };
+
+        window.deleteAdminPartner = async (id) => {
+            if (!confirm("Deseja excluir esta parceria?")) return;
+            try { 
+                await deleteDoc(doc(db, ...PARTNERS_PATH, id)); 
+                showToast("Parceria deletada", "info");
+            } catch(e){
+                partnersData = partnersData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
+                renderPartners();
+                renderAdminPartners();
+            }
+        };
+
+        window.deleteAdminComment = async (id) => {
+            if (!confirm("Deseja apagar este comentário?")) return;
+            try { 
+                await deleteDoc(doc(db, ...COMMENTS_PATH, id)); 
+                showToast("Comentário apagado", "info");
+            } catch(e){
+                commentsData = commentsData.filter(x => x.id !== id);
+                localStorage.setItem('tlstudio_comments', JSON.stringify(commentsData));
+                renderComments();
+                renderAdminComments();
+            }
         };
 
         window.deleteAdminProduct = async (id) => {
