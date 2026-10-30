@@ -1473,18 +1473,68 @@
             document.getElementById(id).classList.add('hidden');
         }
 
+        // Helper function to build EMV BR Code for PIX with user's exact key
+        function generateNubankPixEMV(pixKey, merchantName, merchantCity, amountStr) {
+            // Extract numeric value from string (e.g. "R$ 29,90" -> 29.90)
+            let numericVal = amountStr.replace(/[^0-9,\.]/g, '').replace(',', '.');
+            let val = parseFloat(numericVal) || 0.00;
+            let formattedVal = val.toFixed(2);
+
+            function formatField(id, value) {
+                const len = value.length.toString().padStart(2, '0');
+                return `${id}${len}${value}`;
+            }
+
+            // CRC16 Calculation for EMV PIX
+            function crc16(str) {
+                let crc = 0xFFFF;
+                for (let c = 0; c < str.length; c++) {
+                    crc ^= str.charCodeAt(c) << 8;
+                    for (let i = 0; i < 8; i++) {
+                        if ((crc & 0x8000) !== 0) {
+                            crc = (crc << 1) ^ 0x1021;
+                        } else {
+                            crc = crc << 1;
+                        }
+                        crc &= 0xFFFF;
+                    }
+                }
+                return crc.toString(16).toUpperCase().padStart(4, '0');
+            }
+
+            const merchantAccountInfo = formatField('00', 'BR.GOV.BCB.PIX') + formatField('01', pixKey);
+            
+            let payload = formatField('00', '01') + // Payload Format Indicator
+                          formatField('26', merchantAccountInfo) + // Merchant Account Information
+                          formatField('52', '0000') + // Merchant Category Code
+                          formatField('53', '986') + // Transaction Currency (BRL)
+                          (val > 0 ? formatField('54', formattedVal) : '') + // Transaction Amount
+                          formatField('58', 'BR') + // Country Code
+                          formatField('59', merchantName.substring(0, 25)) + // Merchant Name
+                          formatField('60', merchantCity.substring(0, 15)) + // Merchant City
+                          formatField('62', formatField('05', '***')) + // Additional Data Field
+                          '6304'; // CRC16 Header
+
+            const checksum = crc16(payload);
+            return payload + checksum;
+        }
+
         function openPaymentModal(title, price) {
             document.getElementById('pix-product-title').innerText = title;
             document.getElementById('pix-product-price').innerText = price;
             
-            const randomPixCode = "00020126580014BR.GOV.BCB.PIX0136tuliofonseca00@gmail.com520400005303986540" + (Math.random() * 100).toFixed(2) + "5802BR5910TLSTUDIO6009CAETE62070503***6304";
-            document.getElementById('pix-code-input').value = randomPixCode;
+            // Your exact Nubank PIX Key
+            const NUBANK_KEY = "c535d9df-7b6d-4b89-9914-abfa50946f98";
+            
+            // Generate standard EMV PIX string
+            const pixCode = generateNubankPixEMV(NUBANK_KEY, "TL STUDIO", "CAETE", price);
+            document.getElementById('pix-code-input').value = pixCode;
 
-            // Generate QRCode
+            // Render QR Code
             const qrContainer = document.getElementById('qrcode-container');
             qrContainer.innerHTML = '';
             new QRCode(qrContainer, {
-                text: randomPixCode,
+                text: pixCode,
                 width: 160,
                 height: 160,
                 colorDark: "#820AD1",
@@ -1498,7 +1548,7 @@
             const input = document.getElementById('pix-code-input');
             input.select();
             document.execCommand('copy');
-            showToast("Código Nubank PIX copiado!", "success");
+            showToast("Código Nubank PIX copiado com sucesso!", "success");
         }
 
         function filterCategory(cat) {
@@ -1512,8 +1562,8 @@
             if (window.renderProducts) window.renderProducts();
         }
 
-        function handleSearch(q) {
-            window.searchQuery = q;
+        function handleSearch(query) {
+            window.searchQuery = query;
             if (window.renderProducts) window.renderProducts();
         }
 
@@ -1523,43 +1573,56 @@
                 btn.classList.remove('bg-white', 'text-black');
                 btn.classList.add('bg-[#0f1115]', 'text-gray-300');
             });
-
+            
             document.getElementById(tabId).classList.remove('hidden');
             event.currentTarget.classList.remove('bg-[#0f1115]', 'text-gray-300');
             event.currentTarget.classList.add('bg-white', 'text-black');
         }
 
-        function showToast(msg, type = 'info') {
+        function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const color = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-indigo-600';
-            toast.className = `${color} text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transition-all duration-300 border border-white/20`;
-            toast.innerText = msg;
+            
+            let bgClass = 'bg-gray-900 border-white/20 text-white';
+            if (type === 'success') bgClass = 'bg-emerald-950 border-emerald-500/50 text-emerald-200';
+            if (type === 'error') bgClass = 'bg-red-950 border-red-500/50 text-red-200';
+            
+            toast.className = `p-4 rounded-2xl border ${bgClass} shadow-2xl text-xs flex items-center space-x-3 backdrop-blur-md pointer-events-auto transition duration-300`;
+            toast.innerHTML = `
+                <i class="fa-solid ${type === 'success' ? 'fa-circle-check text-emerald-400' : type === 'error' ? 'fa-circle-xmark text-red-400' : 'fa-circle-info text-sky-400'} text-base"></i>
+                <span class="font-bold">${message}</span>
+            `;
+
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3500);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
         }
 
-        // Terms of service logic
-        document.addEventListener("DOMContentLoaded", function() {
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Terms Modal Session Storage Check
             const modalTermos = document.getElementById("modal-termos");
             const btnAceitarTermos = document.getElementById("btn-aceitar-termos");
-
             if (sessionStorage.getItem("tlStudioAceito") === "true") {
                 modalTermos.classList.add("hidden");
             } else {
                 modalTermos.classList.remove("hidden");
             }
 
-            btnAceitarTermos.addEventListener("click", function() {
-                sessionStorage.setItem("tlStudioAceito", "true");
-                modalTermos.classList.add("hidden");
-            });
-
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenuBtn) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            if (btnAceitarTermos) {
+                btnAceitarTermos.addEventListener("click", function() {
+                    sessionStorage.setItem("tlStudioAceito", "true");
+                    modalTermos.classList.add("hidden");
                 });
             }
         });
