@@ -468,7 +468,9 @@
                 </div>
 
                 <!-- QR Code Box -->
-                <div class="bg-white p-4 rounded-2xl w-48 h-48 mx-auto flex items-center justify-center border-2 border-nubank shadow-xl" id="qrcode-container"></div>
+                <div class="bg-white p-3 rounded-2xl w-48 h-48 mx-auto flex items-center justify-center border-2 border-nubank shadow-xl overflow-hidden" id="qrcode-container">
+                    <img id="pix-qrcode-img" class="w-full h-full object-contain" alt="QR Code PIX">
+                </div>
 
                 <div class="space-y-2">
                     <label class="text-[10px] uppercase text-gray-400 font-bold block">Código PIX Copia e Cola:</label>
@@ -480,14 +482,14 @@
                     </div>
                 </div>
 
-                <div class="bg-emerald-950/40 border border-emerald-500/30 p-3 rounded-xl text-xs text-emerald-300 text-left space-y-1">
-                    <p class="font-bold"><i class="fa-solid fa-circle-check"></i> Registro Instantâneo</p>
-                    <p class="text-[11px] text-emerald-200/80">Ao clicar em "Confirmar Pagamento", o recibo é registrado no painel admin para o e-mail: <strong>tuliofonseca00@gmail.com</strong>.</p>
+                <div class="bg-amber-950/40 border border-amber-500/30 p-3 rounded-xl text-xs text-amber-300 text-left space-y-1">
+                    <p class="font-bold"><i class="fa-solid fa-shield-halved"></i> Como concluir seu pedido:</p>
+                    <p class="text-[11px] text-amber-200/80">1. Realize o pagamento pelo app do seu banco com a chave PIX ou escaneando o QR Code.<br>2. Clique no botão abaixo para enviar o comprovante diretamente no Ticket do Discord.</p>
                 </div>
 
-                <button onclick="confirmPixPayment()" class="w-full py-3.5 btn-nubank rounded-xl text-xs font-bold shadow-lg flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-check"></i>
-                    <span>Confirmar Pagamento Simulado</span>
+                <button onclick="notifyPixOrder()" class="w-full py-3.5 btn-nubank rounded-xl text-xs font-bold shadow-lg flex items-center justify-center space-x-2">
+                    <i class="fa-brands fa-discord text-base"></i>
+                    <span>Já fiz o PIX / Enviar Comprovante no Discord</span>
                 </button>
             </div>
         </div>
@@ -1468,7 +1470,6 @@
                 additionalData +
                 '6304';
 
-            // Calculate CRC16 CCITT
             function crc16(str) {
                 let crc = 0xFFFF;
                 for (let i = 0; i < str.length; i++) {
@@ -1488,7 +1489,6 @@
             return payload + crc16(payload);
         }
 
-        // Active Product Payment State
         let activePaymentProduct = null;
 
         window.openPaymentModal = (name, price) => {
@@ -1496,27 +1496,59 @@
             document.getElementById('pix-product-title').innerText = name;
             document.getElementById('pix-product-price').innerText = price;
 
-            // Nubank PIX Key Provided
+            // Chave Nubank Oficial
             const nubankKey = 'c535d9df-7b6d-4b89-9914-abfa50946f98';
             const payload = generatePixPayload(nubankKey, price);
 
             document.getElementById('pix-code-input').value = payload;
 
-            // QR Code Rendering
-            const qrContainer = document.getElementById('qrcode-container');
-            qrContainer.innerHTML = '';
-            if (window.QRCode) {
-                new QRCode(qrContainer, {
-                    text: payload,
-                    width: 170,
-                    height: 170,
-                    colorDark: "#820AD1",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.M
-                });
-            }
+            // Renderiza QR Code com gerador via imagem segura
+            const qrImg = document.getElementById('pix-qrcode-img');
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payload)}`;
 
             document.getElementById('payment-modal').classList.remove('hidden');
+        };
+
+        window.copyPixCode = () => {
+            const input = document.getElementById('pix-code-input');
+            input.select();
+            document.execCommand('copy');
+            showToast("Código PIX Copia e Cola copiado!", "success");
+        };
+
+        window.notifyPixOrder = async () => {
+            if (!activePaymentProduct) return;
+
+            const userEmail = (window.auth && window.auth.currentUser && !window.auth.currentUser.isAnonymous) 
+                ? window.auth.currentUser.email 
+                : 'Cliente Anônimo / Discord';
+
+            const newOrder = {
+                id: 'ord_' + Date.now(),
+                userEmail,
+                productName: activePaymentProduct.name,
+                price: activePaymentProduct.price,
+                status: 'Aguardando Comprovante',
+                date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})
+            };
+
+            try {
+                const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                await addDoc(collection(window.db, 'artifacts', window.appId, 'public', 'data', 'orders'), newOrder);
+            } catch (e) {
+                let orders = JSON.parse(localStorage.getItem('tlstudio_orders') || '[]');
+                orders.push(newOrder);
+                localStorage.setItem('tlstudio_orders', JSON.stringify(orders));
+                if (window.renderUserOrders) window.renderUserOrders();
+                if (window.renderAdminOrders) window.renderAdminOrders();
+            }
+
+            showToast("Pedido registrado! Envie o comprovante no Discord.", "info");
+            closeModal('payment-modal');
+            
+            setTimeout(() => {
+                window.open('https://discord.gg/mAPuzShdWp', '_blank');
+            }, 1000);
         };
 
         window.copyPixCode = () => {
