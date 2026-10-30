@@ -912,10 +912,8 @@
             updateAuthUI(user);
         });
 
-        // Safe UI Auth Updater with element null checks & profile photo/initials
         function updateAuthUI(user) {
             const adminNavBtn = document.getElementById('admin-nav-btn');
-            const adminNavBtnMobile = document.getElementById('admin-nav-btn-mobile');
             const authTriggerBtn = document.getElementById('btn-login-trigger');
             const authUnlogged = document.getElementById('auth-unlogged');
             const authLogged = document.getElementById('auth-logged');
@@ -956,10 +954,6 @@
                 if (isAdmin) adminNavBtn.classList.remove('hidden');
                 else adminNavBtn.classList.add('hidden');
             }
-            if (adminNavBtnMobile) {
-                if (isAdmin) adminNavBtnMobile.classList.remove('hidden');
-                else adminNavBtnMobile.classList.add('hidden');
-            }
         }
 
         window.loginWithGoogle = async () => {
@@ -977,12 +971,8 @@
             const emailElem = document.getElementById('auth-email');
             const passElem = document.getElementById('auth-pass');
             if (!emailElem || !passElem) return;
-            const email = emailElem.value;
-            const pass = passElem.value;
-            if (!email || !pass) return showToast("Preencha e-mail e senha", "error");
-
             try {
-                await signInWithEmailAndPassword(auth, email, pass);
+                await signInWithEmailAndPassword(auth, emailElem.value, passElem.value);
                 showToast("Bem-vindo de volta!", "success");
                 closeModal('auth-modal');
             } catch (err) {
@@ -994,12 +984,8 @@
             const emailElem = document.getElementById('auth-email');
             const passElem = document.getElementById('auth-pass');
             if (!emailElem || !passElem) return;
-            const email = emailElem.value;
-            const pass = passElem.value;
-            if (!email || !pass) return showToast("Preencha e-mail e senha", "error");
-
             try {
-                await createUserWithEmailAndPassword(auth, email, pass);
+                await createUserWithEmailAndPassword(auth, emailElem.value, passElem.value);
                 showToast("Conta criada com sucesso!", "success");
                 closeModal('auth-modal');
             } catch (err) {
@@ -1042,6 +1028,7 @@
             function updateLocalData(key, data, renderFn, renderAdminFn) {
                 if (key === 'products') productsData = data;
                 if (key === 'projects') projectsData = data;
+                if (key === 'gallery') galleryData = data;
                 if (key === 'partners') partnersData = data;
                 if (key === 'comments') commentsData = data;
                 if (key === 'orders') ordersData = data;
@@ -1051,11 +1038,11 @@
             }
 
             const defaultProducts = [
-                { id: 'p1', category: 'discord', name: 'Configuração Inicial', price: 'R$ 6,99', subtitle: 'Configuração básica para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
-                { id: 'p2', category: 'discord', name: 'Discord Profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos e bots', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
-                { id: 'p3', category: 'sites', name: 'Site Institucional', price: 'R$ 49,99', subtitle: 'Site corporativo profissional completo', icon: 'fa-building', image: 'img/institucional.jpg' },
-                { id: 'p4', category: 'sites', name: 'Site GTA RP', price: 'R$ 49,99', subtitle: 'Painel e site para servidores GTA RP', icon: 'fa-car', image: 'img/gtarp.jpg' },
-                { id: 'p5', category: 'marketing', name: 'Edição de Shorts', price: 'R$ 14,99', subtitle: 'Edição dinâmica de vídeos curtos', icon: 'fa-clapperboard', image: 'img/short.jpg' }
+                { id: 'p1', category: 'discord', name: 'Configuração Inicial', price: 'R$ 6,99', subtitle: 'Configuração básica para seu servidor', image: 'img/config.jpg' },
+                { id: 'p2', category: 'discord', name: 'Discord Profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos e bots', image: 'img/dc_pro.jpg' },
+                { id: 'p3', category: 'sites', name: 'Site Institucional', price: 'R$ 49,99', subtitle: 'Site corporativo profissional completo', image: 'img/institucional.jpg' },
+                { id: 'p4', category: 'sites', name: 'Site GTA RP', price: 'R$ 49,99', subtitle: 'Painel e site para servidores GTA RP', image: 'img/gtarp.jpg' },
+                { id: 'p5', category: 'marketing', name: 'Edição de Shorts', price: 'R$ 14,99', subtitle: 'Edição dinâmica de vídeos curtos', image: 'img/short.jpg' }
             ];
 
             const defaultProjects = [
@@ -1208,12 +1195,7 @@
             commentsData.forEach(c => {
                 const starsCount = parseInt(c.stars) || 5;
                 const stars = '★'.repeat(starsCount) + '☆'.repeat(5 - starsCount);
-                
-                const imageHTML = c.image ? `
-                    <div class="aspect-video rounded-xl overflow-hidden my-2 border border-white/10 bg-black/40">
-                        <img src="${c.image}" class="w-full h-full object-cover" onerror="this.style.display='none'">
-                    </div>
-                ` : '';
+                const imageHTML = c.image ? `<div class="aspect-video rounded-xl overflow-hidden my-2 border border-white/10 bg-black/40"><img src="${c.image}" class="w-full h-full object-cover" onerror="this.style.display='none'"></div>` : '';
 
                 const card = document.createElement('div');
                 card.className = 'glass-panel p-5 rounded-3xl border border-white/10 space-y-3 flex flex-col justify-between';
@@ -1224,9 +1206,7 @@
                         ${imageHTML}
                     </div>
                     <div class="flex items-center space-x-2 pt-2 border-t border-white/10">
-                        <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center font-bold text-[10px] text-white shrink-0">
-                            ${(c.userEmail || 'U')[0].toUpperCase()}
-                        </div>
+                        <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center font-bold text-[10px] text-white shrink-0">${(c.userEmail || 'U')[0].toUpperCase()}</div>
                         <div class="overflow-hidden">
                             <span class="block text-xs font-bold text-white truncate">${c.userEmail || 'Usuário'}</span>
                             <span class="text-[9px] text-gray-500">${c.date || 'Recente'}</span>
@@ -1239,7 +1219,7 @@
 
         window.renderUserOrders = () => {};
 
-        // ADMIN RENDERS & ACTIONS
+        // ADMIN RENDERS & ACTIONS WITH LOCALSTORAGE & FIRESTORE SYNC
         window.renderAdminProducts = () => {
             const table = document.getElementById('admin-products-table');
             if (!table) return;
@@ -1274,25 +1254,23 @@
 
             if (!name || !price) return showToast("Preencha Nome e Preço", "error");
 
-            const data = { id: id || 'p_' + Date.now(), name, price, category, subtitle, image, icon: 'fa-box' };
+            const itemData = { id: id || 'p_' + Date.now(), name, price, category, subtitle, image };
 
             try {
                 if (id) {
-                    await updateDoc(doc(db, ...PRODUCTS_PATH, id), data);
-                } else {
-                    await addDoc(collection(db, ...PRODUCTS_PATH), data);
-                }
-            } catch (e) {
-                if (id) {
                     const idx = productsData.findIndex(x => x.id === id);
-                    if (idx !== -1) productsData[idx] = data;
+                    if (idx !== -1) productsData[idx] = itemData;
+                    else productsData.push(itemData);
                 } else {
-                    productsData.push(data);
+                    productsData.push(itemData);
                 }
                 localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
                 renderProducts();
                 renderAdminProducts();
-            }
+                try {
+                    await setDoc(doc(db, ...PRODUCTS_PATH, itemData.id), itemData);
+                } catch(err) {}
+            } catch (e) {}
 
             showToast("Produto salvo com sucesso!", "success");
             clearProductForm();
@@ -1300,14 +1278,12 @@
         };
 
         window.deleteAdminProduct = async (id) => {
-            try {
-                await deleteDoc(doc(db, ...PRODUCTS_PATH, id));
-            } catch (e) {
-                productsData = productsData.filter(x => x.id !== id);
-                localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
-                renderProducts();
-                renderAdminProducts();
-            }
+            if (!confirm("Tem certeza que deseja excluir este produto?")) return;
+            productsData = productsData.filter(x => x.id !== id);
+            localStorage.setItem('tlstudio_products', JSON.stringify(productsData));
+            renderProducts();
+            renderAdminProducts();
+            try { await deleteDoc(doc(db, ...PRODUCTS_PATH, id)); } catch(e){}
             showToast("Produto excluído", "info");
         };
 
@@ -1352,6 +1328,41 @@
             });
         };
 
+        window.saveAdminProject = async () => {
+            if (!confirm("Tem certeza que deseja salvar as alterações deste projeto?")) return;
+
+            const title = document.getElementById('admin-proj-title').value;
+            const client = document.getElementById('admin-proj-client').value;
+            const desc = document.getElementById('admin-proj-desc').value;
+            const image = document.getElementById('admin-proj-imgurl').value || 'img/projetos/ale_naildesigner.jpg';
+
+            if (!title) return showToast("Título obrigatório", "error");
+
+            const itemData = { id: 'pj_' + Date.now(), title, client, desc, image };
+            projectsData.push(itemData);
+            localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
+            renderProjects();
+            renderAdminProjects();
+            try { await setDoc(doc(db, ...PROJECTS_PATH, itemData.id), itemData); } catch(e){}
+
+            showToast("Projeto salvo com sucesso!", "success");
+            document.getElementById('admin-proj-title').value = '';
+            document.getElementById('admin-proj-client').value = '';
+            document.getElementById('admin-proj-desc').value = '';
+            document.getElementById('admin-proj-imgurl').value = '';
+            closeModal('admin-modal');
+        };
+
+        window.deleteAdminProject = async (id) => {
+            if (!confirm("Tem certeza que deseja excluir este projeto?")) return;
+            projectsData = projectsData.filter(x => x.id !== id);
+            localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
+            renderProjects();
+            renderAdminProjects();
+            try { await deleteDoc(doc(db, ...PROJECTS_PATH, id)); } catch(e){}
+            showToast("Projeto removido", "info");
+        };
+
         window.renderAdminGallery = () => {
             const list = document.getElementById('admin-gallery-list');
             if (!list) return;
@@ -1379,74 +1390,27 @@
 
             if (!image) return showToast("Informe o link ou imagem da galeria", "error");
 
-            const data = { id: 'g_' + Date.now(), title, image };
+            const itemData = { id: 'g_' + Date.now(), title, image };
+            galleryData.push(itemData);
+            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+            renderGallery();
+            renderAdminGallery();
+            try { await setDoc(doc(db, ...GALLERY_PATH, itemData.id), itemData); } catch(e){}
 
-            try {
-                await addDoc(collection(db, ...GALLERY_PATH), data);
-            } catch (e) {
-                galleryData.push(data);
-                localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
-                renderGallery();
-                renderAdminGallery();
-            }
-
-            showToast("Imagem adicionada à Galeria!", "success");
+            showToast("Imagem salva na galeria!", "success");
             document.getElementById('admin-gal-title').value = '';
             document.getElementById('admin-gal-imgurl').value = '';
             closeModal('admin-modal');
         };
 
         window.deleteAdminGallery = async (id) => {
-            try {
-                await deleteDoc(doc(db, ...GALLERY_PATH, id));
-            } catch (e) {
-                galleryData = galleryData.filter(x => x.id !== id);
-                localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
-                renderGallery();
-                renderAdminGallery();
-            }
-            showToast("Imagem removida da galeria", "info");
-        };
-
-        window.saveAdminProject = async () => {
-            if (!confirm("Tem certeza que deseja salvar as alterações deste projeto?")) return;
-
-            const title = document.getElementById('admin-proj-title').value;
-            const client = document.getElementById('admin-proj-client').value;
-            const desc = document.getElementById('admin-proj-desc').value;
-            const image = document.getElementById('admin-proj-imgurl').value || 'img/projetos/ale_naildesigner.jpg';
-
-            if (!title) return showToast("Título obrigatório", "error");
-
-            const data = { id: 'pj_' + Date.now(), title, client, desc, image };
-
-            try {
-                await addDoc(collection(db, ...PROJECTS_PATH), data);
-            } catch (e) {
-                projectsData.push(data);
-                localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
-                renderProjects();
-                renderAdminProjects();
-            }
-
-            showToast("Projeto adicionado!", "success");
-            document.getElementById('admin-proj-title').value = '';
-            document.getElementById('admin-proj-client').value = '';
-            document.getElementById('admin-proj-desc').value = '';
-            document.getElementById('admin-proj-imgurl').value = '';
-            closeModal('admin-modal');
-        };
-
-        window.deleteAdminProject = async (id) => {
-            try {
-                await deleteDoc(doc(db, ...PROJECTS_PATH, id));
-            } catch (e) {
-                projectsData = projectsData.filter(x => x.id !== id);
-                localStorage.setItem('tlstudio_projects', JSON.stringify(projectsData));
-                renderProjects();
-                renderAdminProjects();
-            }
-            showToast("Projeto removido", "info");
+            if (!confirm("Deseja remover esta imagem da galeria?")) return;
+            galleryData = galleryData.filter(x => x.id !== id);
+            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+            renderGallery();
+            renderAdminGallery();
+            try { await deleteDoc(doc(db, ...GALLERY_PATH, id)); } catch(e){}
+            showToast("Imagem removida", "info");
         };
 
         window.renderAdminPartners = () => {
@@ -1477,18 +1441,14 @@
 
             if (!name) return showToast("Nome do parceiro obrigatório", "error");
 
-            const data = { id: 'pt_' + Date.now(), name, link, image };
+            const itemData = { id: 'pt_' + Date.now(), name, link, image };
+            partnersData.push(itemData);
+            localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
+            renderPartners();
+            renderAdminPartners();
+            try { await setDoc(doc(db, ...PARTNERS_PATH, itemData.id), itemData); } catch(e){}
 
-            try {
-                await addDoc(collection(db, ...PARTNERS_PATH), data);
-            } catch (e) {
-                partnersData.push(data);
-                localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
-                renderPartners();
-                renderAdminPartners();
-            }
-
-            showToast("Parceria salva!", "success");
+            showToast("Parceria salva com sucesso!", "success");
             document.getElementById('admin-part-name').value = '';
             document.getElementById('admin-part-link').value = '';
             document.getElementById('admin-part-imgurl').value = '';
@@ -1496,14 +1456,12 @@
         };
 
         window.deleteAdminPartner = async (id) => {
-            try {
-                await deleteDoc(doc(db, ...PARTNERS_PATH, id));
-            } catch (e) {
-                partnersData = partnersData.filter(x => x.id !== id);
-                localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
-                renderPartners();
-                renderAdminPartners();
-            }
+            if (!confirm("Deseja excluir esta parceria?")) return;
+            partnersData = partnersData.filter(x => x.id !== id);
+            localStorage.setItem('tlstudio_partners', JSON.stringify(partnersData));
+            renderPartners();
+            renderAdminPartners();
+            try { await deleteDoc(doc(db, ...PARTNERS_PATH, id)); } catch(e){}
             showToast("Parceria deletada", "info");
         };
 
@@ -1533,22 +1491,16 @@
         };
 
         window.deleteAdminComment = async (id) => {
-            try {
-                await deleteDoc(doc(db, ...COMMENTS_PATH, id));
-            } catch (e) {
-                commentsData = commentsData.filter(x => x.id !== id);
-                localStorage.setItem('tlstudio_comments', JSON.stringify(commentsData));
-                renderComments();
-                renderAdminComments();
-            }
+            if (!confirm("Deseja apagar este comentário?")) return;
+            commentsData = commentsData.filter(x => x.id !== id);
+            localStorage.setItem('tlstudio_comments', JSON.stringify(commentsData));
+            renderComments();
+            renderAdminComments();
+            try { await deleteDoc(doc(db, ...COMMENTS_PATH, id)); } catch(e){}
             showToast("Comentário apagado", "info");
         };
 
-        window.renderAdminOrders = (filterText = '') => {
-            const table = document.getElementById('admin-orders-table');
-            if (!table) return;
-            table.innerHTML = '';
-        };
+        window.renderAdminOrders = () => {};
 
         window.submitComment = async () => {
             if (!currentUser || currentUser.isAnonymous) {
@@ -1564,24 +1516,13 @@
             if (!text) return showToast("Escreva seu comentário", "error");
 
             const date = new Date().toLocaleDateString('pt-BR');
-            const newComment = {
-                id: 'cm_' + Date.now(),
-                userId: currentUser.uid,
-                userEmail: currentUser.email,
-                stars,
-                text,
-                image,
-                date
-            };
-
-            try {
-                await addDoc(collection(db, ...COMMENTS_PATH), newComment);
-            } catch (e) {
-                commentsData.push(newComment);
-                localStorage.setItem('tlstudio_comments', JSON.stringify(commentsData));
-                renderComments();
-                renderAdminComments();
-            }
+            const newComment = { id: 'cm_' + Date.now(), userId: currentUser.uid, userEmail: currentUser.email, stars, text, image, date };
+            
+            commentsData.push(newComment);
+            localStorage.setItem('tlstudio_comments', JSON.stringify(commentsData));
+            renderComments();
+            renderAdminComments();
+            try { await setDoc(doc(db, ...COMMENTS_PATH, newComment.id), newComment); } catch(e){}
 
             showToast("Avaliação publicada online!", "success");
             document.getElementById('comment-text').value = '';
