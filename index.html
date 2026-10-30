@@ -41,8 +41,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- QRCode JS Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .glass-panel {
@@ -70,16 +68,6 @@
             background: #f1f5f9;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
             transform: translateY(-2px);
-        }
-        .btn-nubank {
-            background: #820AD1;
-            color: #ffffff;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-        .btn-nubank:hover {
-            background: #9b12f5;
-            box-shadow: 0 0 20px rgba(130, 10, 209, 0.5);
         }
         .hero-custom-bg {
             background-image: url('img/tl_studio.png');
@@ -114,9 +102,7 @@
 
             <div class="bg-[#07080a]/80 border border-white/10 rounded-2xl p-4 text-xs text-gray-300 space-y-3 overflow-y-auto my-4 flex-grow leading-relaxed">
                 <p class="font-bold text-white uppercase tracking-wider text-[11px] mb-1">📦 Compras e Entregas</p>
-                <p>• Compras podem ser feitas via PIX com QR Code automático ou pelos canais oficiais de ticket no Discord.</p>
-                <p>• Após o pagamento via Nubank PIX, o status será atualizado no seu painel ou no Discord.</p>
-                <p>• A TL STUDIO não realiza reembolso após o download ou entrega dos produtos digitais customizados.</p>
+                <p>• Compras são efetuadas e encomendadas pelos canais oficiais de ticket no Discord.</p>
                 <p>• E-mail oficial de suporte e administração: <strong>tuliofonseca00@gmail.com</strong></p>
             </div>
 
@@ -171,7 +157,7 @@
 
             <!-- Mobile Menu Toggle -->
             <div class="flex md:hidden items-center space-x-2">
-                <button id="mobile-auth-btn" onclick="openAuthModal()" class="bg-white text-black font-bold p-2.5 rounded-xl text-xs">
+                <button onclick="openAuthModal()" class="bg-white text-black font-bold p-2.5 rounded-xl text-xs">
                     <i class="fa-solid fa-user"></i>
                 </button>
                 <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2">
@@ -203,7 +189,7 @@
                 <div class="lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/10 border border-white/25 text-white text-xs font-bold uppercase tracking-wider">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-                        <span>PAGAMENTO ONLINE VIA NUBANK PIX • SUPORTE ONLINE</span>
+                        <span>ATENDIMENTO & ENCOMENDAS VIA DISCORD • SUPORTE ONLINE</span>
                     </div>
                     
                     <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
@@ -212,7 +198,7 @@
                     </h1>
                     
                     <p class="text-base text-gray-300 max-w-xl leading-relaxed">
-                        Servidores Discord completos, desenvolvimento de sites modernos e estratégias de marketing digital. Adquira instantaneamente via PIX Nubank ou atendimento no Discord.
+                        Servidores Discord completos, desenvolvimento de sites modernos e estratégias de marketing digital. Encomende diretamente através do ticket oficial no nosso Discord.
                     </p>
 
                     <div class="flex flex-wrap items-center gap-4 pt-2">
@@ -348,12 +334,12 @@
 
             <div class="space-y-4 text-sm">
                 <div class="glass-panel p-5 rounded-2xl">
-                    <h3 class="font-bold text-white mb-1"><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como é gerado o pagamento Nubank PIX?</h3>
-                    <p class="text-gray-400">O sistema gera um código Copia e Cola e QR Code instantâneo. Após o pagamento, o registro fica gravado para o admin.</p>
+                    <h3 class="font-bold text-white mb-1"><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como encomendar um produto ou serviço?</h3>
+                    <p class="text-gray-400">Escolha o produto desejado no catálogo e clique no botão para abrir um ticket em nosso Discord oficial com a equipe.</p>
                 </div>
                 <div class="glass-panel p-5 rounded-2xl">
-                    <h3 class="font-bold text-white mb-1"><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como recebo o meu produto ou serviço?</h3>
-                    <p class="text-gray-400">Através do suporte em nosso Discord ou envio direto no e-mail cadastrado em seu login.</p>
+                    <h3 class="font-bold text-white mb-1"><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Quais formas de pagamento são aceitas no Discord?</h3>
+                    <p class="text-gray-400">Aceitamos PIX e outros métodos combinados diretamente dentro do seu ticket de atendimento.</p>
                 </div>
             </div>
         </div>
@@ -397,7 +383,7 @@
             <div id="auth-unlogged" class="space-y-4">
                 <div class="text-center">
                     <h3 class="text-xl font-extrabold text-white">Minha Conta TL STUDIO</h3>
-                    <p class="text-xs text-gray-400 mt-1">Acesse para realizar compras e fazer avaliações</p>
+                    <p class="text-xs text-gray-400 mt-1">Acesse para realizar pedidos e avaliações</p>
                 </div>
 
                 <div class="space-y-3">
@@ -421,76 +407,51 @@
                 </div>
             </div>
 
-            <!-- Logged View -->
-            <div id="auth-logged" class="hidden space-y-4">
-                <div class="text-center space-y-2">
-                    <div class="w-16 h-16 rounded-full bg-white/10 mx-auto flex items-center justify-center text-2xl text-white border border-white/20" id="user-avatar-display">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <h3 id="user-email-display" class="text-sm font-bold text-white break-all">user@example.com</h3>
-                    <span id="user-role-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold uppercase">Cliente Verificado</span>
+            <!-- Logged State -->
+            <div id="auth-logged" class="space-y-4 hidden text-center">
+                <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold border border-emerald-500/40">
+                    <i class="fa-solid fa-user-check"></i>
                 </div>
-
-                <!-- User Purchase History -->
-                <div class="border-t border-white/10 pt-4">
-                    <h4 class="text-xs font-bold text-white mb-2 flex items-center justify-between">
-                        <span><i class="fa-solid fa-bag-shopping text-emerald-400 mr-1"></i> Minhas Compras</span>
-                    </h4>
-                    <div id="user-orders-list" class="max-h-40 overflow-y-auto space-y-2 text-xs text-gray-300">
-                        <!-- Loaded JS -->
-                    </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Conta Conectada</h3>
+                    <p id="user-email-display" class="text-xs text-emerald-400 mt-1">cliente@email.com</p>
                 </div>
-
-                <div class="pt-2">
-                    <button onclick="logoutUser()" class="w-full py-2.5 bg-red-600/80 hover:bg-red-700 text-white font-bold rounded-xl text-xs">
-                        Sair da Conta
-                    </button>
-                </div>
+                <button onclick="logoutUser()" class="w-full py-3 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 font-bold rounded-xl text-xs">
+                    Desconectar Conta
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Nubank PIX Payment Modal -->
-    <div id="payment-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+    <!-- Purchase Confirmation Modal (Discord Ticket) -->
+    <div id="discord-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
         <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/20 shadow-2xl">
-            <button onclick="closeModal('payment-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+            <button onclick="closeModal('discord-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
             <div class="text-center space-y-4">
-                <div class="w-12 h-12 bg-nubank text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-bold shadow-lg">
-                    <span>Nu</span>
+                <div class="w-14 h-14 bg-[#5865F2] text-white rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold shadow-lg shadow-[#5865F2]/30">
+                    <i class="fa-brands fa-discord"></i>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold text-white">Pagamento via Nubank PIX</h3>
-                    <p id="pix-product-title" class="text-xs text-gray-400">Produto Selecionado</p>
-                    <p id="pix-product-price" class="text-2xl font-black text-white mt-1 text-neon">R$ 0,00</p>
+                    <h3 class="text-lg font-bold text-white">Encomendar no Discord</h3>
+                    <p id="discord-product-title" class="text-xs text-gray-400 mt-1">Produto Selecionado</p>
+                    <p id="discord-product-price" class="text-2xl font-black text-white mt-1 text-neon">R$ 0,00</p>
                 </div>
 
-                <!-- QR Code Box -->
-                <div class="bg-white p-3 rounded-2xl w-48 h-48 mx-auto flex items-center justify-center border-2 border-nubank shadow-xl overflow-hidden" id="qrcode-container">
-                    <img id="pix-qrcode-img" class="w-full h-full object-contain" alt="QR Code PIX">
+                <div class="bg-[#07080a] p-4 rounded-2xl border border-white/10 text-xs text-gray-300 text-left space-y-2 leading-relaxed">
+                    <p class="font-bold text-white flex items-center space-x-1.5">
+                        <i class="fa-solid fa-ticket text-indigo-400"></i>
+                        <span>Atendimento via Ticket Oficial:</span>
+                    </p>
+                    <p>Ao clicar no botão abaixo, você será redirecionado para o nosso Discord oficial para abrir um ticket e finalizar o pedido diretamente com a equipe da TL STUDIO.</p>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="text-[10px] uppercase text-gray-400 font-bold block">Código PIX Copia e Cola:</label>
-                    <div class="flex items-center space-x-2">
-                        <input type="text" id="pix-code-input" readonly class="w-full bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-xs text-gray-300 select-all">
-                        <button onclick="copyPixCode()" class="btn-nubank px-4 py-2.5 rounded-xl text-xs shrink-0">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-amber-950/40 border border-amber-500/30 p-3 rounded-xl text-xs text-amber-300 text-left space-y-1">
-                    <p class="font-bold"><i class="fa-solid fa-shield-halved"></i> Como concluir seu pedido:</p>
-                    <p class="text-[11px] text-amber-200/80">1. Realize o pagamento pelo app do seu banco com a chave PIX ou escaneando o QR Code.<br>2. Clique no botão abaixo para enviar o comprovante diretamente no Ticket do Discord.</p>
-                </div>
-
-                <button onclick="notifyPixOrder()" class="w-full py-3.5 btn-nubank rounded-xl text-xs font-bold shadow-lg flex items-center justify-center space-x-2">
+                <a id="discord-modal-link" href="https://discord.gg/mAPuzShdWp" target="_blank" onclick="closeModal('discord-modal')" class="w-full py-3.5 bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold rounded-xl text-xs shadow-lg flex items-center justify-center space-x-2 transition">
                     <i class="fa-brands fa-discord text-base"></i>
-                    <span>Já fiz o PIX / Enviar Comprovante no Discord</span>
-                </button>
+                    <span>Abrir Ticket e Encomendar</span>
+                </a>
             </div>
         </div>
     </div>
@@ -599,15 +560,12 @@
                         </div>
                         <input type="text" id="admin-prod-sub" placeholder="Subtítulo / Descrição Curta" class="w-full bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
                         
-                        <!-- Image Source: Link or Gallery -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <input type="text" id="admin-prod-imgurl" placeholder="Link da Imagem (URL Externa)" class="bg-[#07080a] p-2.5 rounded-xl border border-white/10 text-white">
-                            <div class="flex items-center space-x-2">
-                                <label class="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl cursor-pointer w-full text-center border border-white/20">
-                                    <i class="fa-solid fa-image mr-1"></i> Upload da Galeria
-                                    <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-prod-imgurl')">
-                                </label>
-                            </div>
+                            <label class="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl cursor-pointer w-full text-center border border-white/20">
+                                <i class="fa-solid fa-image mr-1"></i> Upload da Galeria
+                                <input type="file" accept="image/*" class="hidden" onchange="convertImageToBase64(this, 'admin-prod-imgurl')">
+                            </label>
                         </div>
 
                         <div class="flex space-x-2 pt-2">
@@ -747,7 +705,6 @@
             updateDoc 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Firebase Configuration - Configurações Reais do Projeto loja-tl
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'loja-tl';
         const firebaseConfig = {
             apiKey: "AIzaSyDr9noWC2gYRiuPHvI8NjP_ffi3BWSZIoE",
@@ -767,7 +724,6 @@
         window.auth = auth;
         window.appId = appId;
 
-        // Collections Firestore Paths
         const ADMIN_EMAIL = 'tuliofonseca00@gmail.com';
         const PRODUCTS_PATH = ['artifacts', appId, 'public', 'data', 'products'];
         const PROJECTS_PATH = ['artifacts', appId, 'public', 'data', 'projects'];
@@ -782,7 +738,6 @@
         let commentsData = [];
         let ordersData   = [];
 
-        // Auth Authentication Initialization
         async function initAuth() {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -803,7 +758,7 @@
 
         initAuth();
 
-        // UI Auth Updater
+        // Safe UI Auth Updater with element null checks
         function updateAuthUI(user) {
             const adminNavBtn = document.getElementById('admin-nav-btn');
             const adminNavBtnMobile = document.getElementById('admin-nav-btn-mobile');
@@ -812,29 +767,41 @@
             const authLogged = document.getElementById('auth-logged');
             const userEmailDisplay = document.getElementById('user-email-display');
 
-            if (user && !user.isAnonymous && user.email) {
-                authTriggerBtn.innerHTML = `<i class="fa-solid fa-user-check text-emerald-400"></i> <span class="truncate max-w-[100px]">${user.email.split('@')[0]}</span>`;
-                authUnlogged.classList.add('hidden');
-                authLogged.classList.remove('hidden');
-                userEmailDisplay.innerText = user.email;
+            const isAuthed = user && !user.isAnonymous && user.email;
 
-                if (user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                    adminNavBtn.classList.remove('hidden');
-                    adminNavBtnMobile.classList.remove('hidden');
+            if (authTriggerBtn) {
+                if (isAuthed) {
+                    authTriggerBtn.innerHTML = `<i class="fa-solid fa-user-check text-emerald-400"></i> <span class="truncate max-w-[100px]">${user.email.split('@')[0]}</span>`;
                 } else {
-                    adminNavBtn.classList.add('hidden');
-                    adminNavBtnMobile.classList.add('hidden');
+                    authTriggerBtn.innerHTML = `<i class="fa-solid fa-user-lock"></i> <span>Entrar</span>`;
                 }
-            } else {
-                authTriggerBtn.innerHTML = `<i class="fa-solid fa-user-lock"></i> <span>Entrar</span>`;
-                authUnlogged.classList.remove('hidden');
-                authLogged.classList.add('hidden');
-                adminNavBtn.classList.add('hidden');
-                adminNavBtnMobile.classList.add('hidden');
+            }
+
+            if (authUnlogged) {
+                if (isAuthed) authUnlogged.classList.add('hidden');
+                else authUnlogged.classList.remove('hidden');
+            }
+
+            if (authLogged) {
+                if (isAuthed) authLogged.classList.remove('hidden');
+                else authLogged.classList.add('hidden');
+            }
+
+            if (userEmailDisplay && isAuthed) {
+                userEmailDisplay.innerText = user.email;
+            }
+
+            const isAdmin = isAuthed && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+            if (adminNavBtn) {
+                if (isAdmin) adminNavBtn.classList.remove('hidden');
+                else adminNavBtn.classList.add('hidden');
+            }
+            if (adminNavBtnMobile) {
+                if (isAdmin) adminNavBtnMobile.classList.remove('hidden');
+                else adminNavBtnMobile.classList.add('hidden');
             }
         }
 
-        // Global Auth Functions
         window.loginWithGoogle = async () => {
             try {
                 const provider = new GoogleAuthProvider();
@@ -847,8 +814,11 @@
         };
 
         window.loginWithEmail = async () => {
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-pass').value;
+            const emailElem = document.getElementById('auth-email');
+            const passElem = document.getElementById('auth-pass');
+            if (!emailElem || !passElem) return;
+            const email = emailElem.value;
+            const pass = passElem.value;
             if (!email || !pass) return showToast("Preencha e-mail e senha", "error");
 
             try {
@@ -861,8 +831,11 @@
         };
 
         window.registerWithEmail = async () => {
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-pass').value;
+            const emailElem = document.getElementById('auth-email');
+            const passElem = document.getElementById('auth-pass');
+            if (!emailElem || !passElem) return;
+            const email = emailElem.value;
+            const pass = passElem.value;
             if (!email || !pass) return showToast("Preencha e-mail e senha", "error");
 
             try {
@@ -881,9 +854,7 @@
             closeModal('auth-modal');
         };
 
-        // Realtime Firestore Sync with Fallback Handlers
         function setupFirestoreListeners() {
-            // Helper function to safely subscribe or fallback to local storage
             function safeSubscribe(path, key, defaultData, renderFn, renderAdminFn) {
                 try {
                     onSnapshot(collection(db, ...path), (snap) => {
@@ -897,7 +868,6 @@
                         }
                         updateLocalData(key, data, renderFn, renderAdminFn);
                     }, (err) => {
-                        console.warn(`${key} permission/network fallback:`, err.message);
                         const saved = localStorage.getItem('tlstudio_' + key);
                         const data = saved ? JSON.parse(saved) : defaultData;
                         updateLocalData(key, data, renderFn, renderAdminFn);
@@ -920,7 +890,6 @@
                 if (renderAdminFn) renderAdminFn();
             }
 
-            // Defaults
             const defaultProducts = [
                 { id: 'p1', category: 'discord', name: 'Configuração Inicial', price: 'R$ 6,99', subtitle: 'Configuração básica para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
                 { id: 'p2', category: 'discord', name: 'Discord Profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos e bots', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
@@ -946,7 +915,6 @@
             safeSubscribe(ORDERS_PATH, 'orders', [], renderUserOrders, renderAdminOrders);
         }
 
-        // Render Functions
         window.renderProducts = () => {
             const grid = document.getElementById('products-grid');
             if (!grid) return;
@@ -983,9 +951,9 @@
                             <span class="text-[10px] uppercase text-gray-500 block font-bold">Investimento</span>
                             <span class="text-base font-extrabold text-white text-neon">${p.price}</span>
                         </div>
-                        <button onclick="openPaymentModal('${p.name}', '${p.price}')" class="btn-nubank px-4 py-2 rounded-xl text-xs flex items-center space-x-1.5">
-                            <i class="fa-solid fa-pix"></i>
-                            <span>Comprar PIX</span>
+                        <button onclick="openDiscordModal('${p.name}', '${p.price}')" class="btn-neon px-4 py-2 rounded-xl text-xs flex items-center space-x-1.5">
+                            <i class="fa-brands fa-discord text-indigo-600"></i>
+                            <span>Encomendar</span>
                         </button>
                     </div>
                 `;
@@ -1079,40 +1047,9 @@
             });
         };
 
-        window.renderUserOrders = () => {
-            const list = document.getElementById('user-orders-list');
-            if (!list) return;
-            list.innerHTML = '';
+        window.renderUserOrders = () => {};
 
-            if (!currentUser || currentUser.isAnonymous) {
-                list.innerHTML = `<p class="text-gray-500">Faça login para ver seu histórico de pedidos.</p>`;
-                return;
-            }
-
-            const myOrders = ordersData.filter(o => o.userEmail === currentUser.email);
-            if (myOrders.length === 0) {
-                list.innerHTML = `<p class="text-gray-500">Nenhum pedido realizado ainda.</p>`;
-                return;
-            }
-
-            myOrders.forEach(o => {
-                const item = document.createElement('div');
-                item.className = 'p-2.5 rounded-xl bg-[#07080a] border border-white/10 flex justify-between items-center';
-                item.innerHTML = `
-                    <div>
-                        <span class="font-bold text-white block">${o.productName}</span>
-                        <span class="text-[10px] text-gray-400">${o.date} • PIX Nubank</span>
-                    </div>
-                    <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${o.status === 'Pago' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-yellow-500/20 text-yellow-400'}">
-                        ${o.status}
-                    </span>
-                `;
-                list.appendChild(item);
-            });
-        };
-
-        // ==================== ADMIN DASHBOARD RENDERS & ACTIONS ====================
-
+        // ADMIN RENDERS & ACTIONS
         window.renderAdminProducts = () => {
             const table = document.getElementById('admin-products-table');
             if (!table) return;
@@ -1200,7 +1137,6 @@
             document.getElementById('admin-prod-imgurl').value = '';
         };
 
-        // ADMIN PROJECTS
         window.renderAdminProjects = () => {
             const list = document.getElementById('admin-projects-list');
             if (!list) return;
@@ -1261,7 +1197,6 @@
             showToast("Projeto removido", "info");
         };
 
-        // ADMIN PARTNERS
         window.renderAdminPartners = () => {
             const list = document.getElementById('admin-partners-list');
             if (!list) return;
@@ -1317,7 +1252,6 @@
             showToast("Parceria deletada", "info");
         };
 
-        // ADMIN COMMENTS MODERATION
         window.renderAdminComments = () => {
             const list = document.getElementById('admin-comments-list');
             if (!list) return;
@@ -1355,50 +1289,12 @@
             showToast("Comentário apagado", "info");
         };
 
-        // ADMIN ORDERS
         window.renderAdminOrders = (filterText = '') => {
             const table = document.getElementById('admin-orders-table');
             if (!table) return;
             table.innerHTML = '';
-
-            const list = ordersData.filter(o => (o.userEmail || '').toLowerCase().includes(filterText.toLowerCase()));
-
-            list.forEach(o => {
-                const tr = document.createElement('tr');
-                tr.className = 'border-b border-white/5 hover:bg-white/5';
-                tr.innerHTML = `
-                    <td class="p-3 text-[10px]">${o.date}</td>
-                    <td class="p-3 font-bold text-white">${o.userEmail}</td>
-                    <td class="p-3">${o.productName}</td>
-                    <td class="p-3 font-bold text-emerald-400">${o.price}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[9px] bg-emerald-500/20 text-emerald-300 font-bold">${o.status}</span></td>
-                    <td class="p-3 text-right">
-                        <button onclick="toggleOrderStatus('${o.id}', '${o.status}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-[10px]">Alterar Status</button>
-                    </td>
-                `;
-                table.appendChild(tr);
-            });
         };
 
-        window.toggleOrderStatus = async (id, currentStatus) => {
-            const nextStatus = currentStatus === 'Pago' ? 'Entregue' : 'Pago';
-            try {
-                await updateDoc(doc(db, ...ORDERS_PATH, id), { status: nextStatus });
-            } catch (e) {
-                const order = ordersData.find(x => x.id === id);
-                if (order) order.status = nextStatus;
-                localStorage.setItem('tlstudio_orders', JSON.stringify(ordersData));
-                renderUserOrders();
-                renderAdminOrders();
-            }
-            showToast("Status alterado para " + nextStatus, "success");
-        };
-
-        window.filterAdminOrders = (text) => {
-            renderAdminOrders(text);
-        };
-
-        // Submit Comment
         window.submitComment = async () => {
             if (!currentUser || currentUser.isAnonymous) {
                 showToast("Faça login para publicar uma avaliação", "error");
@@ -1441,159 +1337,12 @@
 
     <!-- Global Helper Logic and UI Event Handlers -->
     <script>
-        // Nubank PIX BR Code EMV Payload Generator
-        function generatePixPayload(key, amount, name = "TL STUDIO", city = "SAO PAULO") {
-            const cleanAmount = parseFloat(amount.replace(/[^0-9,\.]/g, '').replace(',', '.')).toFixed(2);
-            
-            function formatField(id, value) {
-                const len = value.length.toString().padStart(2, '0');
-                return `${id}${len}${value}`;
-            }
-
-            const merchantAccount = formatField('00', 'br.gov.bcb.pix') + formatField('01', key);
-            const merchantCategory = '52040000';
-            const transactionCurrency = '533986';
-            const transactionAmount = formatField('54', cleanAmount);
-            const countryCode = '5802BR';
-            const merchantName = formatField('59', name);
-            const merchantCity = formatField('60', city);
-            const additionalData = formatField('62', formatField('05', 'TLSTUDIO'));
-
-            let payload = '000201' +
-                formatField('26', merchantAccount) +
-                merchantCategory +
-                transactionCurrency +
-                transactionAmount +
-                countryCode +
-                merchantName +
-                merchantCity +
-                additionalData +
-                '6304';
-
-            function crc16(str) {
-                let crc = 0xFFFF;
-                for (let i = 0; i < str.length; i++) {
-                    crc ^= str.charCodeAt(i) << 8;
-                    for (let j = 0; j < 8; j++) {
-                        if ((crc & 0x8000) !== 0) {
-                            crc = (crc << 1) ^ 0x1021;
-                        } else {
-                            crc = crc << 1;
-                        }
-                        crc &= 0xFFFF;
-                    }
-                }
-                return crc.toString(16).toUpperCase().padStart(4, '0');
-            }
-
-            return payload + crc16(payload);
-        }
-
-        let activePaymentProduct = null;
-
-        window.openPaymentModal = (name, price) => {
-            activePaymentProduct = { name, price };
-            document.getElementById('pix-product-title').innerText = name;
-            document.getElementById('pix-product-price').innerText = price;
-
-            // Chave Nubank Oficial
-            const nubankKey = 'c535d9df-7b6d-4b89-9914-abfa50946f98';
-            const payload = generatePixPayload(nubankKey, price);
-
-            document.getElementById('pix-code-input').value = payload;
-
-            // Renderiza QR Code com gerador via imagem segura
-            const qrImg = document.getElementById('pix-qrcode-img');
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payload)}`;
-
-            document.getElementById('payment-modal').classList.remove('hidden');
+        window.openDiscordModal = (name, price) => {
+            document.getElementById('discord-product-title').innerText = name;
+            document.getElementById('discord-product-price').innerText = price;
+            document.getElementById('discord-modal').classList.remove('hidden');
         };
 
-        window.copyPixCode = () => {
-            const input = document.getElementById('pix-code-input');
-            input.select();
-            document.execCommand('copy');
-            showToast("Código PIX Copia e Cola copiado!", "success");
-        };
-
-        window.notifyPixOrder = async () => {
-            if (!activePaymentProduct) return;
-
-            const userEmail = (window.auth && window.auth.currentUser && !window.auth.currentUser.isAnonymous) 
-                ? window.auth.currentUser.email 
-                : 'Cliente Anônimo / Discord';
-
-            const newOrder = {
-                id: 'ord_' + Date.now(),
-                userEmail,
-                productName: activePaymentProduct.name,
-                price: activePaymentProduct.price,
-                status: 'Aguardando Comprovante',
-                date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})
-            };
-
-            try {
-                const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-                await addDoc(collection(window.db, 'artifacts', window.appId, 'public', 'data', 'orders'), newOrder);
-            } catch (e) {
-                let orders = JSON.parse(localStorage.getItem('tlstudio_orders') || '[]');
-                orders.push(newOrder);
-                localStorage.setItem('tlstudio_orders', JSON.stringify(orders));
-                if (window.renderUserOrders) window.renderUserOrders();
-                if (window.renderAdminOrders) window.renderAdminOrders();
-            }
-
-            showToast("Pedido registrado! Envie o comprovante no Discord.", "info");
-            closeModal('payment-modal');
-            
-            setTimeout(() => {
-                window.open('https://discord.gg/mAPuzShdWp', '_blank');
-            }, 1000);
-        };
-
-        window.copyPixCode = () => {
-            const input = document.getElementById('pix-code-input');
-            input.select();
-            document.execCommand('copy');
-            showToast("Código PIX Copia e Cola copiado!", "success");
-        };
-
-        window.confirmPixPayment = async () => {
-            if (!activePaymentProduct) return;
-
-            const userEmail = (window.auth && window.auth.currentUser && !window.auth.currentUser.isAnonymous) 
-                ? window.auth.currentUser.email 
-                : 'Cliente Anônimo / Discord';
-
-            const newOrder = {
-                id: 'ord_' + Date.now(),
-                userEmail,
-                productName: activePaymentProduct.name,
-                price: activePaymentProduct.price,
-                status: 'Pago',
-                date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})
-            };
-
-            try {
-                const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-                await addDoc(collection(window.db, 'artifacts', window.appId, 'public', 'data', 'orders'), newOrder);
-            } catch (e) {
-                let orders = JSON.parse(localStorage.getItem('tlstudio_orders') || '[]');
-                orders.push(newOrder);
-                localStorage.setItem('tlstudio_orders', JSON.stringify(orders));
-                if (window.renderUserOrders) window.renderUserOrders();
-                if (window.renderAdminOrders) window.renderAdminOrders();
-            }
-
-            showToast("Pagamento registrado! Redirecionando para o Discord...", "success");
-            closeModal('payment-modal');
-            
-            setTimeout(() => {
-                window.open('https://discord.gg/mAPuzShdWp', '_blank');
-            }, 1200);
-        };
-
-        // Utility Image Base64 Converter for Uploads
         window.convertImageToBase64 = (inputElement, targetInputId) => {
             const file = inputElement.files[0];
             if (!file) return;
@@ -1611,13 +1360,11 @@
             reader.readAsDataURL(file);
         };
 
-        // Modal Helpers
         window.openAuthModal = () => document.getElementById('auth-modal').classList.remove('hidden');
         window.openCommentModal = () => document.getElementById('comment-modal').classList.remove('hidden');
         window.openAdminModal = () => document.getElementById('admin-modal').classList.remove('hidden');
         window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
 
-        // Admin Tabs Switcher
         window.switchAdminTab = (tabId) => {
             document.querySelectorAll('.admin-tab-btn').forEach(btn => {
                 btn.classList.remove('bg-white', 'text-black');
@@ -1630,7 +1377,6 @@
             document.getElementById(tabId).classList.remove('hidden');
         };
 
-        // Category Filter & Search Handlers
         window.currentFilter = 'all';
         window.searchQuery = '';
 
@@ -1650,7 +1396,6 @@
             if (window.renderProducts) window.renderProducts();
         };
 
-        // Toast Notifications
         window.showToast = (msg, type = "info") => {
             const container = document.getElementById('toast-container');
             if (!container) return;
@@ -1669,25 +1414,26 @@
             setTimeout(() => toast.remove(), 4000);
         };
 
-        // DOM Initialization
         document.addEventListener("DOMContentLoaded", function () {
             const modalTermos = document.getElementById("modal-termos");
             const btnAceitarTermos = document.getElementById("btn-aceitar-termos");
 
             if (sessionStorage.getItem("tlStudioAceito") === "true") {
-                modalTermos.classList.add("hidden");
+                if (modalTermos) modalTermos.classList.add("hidden");
             } else {
-                modalTermos.classList.remove("hidden");
+                if (modalTermos) modalTermos.classList.remove("hidden");
             }
 
-            btnAceitarTermos.addEventListener("click", function () {
-                sessionStorage.setItem("tlStudioAceito", "true");
-                modalTermos.classList.add("hidden");
-            });
+            if (btnAceitarTermos) {
+                btnAceitarTermos.addEventListener("click", function () {
+                    sessionStorage.setItem("tlStudioAceito", "true");
+                    if (modalTermos) modalTermos.classList.add("hidden");
+                });
+            }
 
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenuBtn) {
+            if (mobileMenuBtn && mobileMenu) {
                 mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
             }
         });
