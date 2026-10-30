@@ -973,37 +973,40 @@
 
         function setupFirestoreListeners() {
             function safeSubscribe(path, key, defaultData, renderFn, renderAdminFn) {
+                // Tenta carregar imediatamente do localStorage para não piscar nada na tela ao dar F5
+                const saved = localStorage.getItem('tlstudio_' + key);
+                const isModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
+
+                let currentData = [];
+                if (saved !== null) {
+                    currentData = JSON.parse(saved);
+                } else if (!isModified) {
+                    currentData = defaultData;
+                }
+
+                updateLocalData(key, currentData, renderFn, renderAdminFn);
+
                 try {
                     onSnapshot(collection(db, ...path), (snap) => {
                         let data = [];
                         snap.forEach(docSnap => data.push({ id: docSnap.id, ...docSnap.data() }));
-                        
-                        const isModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
 
-                        if (data.length === 0 && !isModified) {
-                            const saved = localStorage.getItem('tlstudio_' + key);
-                            data = saved ? JSON.parse(saved) : defaultData;
-                        } else if (data.length > 0) {
+                        const userHasModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
+
+                        if (data.length > 0) {
                             localStorage.setItem('tlstudio_' + key, JSON.stringify(data));
                             localStorage.setItem('tlstudio_' + key + '_user_modified', 'true');
-                        } else {
-                            // Se data.length === 0 e isModified é true, significa que o usuário deletou tudo de propósito!
-                            data = [];
+                            updateLocalData(key, data, renderFn, renderAdminFn);
+                        } else if (userHasModified) {
+                            // Se no Firebase está vazio e o usuário modificou, significa que foi tudo deletado
                             localStorage.setItem('tlstudio_' + key, JSON.stringify([]));
+                            updateLocalData(key, [], renderFn, renderAdminFn);
                         }
-
-                        updateLocalData(key, data, renderFn, renderAdminFn);
                     }, (err) => {
-                        const saved = localStorage.getItem('tlstudio_' + key);
-                        const isModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
-                        let data = saved ? JSON.parse(saved) : (isModified ? [] : defaultData);
-                        updateLocalData(key, data, renderFn, renderAdminFn);
+                        console.warn("Erro no snapshot para " + key + ", mantendo dados locais fixos.");
                     });
                 } catch (e) {
-                    const saved = localStorage.getItem('tlstudio_' + key);
-                    const isModified = localStorage.getItem('tlstudio_' + key + '_user_modified') === 'true';
-                    let data = saved ? JSON.parse(saved) : (isModified ? [] : defaultData);
-                    updateLocalData(key, data, renderFn, renderAdminFn);
+                    console.warn("Erro no listener para " + key);
                 }
             }
 
@@ -1364,18 +1367,42 @@
             if (idx !== -1) galleryData[idx] = itemData;
             else galleryData.push(itemData);
 
+            // Marca que o usuário alterou ativamente a galeria
             localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
             localStorage.setItem('tlstudio_gallery_user_modified', 'true');
+
             renderGallery();
             renderAdminGallery();
 
             try {
                 await setDoc(doc(db, ...GALLERY_PATH, docId), itemData);
                 showToast("Imagem salva na galeria!", "success");
-            } catch(e){}
+            } catch(e) {
+                console.error(e);
+            }
 
             clearGalleryForm();
             closeModal('admin-modal');
+        };
+
+        window.deleteAdminGallery = async (id) => {
+            if (!confirm("Deseja remover esta imagem da galeria?")) return;
+
+            galleryData = galleryData.filter(x => x.id !== id);
+
+            // Marca que a galeria foi modificada pelo usuário
+            localStorage.setItem('tlstudio_gallery', JSON.stringify(galleryData));
+            localStorage.setItem('tlstudio_gallery_user_modified', 'true');
+
+            renderGallery();
+            renderAdminGallery();
+
+            try { 
+                await deleteDoc(doc(db, ...GALLERY_PATH, id)); 
+                showToast("Imagem removida permanentemente!", "info");
+            } catch(e){
+                console.error(e);
+            }
         };
 
         window.deleteAdminGallery = async (id) => {
