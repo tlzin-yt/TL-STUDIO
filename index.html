@@ -1,537 +1,966 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TL STUDIO | Soluções Digitais & Desenvolvimento</title>
-  
-  <!-- Fontes e Ícones -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              bg: '#0a0a0c',
-              card: '#121217',
-              border: '#1f1f28',
-              accent: '#3b82f6',
-              purple: '#8b5cf6',
-              neon: '#00f0ff'
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TL STUDIO - Loja Digital & Marketing Digital</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbase: '#07080a',
+                        carddark: '#0f1115',
+                        borderdark: '#1a1d24',
+                        neonwhite: '#f8fafc',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'neon-glow': 'neonGlow 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        neonGlow: {
+                            '0%': { textShadow: '0 0 5px rgba(255,255,255,0.4), 0 0 10px rgba(255,255,255,0.2), 0 0 20px rgba(255,255,255,0.1)' },
+                            '100%': { textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5), 0 0 30px rgba(255,255,255,0.3), 0 0 40px rgba(255,255,255,0.2)' }
+                        }
+                    }
+                }
             }
-          },
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-          }
         }
-      }
-    }
-  </script>
-
-  <style>
-    body {
-      background-color: #0a0a0c;
-      color: #e2e8f0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .glass-panel {
-      background: rgba(18, 18, 23, 0.75);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .neon-border {
-      position: relative;
-    }
-    .neon-border::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 1rem;
-      padding: 1px;
-      background: linear-gradient(45deg, #00f0ff, #3b82f6, #8b5cf6);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.6;
-      transition: opacity 0.3s ease;
-    }
-    .neon-border:hover::before {
-      opacity: 1;
-    }
-  </style>
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-panel {
+            background: rgba(15, 17, 21, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.04);
+        }
+        .text-neon {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+        .btn-neon {
+            background: #ffffff;
+            color: #07080a;
+            font-weight: 800;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.35), 0 0 40px rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        .btn-neon:hover {
+            background: #f1f5f9;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .hero-custom-bg {
+            background-image: url('img/tl_studio.png');
+            background-size: cover;
+            background-position: center;
+        }
+        .section-custom-bg {
+            background-image: url('img/tl_studio.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .footer-custom-bg {
+            background-image: url('img/tl_studio.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-brand-accent selection:text-white">
+<body class="bg-[#07080a] text-gray-200 min-h-screen flex flex-col selection:bg-white selection:text-black">
 
-  <!-- Header / Nav -->
-  <header class="sticky top-0 z-40 glass-panel border-b border-brand-border">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-accent to-brand-purple flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-brand-accent/20">
-          TL
-        </div>
-        <span class="text-xl font-bold tracking-wider text-white">TL STUDIO</span>
-      </div>
-
-      <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-300">
-        <a href="#sobre" class="hover:text-brand-neon transition-colors">Sobre</a>
-        <a href="#produtos" class="hover:text-brand-neon transition-colors">Produtos</a>
-        <a href="#projetos" class="hover:text-brand-neon transition-colors">Projetos</a>
-        <a href="#parcerias" class="hover:text-brand-neon transition-colors">Parcerias</a>
-      </nav>
-
-      <button onclick="toggleDashboard()" class="px-4 py-2 rounded-lg bg-brand-border hover:bg-slate-800 text-xs font-semibold text-slate-200 border border-slate-700 transition-all flex items-center gap-2">
-        <i class="fa-solid fa-sliders"></i> Admin Dashboard
-      </button>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24 flex-1 w-full">
-
-    <!-- Seção Sobre a TL STUDIO -->
-    <section id="sobre" class="glass-panel p-8 md:p-12 rounded-2xl relative overflow-hidden">
-      <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="max-w-3xl space-y-4 relative z-10">
-        <span class="text-xs font-bold tracking-widest text-brand-neon uppercase">Quem Somos</span>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Sobre a TL STUDIO</h2>
-        <p class="text-slate-300 leading-relaxed text-base">
-          A <strong class="text-white">TL STUDIO</strong> é uma agência especializada no desenvolvimento de páginas web profissionais, estruturação avançada de servidores no Discord e soluções digitais sob medida para criadores, empresas e comunidades que buscam destaque na internet.
-        </p>
-        <p class="text-slate-400 leading-relaxed text-sm">
-          Nosso foco é entregar performance, design moderno e total segurança. Cada projeto é executado com rigor técnico para proporcionar a melhor experiência e conversão aos nossos clientes.
-        </p>
-      </div>
-    </section>
-
-    <!-- Seção Produtos -->
-    <section id="produtos" class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <span class="text-xs font-bold tracking-widest text-brand-accent uppercase">Catálogo</span>
-          <h2 class="text-2xl font-bold text-white">Nossos Produtos</h2>
-        </div>
-      </div>
-      <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Renderizado dinamicamente via JS/Firebase -->
-      </div>
-    </section>
-
-    <!-- Seção Projetos -->
-    <section id="projetos" class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <span class="text-xs font-bold tracking-widest text-brand-purple uppercase">Portfólio</span>
-          <h2 class="text-2xl font-bold text-white">Projetos Recentes</h2>
-        </div>
-      </div>
-      <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Renderizado dinamicamente via JS/Firebase -->
-      </div>
-    </section>
-
-    <!-- Seção Parcerias -->
-    <section id="parcerias" class="space-y-6">
-      <div class="text-center max-w-xl mx-auto space-y-2">
-        <span class="text-xs font-bold tracking-widest text-brand-neon uppercase">Rede de Apoio Exclusiva</span>
-        <h2 class="text-2xl font-bold text-white">Parcerias Oficiais</h2>
-      </div>
-      <div id="partnerships-container" class="flex flex-wrap justify-center gap-6">
-        <!-- Renderizado dinamicamente via JS/Firebase -->
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Modal Admin Dashboard -->
-  <div id="dashboard-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-brand-card border border-brand-border w-full max-w-4xl rounded-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-      
-      <!-- Topo Modal -->
-      <div class="p-6 border-b border-brand-border flex items-center justify-between bg-black/40">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-gauge-high text-brand-neon text-xl"></i>
-          <h3 class="text-lg font-bold text-white">Painel de Controlo Admin</h3>
-        </div>
-        <button onclick="toggleDashboard()" class="text-slate-400 hover:text-white p-2">
-          <i class="fa-solid fa-xmark text-xl"></i>
-        </button>
-      </div>
-
-      <!-- Tabs -->
-      <div class="flex border-b border-brand-border bg-black/20 px-6 overflow-x-auto">
-        <button onclick="switchTab('produtos')" id="tab-btn-produtos" class="px-4 py-3 text-sm font-semibold border-b-2 border-brand-accent text-brand-accent whitespace-nowrap">Produtos</button>
-        <button onclick="switchTab('projetos')" id="tab-btn-projetos" class="px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">Projetos</button>
-        <button onclick="switchTab('parcerias')" id="tab-btn-parcerias" class="px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">Parcerias</button>
-      </div>
-
-      <!-- Conteúdo das Tabs -->
-      <div class="p-6 overflow-y-auto flex-1 space-y-6">
-        
-        <!-- Tab Produtos -->
-        <div id="tab-produtos" class="tab-content space-y-6">
-          <form id="form-produto" onsubmit="handleSaveProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/30 p-4 rounded-xl border border-brand-border">
-            <input type="hidden" id="prod-id">
-            <input type="text" id="prod-titulo" placeholder="Título do Produto" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent">
-            <input type="text" id="prod-preco" placeholder="Preço (ex: R$ 49,90)" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent">
-            <input type="text" id="prod-img" placeholder="URL da Imagem" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent col-span-1 md:col-span-2">
-            <textarea id="prod-desc" placeholder="Descrição curta" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent col-span-1 md:col-span-2 rows-2"></textarea>
-            <div class="col-span-1 md:col-span-2 flex justify-end gap-2">
-              <button type="button" onclick="resetForm('produto')" class="px-4 py-2 text-xs bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700">Limpar</button>
-              <button type="submit" class="px-4 py-2 text-xs bg-brand-accent text-white font-bold rounded-lg hover:bg-blue-600">Salvar Produto</button>
+    <!-- Modal de Termos / Aceite Obrigatório com a logo img/tl_studio.jpg -->
+    <div id="modal-termos" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-lg rounded-3xl p-8 relative border border-white/20 shadow-2xl text-left flex flex-col max-h-[90vh]">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center text-xl shadow-lg shadow-white/20 shrink-0 overflow-hidden">
+                    <img src="img/tl_studio.jpg" alt="Logo TL STUDIO" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Termos de Uso e Segurança</h3>
+                    <p class="text-xs text-gray-400">TL STUDIO • Leia atentamente antes de continuar</p>
+                </div>
             </div>
-          </form>
-          <div class="space-y-2">
-            <h4 class="text-sm font-bold text-slate-300">Produtos Cadastrados</h4>
-            <div id="admin-list-produtos" class="space-y-2"></div>
-          </div>
-        </div>
 
-        <!-- Tab Projetos -->
-        <div id="tab-projetos" class="tab-content hidden space-y-6">
-          <form id="form-projeto" onsubmit="handleSaveProject(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/30 p-4 rounded-xl border border-brand-border">
-            <input type="hidden" id="proj-id">
-            <input type="text" id="proj-titulo" placeholder="Título do Projeto" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent">
-            <input type="text" id="proj-cliente" placeholder="Nome do Cliente" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent">
-            <input type="text" id="proj-img" placeholder="URL da Imagem" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent col-span-1 md:col-span-2">
-            <textarea id="proj-desc" placeholder="Descrição do projeto" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent col-span-1 md:col-span-2 rows-2"></textarea>
-            <div class="col-span-1 md:col-span-2 flex justify-end gap-2">
-              <button type="button" onclick="resetForm('projeto')" class="px-4 py-2 text-xs bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700">Limpar</button>
-              <button type="submit" class="px-4 py-2 text-xs bg-brand-accent text-white font-bold rounded-lg hover:bg-blue-600">Salvar Projeto</button>
+            <!-- Caixa de Texto com a Rolagem dos Termos Oficiais -->
+            <div class="bg-[#07080a]/80 border border-white/10 rounded-2xl p-4 text-xs text-gray-300 space-y-3 overflow-y-auto my-4 flex-grow leading-relaxed">
+                <p class="font-bold text-white uppercase tracking-wider text-[11px] mb-1">📦 Compras e Entregas</p>
+                <p>• Todas as compras da TL STUDIO devem ser realizadas exclusivamente através do sistema oficial de tickets no Discord.</p>
+                <p>• Todo atendimento relacionado a pedidos deverá ocorrer pelo ticket correspondente.</p>
+                <p>• As entregas dos serviços e produtos serão realizadas através do ticket do Discord, salvo quando for necessário utilizar outro meio para disponibilizar o arquivo, acesso ou serviço.</p>
+                <p>• A TL STUDIO não se responsabiliza por compras realizadas fora dos canais oficiais.</p>
+                <p>• Nunca realize pagamentos ou negociações com pessoas que se passem pela equipe fora do atendimento oficial.</p>
+                <p>• Antes de realizar qualquer pagamento, confirme se está sendo atendido pelo canal oficial da TL STUDIO.</p>
+                <p>• Após a conclusão do pedido, o cliente deverá verificar a entrega e informar qualquer problema dentro do próprio ticket.</p>
+                
+                <div class="pt-2 border-t border-white/10 mt-3">
+                    <p class="font-bold text-white uppercase tracking-wider text-[11px] mb-1">🔒 Segurança</p>
+                    <p>• Para sua segurança, mantenha toda a negociação, confirmação de pagamento e histórico do pedido dentro do ticket oficial da TL STUDIO.</p>
+                </div>
             </div>
-          </form>
-          <div class="space-y-2">
-            <h4 class="text-sm font-bold text-slate-300">Projetos Cadastrados</h4>
-            <div id="admin-list-projetos" class="space-y-2"></div>
-          </div>
-        </div>
 
-        <!-- Tab Parcerias -->
-        <div id="tab-parcerias" class="tab-content hidden space-y-6">
-          <form id="form-parceria" onsubmit="handleSavePartnership(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/30 p-4 rounded-xl border border-brand-border">
-            <input type="hidden" id="parc-id">
-            <input type="text" id="parc-nome" placeholder="Nome da Parceria" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent">
-            <input type="text" id="parc-link" placeholder="Link Oficial" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent">
-            <input type="text" id="parc-img" placeholder="URL do Logo/Banner" required class="bg-brand-bg border border-brand-border p-2.5 rounded-lg text-sm text-white focus:outline-none focus:border-brand-accent col-span-1 md:col-span-2">
-            <div class="col-span-1 md:col-span-2 flex justify-end gap-2">
-              <button type="button" onclick="resetForm('parceria')" class="px-4 py-2 text-xs bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700">Limpar</button>
-              <button type="submit" class="px-4 py-2 text-xs bg-brand-accent text-white font-bold rounded-lg hover:bg-blue-600">Salvar Parceria</button>
+            <button id="btn-aceitar-termos" class="w-full py-3.5 px-4 btn-neon rounded-2xl flex items-center justify-center space-x-3 text-sm shrink-0">
+                <i class="fa-solid fa-check"></i>
+                <span>Li e Aceito os Termos para Continuar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- [MODAL DE LOGIN ADMIN] -->
+    <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-8 relative border border-white/20 shadow-2xl text-left">
+            <button onclick="toggleLoginModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white bg-[#0f1115] border border-white/10 p-2.5 rounded-full transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center text-xl shadow-lg">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Acesso Administrativo</h3>
+                    <p class="text-xs text-gray-400">Painel de Gestão da TL STUDIO</p>
+                </div>
             </div>
-          </form>
-          <div class="space-y-2">
-            <h4 class="text-sm font-bold text-slate-300">Parcerias Cadastradas</h4>
-            <div id="admin-list-parcerias" class="space-y-2"></div>
-          </div>
+            <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">E-mail Admin</label>
+                    <input type="email" id="login-email" required placeholder="admin@tlstudio.com" class="w-full bg-[#07080a] border border-white/15 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Senha</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-[#07080a] border border-white/15 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-white">
+                </div>
+                <div id="login-error" class="text-red-400 text-xs hidden">Credenciais inválidas. Tente novamente.</div>
+                <button type="submit" class="w-full py-3.5 btn-neon rounded-2xl font-bold text-sm flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Entrar no Painel</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- [MODAL DO DASHBOARD ADMIN] -->
+    <div id="dashboard-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-4xl rounded-3xl p-6 sm:p-8 relative border border-white/20 shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Painel de Gerenciamento de Produtos</h3>
+                        <p class="text-xs text-emerald-400 font-semibold">Sincronizado com Firebase Cloud</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="handleAdminLogout()" class="px-3 py-1.5 bg-red-900/40 hover:bg-red-900/80 text-red-300 border border-red-500/30 rounded-xl text-xs font-bold transition">
+                        <i class="fa-solid fa-power-off mr-1"></i> Sair
+                    </button>
+                    <button onclick="toggleDashboardModal()" class="text-gray-400 hover:text-white bg-[#0f1115] border border-white/10 p-2 rounded-full transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Formulário de Cadastro/Edição de Produto -->
+            <form id="product-form" onsubmit="handleSaveProduct(event)" class="bg-[#07080a]/90 border border-white/10 p-4 sm:p-6 rounded-2xl mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="hidden" id="dash-prod-id">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Nome do Produto</label>
+                    <input type="text" id="dash-prod-name" required placeholder="Ex: discord-pro" class="w-full bg-[#0f1115] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Categoria</label>
+                    <select id="dash-prod-category" required class="w-full bg-[#0f1115] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                        <option value="discord">Discord</option>
+                        <option value="sites">Sites</option>
+                        <option value="marketing">Marketing</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Preço (Ex: R$ 29,90)</label>
+                    <input type="text" id="dash-prod-price" required placeholder="R$ 29,90" class="w-full bg-[#0f1115] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Ícone FontAwesome (Ex: fa-shield-halved)</label>
+                    <input type="text" id="dash-prod-icon" required placeholder="fa-shield-halved" class="w-full bg-[#0f1115] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Caminho / URL da Imagem (Ex: img/dc_pro.jpg)</label>
+                    <input type="text" id="dash-prod-image" required placeholder="img/dc_pro.jpg" class="w-full bg-[#0f1115] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Descrição Curta</label>
+                    <input type="text" id="dash-prod-subtitle" required placeholder="Descrição para os clientes" class="w-full bg-[#0f1115] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                </div>
+                <div class="md:col-span-2 flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="resetDashForm()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-bold transition">Limpar</button>
+                    <button type="submit" class="px-6 py-2 btn-neon rounded-xl text-xs font-bold">Salvar Produto</button>
+                </div>
+            </form>
+
+            <!-- Lista de Produtos Cadastrados no Dashboard -->
+            <div class="overflow-y-auto flex-1 space-y-2 pr-1">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Produtos no Banco de Dados</h4>
+                <div id="dashboard-products-list" class="space-y-2">
+                    <!-- Injetado dinamicamente via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-white to-gray-400 flex items-center justify-center shadow-lg shadow-white/20 animate-float text-black overflow-hidden border border-white/30">
+                    <img src="img/tl_studio.jpg" alt="Logo TL STUDIO" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-wider text-neon">TL STUDIO</span>
+                    <span class="block text-[10px] text-gray-400 font-bold tracking-widest uppercase">Mercado Digital</span>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="hidden lg:flex items-center space-x-3 bg-[#0f1115] px-4 py-2 rounded-2xl border border-white/10 w-80">
+                <i class="fa-solid fa-search text-gray-400 text-sm"></i>
+                <input type="text" id="site-search" placeholder="Buscar produtos, discord, sites..." class="bg-transparent text-sm text-white focus:outline-none w-full placeholder-gray-500" oninput="handleSearch(this.value)">
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center space-x-5">
+                <a href="#produtos" class="text-sm font-semibold text-gray-300 hover:text-white transition">Produtos</a>
+                <a href="#faq" class="text-sm font-semibold text-gray-300 hover:text-white transition">Dúvidas (FAQ)</a>
+                <a href="#portfolio" class="text-sm font-semibold text-gray-300 hover:text-white transition">Portfólio</a>
+                <a href="#avaliacoes" class="text-sm font-semibold text-gray-300 hover:text-white transition">Avaliações</a>
+                <div class="h-5 w-[1px] bg-gray-800"></div>
+
+                <!-- [BOTÃO DE LOGIN / DASHBOARD DENTRO DO HEADER] -->
+                <button id="nav-admin-btn" onclick="openAdminPortal()" class="flex items-center space-x-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3.5 py-2 rounded-xl font-semibold text-xs transition">
+                    <i class="fa-solid fa-user-shield text-base"></i>
+                    <span id="nav-admin-label">Admin Login</span>
+                </button>
+
+                <!-- Botão Discord -->
+                <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="flex items-center space-x-1.5 bg-[#5865F2] hover:bg-[#4752C4] text-white px-3.5 py-2 rounded-xl font-semibold text-xs transition shadow-lg shadow-[#5865F2]/25">
+                    <i class="fa-brands fa-discord text-base"></i>
+                    <span>Discord</span>
+                </a>
+                <!-- Botão Instagram -->
+                <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="flex items-center space-x-1.5 bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] hover:opacity-90 text-white px-3.5 py-2 rounded-xl font-semibold text-xs transition shadow-lg shadow-pink-500/20">
+                    <i class="fa-brands fa-instagram text-base"></i>
+                    <span>Instagram</span>
+                </a>
+                <!-- Botão YouTube -->
+                <a href="https://youtube.com/@tlzin5773?si=zB7f8nTNqvfe-jGr" target="_blank" class="flex items-center space-x-1.5 bg-[#FF0000] hover:bg-[#CC0000] text-white px-3.5 py-2 rounded-xl font-semibold text-xs transition shadow-lg shadow-red-500/20">
+                    <i class="fa-brands fa-youtube text-base"></i>
+                    <span>YouTube</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="flex md:hidden items-center space-x-2">
+                <button onclick="openAdminPortal()" class="bg-white/10 text-white p-2.5 rounded-xl font-bold text-sm border border-white/20">
+                    <i class="fa-solid fa-user-shield"></i>
+                </button>
+                <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="bg-[#5865F2] text-white p-2.5 rounded-xl font-bold text-sm">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+                <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
         </div>
 
-      </div>
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-3 pb-5 border-t border-gray-800 space-y-3 bg-[#161719]">
+            <input type="text" placeholder="Buscar produtos..." class="w-full bg-[#07080a] px-3 py-2 rounded-xl text-sm border border-white/10 text-white" oninput="handleSearch(this.value)">
+            <a href="#produtos" class="block text-gray-300 hover:text-white py-1.5 font-medium">Produtos</a>
+            <a href="#faq" class="block text-gray-300 hover:text-white py-1.5 font-medium">Dúvidas (FAQ)</a>
+            <a href="#portfolio" class="block text-gray-300 hover:text-white py-1.5 font-medium">Portfólio</a>
+            <a href="#avaliacoes" class="block text-gray-300 hover:text-white py-1.5 font-medium">Avaliações</a>
+            <div class="grid grid-cols-3 gap-2 pt-2">
+                <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="flex items-center justify-center space-x-1 bg-[#5865F2] text-white py-2.5 rounded-xl text-xs font-semibold">
+                    <i class="fa-brands fa-discord"></i> <span>Discord</span>
+                </a>
+                <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="flex items-center justify-center space-x-1 bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white py-2.5 rounded-xl text-xs font-semibold">
+                    <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
+                </a>
+                <a href="https://youtube.com/@tlzin5773?si=zB7f8nTNqvfe-jGr" target="_blank" class="flex items-center justify-center space-x-1 bg-[#FF0000] text-white py-2.5 rounded-xl text-xs font-semibold">
+                    <i class="fa-brands fa-youtube"></i> <span>YouTube</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-20 lg:py-28 hero-custom-bg">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#07080a] via-[#07080a]/90 to-[#07080a]/75 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/10 border border-white/25 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-white/10">
+                        <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
+                        <span>NOVO CONTEÚDO • ENTREGA VIA DISCORD</span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                        SUA PRÓXIMA <br>
+                        <span class="text-neon">EVOLUÇÃO NO SEUS PROJETOS.</span>
+                    </h1>
+                    
+                    <p class="text-base sm:text-lg text-gray-300 max-w-xl leading-relaxed">
+                        Servidores Discord completos, sites profissionais iniciais e estratégias avançadas de marketing. Tudo em um ecossistema premium.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <a href="#produtos" class="px-8 py-4 rounded-2xl btn-neon flex items-center space-x-3 text-base">
+                            <i class="fa-solid fa-rocket"></i>
+                            <span>Explorar Catálogo</span>
+                        </a>
+                        <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="px-8 py-4 rounded-2xl bg-[#0f1115] hover:bg-[#1a1d24] text-gray-200 font-bold transition border border-white/20 flex items-center space-x-3 text-base shadow-lg shadow-white/5">
+                            <i class="fa-brands fa-discord text-xl text-[#5865F2]"></i>
+                            <span>Abrir Ticket no Discord</span>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold border border-white/20">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-white">+10 Clientes</span>
+                                <span class="text-[10px] text-emerald-400 font-semibold">Avaliação 5.0 ★</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold border border-white/20">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-white">100% Seguro</span>
+                                <span class="text-[10px] text-gray-400">Prazo De Entrega curto</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold border border-white/20">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-white">PIX</span>
+                                <span class="text-[10px] text-gray-400">Entrega via ticket</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Showcase Grid -->
+                <div class="lg:col-span-5 grid grid-cols-3 gap-3">
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/dc_pro.jpg" alt="Discord" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=Discord'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Discord Pro</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/institucional.jpg" alt="Site" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Sites'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Site institucional</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/short.jpg" alt="Marketing" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/1a1d24/ffffff?text=Marketing'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Edição de shorts</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/config.jpg" alt="Setup" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=Setup'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Configuração Discord</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/pages.jpg" alt="Landing" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Landing'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Landing Page</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/arte.jpg" alt="Banners" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Artes'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Artes & Shorts</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/gtarp.jpg" alt="GTA RP" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/0f1115/ffffff?text=GTA+RP'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Site GTA RP</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/dc_premiun.jpg" alt="Premium" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Premium'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Discord Premium</span>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl aspect-[4/3] flex flex-col justify-between group hover:border-white/40 transition">
+                        <img src="img/divulgacao.jpg" alt="Campanhas" class="w-full h-20 object-cover rounded-xl" onerror="this.src='https://placehold.co/300x200/141720/ffffff?text=Campanha'">
+                        <span class="text-xs font-bold text-white mt-2 truncate">Campanha de divulgação</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Catalog -->
+    <main id="produtos" class="section-custom-bg relative py-16 w-full">
+        <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">LOJA OFICIAL</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Catálogo de Serviços & Produtos</h2>
+                </div>
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap gap-2 mt-6 md:mt-0">
+                    <button onclick="filterCategory('all')" class="cat-btn active px-5 py-2.5 rounded-xl font-bold text-xs transition btn-neon">
+                        <i class="fa-solid fa-layer-group mr-1.5"></i> Todos
+                    </button>
+                    <button onclick="filterCategory('discord')" class="cat-btn px-5 py-2.5 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:bg-[#1a1d24] hover:text-white border border-white/10">
+                        <i class="fa-brands fa-discord mr-1.5 text-indigo-400"></i> Discord
+                    </button>
+                    <button onclick="filterCategory('sites')" class="cat-btn px-5 py-2.5 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:bg-[#1a1d24] hover:text-white border border-white/10">
+                        <i class="fa-solid fa-globe mr-1.5 text-sky-400"></i> Sites
+                    </button>
+                    <button onclick="filterCategory('marketing')" class="cat-btn px-5 py-2.5 rounded-xl font-bold text-xs transition bg-[#0f1115] text-gray-300 hover:bg-[#1a1d24] hover:text-white border border-white/10">
+                        <i class="fa-solid fa-bullhorn mr-1.5 text-pink-400"></i> Marketing
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamic Injection via JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section-custom-bg py-16 border-t border-b border-white/10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[#07080a]/92 pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">TIRE SUAS DÚVIDAS</span>
+                <h2 class="text-3xl font-black text-white">Perguntas Frequentes (FAQ)</h2>
+                <p class="text-sm text-gray-400 mt-2">Tudo o que você precisa saber sobre nossos serviços e entregas.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="glass-panel p-6 rounded-2xl border border-white/10">
+                    <h3 class="text-base font-bold text-white flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como funciona a entrega dos produtos?</span>
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">As entregas são realizadas exclusivamente através do ticket oficial em nosso Discord.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-white/10">
+                    <h3 class="text-base font-bold text-white flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Quais são as formas de pagamento aceitas?</span>
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Aceitamos PIX. Toda a confirmação de pagamento e envio de comprovante deve ser tratada dentro do ticket oficial.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-white/10">
+                    <h3 class="text-base font-bold text-white flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Onde devo realizar minhas negociações?</span>
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Para sua segurança, mantenha toda a negociação, confirmação de pagamento e histórico do pedido dentro do ticket oficial da TL STUDIO.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-white/10">
+                    <h3 class="text-base font-bold text-white flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-question text-indigo-400 mr-2"></i> Como faço para abrir um orçamento personalizado?</span>
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">Basta entrar em nosso Discord oficial e abrir um ticket de atendimento com nossa equipe.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section-custom-bg relative py-16 w-full">
+        <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">PORTFÓLIO DE SUCESSO</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Projetos Recentes Entregues</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+                    <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
+                        <img src="img/projetos/ale_naildesigner.jpg" alt="Ale_naildesigner" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Ale+Nail+Designer'">
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Ale_naildesigner</h3>
+                    <p class="text-sm text-gray-400">Um Site institucional preparado para atender clientes e agendar unhas na Ale_naildesigner</p>
+                    <div class="flex items-center justify-between pt-2 text-xs text-emerald-400 font-bold">
+                        <span><i class="fa-solid fa-circle-check"></i> Status: Entregue</span>
+                        <span class="text-gray-400">Ale_naildesigner</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+                    <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
+                        <img src="img/projetos/projeto2.jpg" alt="Projeto 2" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Projeto+2'">
+                    </div>
+                    <h3 class="text-lg font-bold text-white">[ Título do Projeto 2 ]</h3>
+                    <p class="text-sm text-gray-400">[ Descrição detalhada do projeto entregue para o cliente. ]</p>
+                    <div class="flex items-center justify-between pt-2 text-xs text-emerald-400 font-bold">
+                        <span><i class="fa-solid fa-circle-check"></i> Status: Entregue</span>
+                        <span class="text-gray-400">[ Cliente ]</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+                    <div class="aspect-video bg-[#0b0c10] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
+                        <img src="img/projetos/projeto3.jpg" alt="Projeto 3" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=Projeto+3'">
+                    </div>
+                    <h3 class="text-lg font-bold text-white">[ Título do Projeto 3 ]</h3>
+                    <p class="text-sm text-gray-400">[ Descrição detalhada do projeto entregue para o cliente. ]</p>
+                    <div class="flex items-center justify-between pt-2 text-xs text-emerald-400 font-bold">
+                        <span><i class="fa-solid fa-circle-check"></i> Status: Entregue</span>
+                        <span class="text-gray-400">[ Cliente ]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials / Avaliações -->
+    <section id="avaliacoes" class="section-custom-bg relative py-16 border-t border-white/10">
+        <div class="absolute inset-0 bg-[#07080a]/92 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest block mb-2">AVALIAÇÕES REAIS</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">O que Nossos Clientes Dizem</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+                    <div class="flex text-yellow-400 space-x-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 italic">"[ Digite aqui o depoimento ou feedback do cliente... ]"</p>
+                    <div class="flex items-center space-x-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">?</div>
+                        <div>
+                            <span class="block text-xs font-bold text-white">[ Nome do Cliente ]</span>
+                            <span class="text-[10px] text-gray-400">Comprador Verificado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+                    <div class="flex text-yellow-400 space-x-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 italic">"[ Digite aqui o depoimento ou feedback do cliente... ]"</p>
+                    <div class="flex items-center space-x-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">?</div>
+                        <div>
+                            <span class="block text-xs font-bold text-white">[ Nome do Cliente ]</span>
+                            <span class="text-[10px] text-gray-400">Comprador Verificado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+                    <div class="flex text-yellow-400 space-x-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 italic">"[ Digite aqui o depoimento ou feedback do cliente... ]"</p>
+                    <div class="flex items-center space-x-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">?</div>
+                        <div>
+                            <span class="block text-xs font-bold text-white">[ Nome do Cliente ]</span>
+                            <span class="text-[10px] text-gray-400">Comprador Verificado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purchase Modal -->
+    <div id="purchase-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-8 relative border border-white/20 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white bg-[#0f1115] border border-white/10 p-2.5 rounded-full transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mt-2">
+                <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/30 text-white flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg shadow-white/20">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <h3 id="modal-title" class="text-xl font-bold text-white mb-1">Nome do Produto</h3>
+                <p id="modal-price" class="text-3xl font-black text-white text-neon mb-4">R$ 0,00</p>
+                <p class="text-sm text-gray-300 mb-6 leading-relaxed">Para adquirir este produto com segurança e atendimento imediato, entre em nosso Discord oficial e abra um ticket!</p>
+                <div class="space-y-3">
+                    <a id="modal-discord-btn" href="https://discord.gg/mAPuzShdWp" target="_blank" class="w-full py-4 px-4 btn-neon rounded-2xl flex items-center justify-center space-x-3 text-base">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                        <span>Comprar no Discord</span>
+                    </a>
+                    <button onclick="closeModal()" class="w-full py-3.5 px-4 bg-[#0f1115] hover:bg-[#1a1d24] text-gray-300 font-semibold rounded-2xl transition text-sm border border-white/10">
+                        Continuar Navegando
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <footer class="border-t border-brand-border glass-panel py-8 mt-12">
-    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-      <p class="text-sm text-slate-400">&copy; 2026 TL STUDIO. Todos os direitos reservados.</p>
-    </div>
-  </footer>
+    <!-- Footer -->
+    <footer id="sobre" class="footer-custom-bg relative border-t border-white/10 text-gray-300 py-16 overflow-hidden">
+        <div class="absolute inset-0 bg-[#07080a]/90 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-black font-bold shadow-md shadow-white/30 overflow-hidden border border-white/20">
+                            <img src="img/tl_studio.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
+                        </div>
+                        <span class="text-2xl font-black text-white tracking-wider text-neon">TL STUDIO</span>
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Sua loja digital de confiança especializada em servidores Discord, desenvolvimento web profissional e campanhas de marketing de alta conversão.
+                    </p>
+                </div>
+                <div class="flex flex-col md:items-center">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Redes Sociais Oficiais</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://discord.gg/mAPuzShdWp" target="_blank" class="w-12 h-12 rounded-2xl bg-[#5865F2] text-white flex items-center justify-center hover:opacity-90 transition shadow-md shadow-[#5865F2]/30">
+                            <i class="fa-brands fa-discord text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/tlzin.ofc?stkn=OW52OXcxazBzNWZv" target="_blank" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white flex items-center justify-center hover:opacity-90 transition shadow-md shadow-pink-500/30">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                        </a>
+                        <a href="https://youtube.com/@tlzin5773?si=zB7f8nTNqvfe-jGr" target="_blank" class="w-12 h-12 rounded-2xl bg-[#FF0000] text-white flex items-center justify-center hover:opacity-90 transition shadow-md shadow-red-500/30">
+                            <i class="fa-brands fa-youtube text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:text-right">
+                    <p class="text-sm font-bold text-white mb-1">TL STUDIO © 2026</p>
+                    <p class="text-xs text-gray-400">Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-  <!-- Script Module Firebase & App Logic -->
-  <script type="module">
-    import { db } from './firebase-config.js';
-    import { 
-      collection, 
-      doc, 
-      setDoc, 
-      deleteDoc, 
-      onSnapshot 
-    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    <!-- [MODULO DO FIREBASE & MIGRACAO DE DADOS EM TEMPO REAL] -->
+    <script type="module">
+        import { db, auth } from './firebase-config.js';
+        import { collection, doc, setDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-    // State Local
-    window.appState = {
-      produtos: [],
-      projetos: [],
-      parcerias: []
-    };
+        // Torna as instâncias acessíveis globalmente nos scripts tradicionais
+        window.firebaseDB = db;
+        window.firebaseAuth = auth;
+        window.firestoreMethods = { collection, doc, setDoc, deleteDoc, onSnapshot };
+        window.authMethods = { signInWithEmailAndPassword, signOut, onAuthStateChanged };
 
-    // ==========================================
-    // 1. OUVINTES EM TEMPO REAL (FIRESTORE)
-    // ==========================================
-    
-    // Produtos
-    onSnapshot(collection(db, 'produtos'), (snapshot) => {
-      const list = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-      window.appState.produtos = list;
-      localStorage.setItem('tl_produtos', JSON.stringify(list));
-      renderProductsUI(list);
-      renderAdminProductsList(list);
-    });
+        // Monitora o estado de autenticação do Admin
+        onAuthStateChanged(auth, (user) => {
+            const adminLabel = document.getElementById('nav-admin-label');
+            if (user) {
+                window.isAdminLoggedIn = true;
+                if (adminLabel) adminLabel.innerText = "Dashboard Admin";
+            } else {
+                window.isAdminLoggedIn = false;
+                if (adminLabel) adminLabel.innerText = "Admin Login";
+            }
+        });
 
-    // Projetos
-    onSnapshot(collection(db, 'projetos'), (snapshot) => {
-      const list = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-      window.appState.projetos = list;
-      localStorage.setItem('tl_projetos', JSON.stringify(list));
-      renderProjectsUI(list);
-      renderAdminProjectsList(list);
-    });
+        // Escuta em tempo real a coleção 'produtos' no Firestore
+        onSnapshot(collection(db, 'produtos'), (snapshot) => {
+            if (!snapshot.empty) {
+                const firebaseProducts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                window.products = firebaseProducts;
+                renderProducts();
+                renderDashboardProductsList();
+            } else {
+                // Se a coleção estiver vazia no banco, faz o upload automático dos 16 produtos originais
+                uploadOriginalProductsToFirebase();
+            }
+        });
 
-    // Parcerias
-    onSnapshot(collection(db, 'parcerias'), (snapshot) => {
-      const list = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-      window.appState.parcerias = list;
-      localStorage.setItem('tl_parcerias', JSON.stringify(list));
-      renderPartnershipsUI(list);
-      renderAdminPartnershipsList(list);
-    });
-
-    // ==========================================
-    // 2. SALVAR & EXCLUIR NO FIRESTORE
-    // ==========================================
-    window.salvarItem = async function(colecao, id, dados) {
-      try {
-        const docId = id ? String(id) : 'item_' + Date.now();
-        const ref = doc(db, colecao, docId);
-        await setDoc(ref, dados, { merge: true });
-        console.log(`[Firestore] Guardado com sucesso em ${colecao}`);
-      } catch (e) {
-        console.error("Erro ao salvar:", e);
-      }
-    };
-
-    window.deletarItem = async function(colecao, id) {
-      try {
-        await deleteDoc(doc(db, colecao, String(id)));
-        console.log(`[Firestore] Deletado de ${colecao}`);
-      } catch (e) {
-        console.error("Erro ao excluir:", e);
-      }
-    };
-
-    // Initialize Local Caches se offline
-    window.addEventListener('DOMContentLoaded', () => {
-      const p = localStorage.getItem('tl_produtos');
-      const pr = localStorage.getItem('tl_projetos');
-      const pa = localStorage.getItem('tl_parcerias');
-      if (p) renderProductsUI(JSON.parse(p));
-      if (pr) renderProjectsUI(JSON.parse(pr));
-      if (pa) renderPartnershipsUI(JSON.parse(pa));
-    });
-  </script>
-
-  <!-- Global UI Handlers Script -->
-  <script>
-    function toggleDashboard() {
-      const modal = document.getElementById('dashboard-modal');
-      modal.classList.toggle('hidden');
-    }
-
-    function switchTab(tab) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.getElementById('tab-' + tab).classList.remove('hidden');
-
-      ['produtos', 'projetos', 'parcerias'].forEach(t => {
-        const btn = document.getElementById('tab-btn-' + t);
-        if (t === tab) {
-          btn.className = "px-4 py-3 text-sm font-semibold border-b-2 border-brand-accent text-brand-accent whitespace-nowrap";
-        } else {
-          btn.className = "px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap";
+        // Função para semear o banco Firestore com os 16 produtos originais no primeiro acesso
+        async function uploadOriginalProductsToFirebase() {
+            const defaultProducts = window.defaultProductsList || [];
+            for (const prod of defaultProducts) {
+                const docRef = doc(db, 'produtos', 'prod_' + prod.id);
+                await setDoc(docRef, prod, { merge: true });
+            }
         }
-      });
-    }
+    </script>
 
-    // Handlers Formulários
-    function handleSaveProduct(e) {
-      e.preventDefault();
-      const id = document.getElementById('prod-id').value;
-      const data = {
-        titulo: document.getElementById('prod-titulo').value,
-        preco: document.getElementById('prod-preco').value,
-        img: document.getElementById('prod-img').value,
-        desc: document.getElementById('prod-desc').value
-      };
-      window.salvarItem('produtos', id, data);
-      resetForm('produto');
-    }
+    <!-- JavaScript Application Logic Original Ajustado -->
+    <script>
+        // Lógica do Modal de Termos com sessionStorage (aparece 1 vez por sessão)
+        document.addEventListener("DOMContentLoaded", function() {
+            const modalTermos = document.getElementById("modal-termos");
+            const btnAceitarTermos = document.getElementById("btn-aceitar-termos");
 
-    function handleSaveProject(e) {
-      e.preventDefault();
-      const id = document.getElementById('proj-id').value;
-      const data = {
-        titulo: document.getElementById('proj-titulo').value,
-        cliente: document.getElementById('proj-cliente').value,
-        img: document.getElementById('proj-img').value,
-        desc: document.getElementById('proj-desc').value
-      };
-      window.salvarItem('projetos', id, data);
-      resetForm('projeto');
-    }
+            if (sessionStorage.getItem("tlStudioAceito") === "true") {
+                modalTermos.classList.add("hidden");
+            } else {
+                modalTermos.classList.remove("hidden");
+            }
 
-    function handleSavePartnership(e) {
-      e.preventDefault();
-      const id = document.getElementById('parc-id').value;
-      const data = {
-        nome: document.getElementById('parc-nome').value,
-        link: document.getElementById('parc-link').value,
-        img: document.getElementById('parc-img').value
-      };
-      window.salvarItem('parcerias', id, data);
-      resetForm('parceria');
-    }
+            btnAceitarTermos.addEventListener("click", function() {
+                sessionStorage.setItem("tlStudioAceito", "true");
+                modalTermos.classList.add("hidden");
+            });
+        });
 
-    function resetForm(type) {
-      if (type === 'produto') {
-        document.getElementById('form-produto').reset();
-        document.getElementById('prod-id').value = '';
-      } else if (type === 'projeto') {
-        document.getElementById('form-projeto').reset();
-        document.getElementById('proj-id').value = '';
-      } else if (type === 'parceria') {
-        document.getElementById('form-parceria').reset();
-        document.getElementById('parc-id').value = '';
-      }
-    }
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
 
-    // Renders UI Publica
-    function renderProductsUI(items) {
-      const container = document.getElementById('products-container');
-      if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">Nenhum produto cadastrado no momento.</p>`;
-        return;
-      }
-      container.innerHTML = items.map(item => `
-        <div class="glass-panel rounded-xl p-4 space-y-3 flex flex-col justify-between">
-          <img src="${item.img}" class="w-full h-40 object-cover rounded-lg" alt="${item.titulo}">
-          <div>
-            <h3 class="font-bold text-white text-base">${item.titulo}</h3>
-            <p class="text-xs text-slate-400 mt-1">${item.desc}</p>
-          </div>
-          <div class="flex items-center justify-between pt-2 border-t border-brand-border">
-            <span class="text-brand-neon font-extrabold text-sm">${item.preco}</span>
-            <button class="px-3 py-1.5 text-xs bg-brand-accent text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">Adquirir</button>
-          </div>
-        </div>
-      `).join('');
-    }
+        // [LISTA OFICIAL PADRÃO DE PRODUTOS - SERVE DE BASE E FALLBACK LOCAL]
+        window.defaultProductsList = [
+            { id: 1, category: 'discord', name: 'configuração', price: 'R$ 6,99', subtitle: 'Configuração básica inicial para seu servidor', icon: 'fa-screwdriver-wrench', image: 'img/config.jpg' },
+            { id: 2, category: 'discord', name: 'discord-básico', price: 'R$ 15,49', subtitle: 'Servidor Discord básico estruturado e pronto', icon: 'fa-server', image: 'img/dc_base.jpg' },
+            { id: 3, category: 'discord', name: 'discord-profissional', price: 'R$ 29,98', subtitle: 'Servidor completo com cargos, bots e segurança', icon: 'fa-shield-halved', image: 'img/dc_pro.jpg' },
+            { id: 4, category: 'discord', name: 'discord-premium', price: 'R$ 49,49', subtitle: 'Servidor avançado com design visual exclusivo', icon: 'fa-crown', image: 'img/dc_premiun.jpg' },
+            { id: 5, category: 'discord', name: 'discord-personalizado', price: 'R$ 69,90', subtitle: 'Setup 100% sob medida para seu projeto/guilda', icon: 'fa-star', image: 'img/dc_pers.jpg' },
 
-    function renderProjectsUI(items) {
-      const container = document.getElementById('projects-container');
-      if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">Nenhum projeto cadastrado no momento.</p>`;
-        return;
-      }
-      container.innerHTML = items.map(item => `
-        <div class="glass-panel rounded-xl p-4 space-y-3">
-          <img src="${item.img}" class="w-full h-40 object-cover rounded-lg" alt="${item.titulo}">
-          <div>
-            <span class="text-[10px] uppercase font-bold text-brand-purple">Cliente: ${item.cliente}</span>
-            <h3 class="font-bold text-white text-base">${item.titulo}</h3>
-            <p class="text-xs text-slate-400 mt-1">${item.desc}</p>
-          </div>
-        </div>
-      `).join('');
-    }
+            { id: 6, category: 'sites', name: 'link-na-bio', price: 'R$ 14,49', subtitle: 'Página de links estilizada, rápida e responsiva', icon: 'fa-link', image: 'img/link_na_bio.jpg' },
+            { id: 7, category: 'sites', name: 'página-divulgação', price: 'R$ 24,99', subtitle: 'Página focada em conversão e anúncios', icon: 'fa-bullhorn', image: 'img/divulgacao.jpg' },
+            { id: 8, category: 'sites', name: 'portfólio', price: 'R$ 29,99', subtitle: 'Mostre seus trabalhos e serviços com elegância', icon: 'fa-briefcase', image: 'img/portfolio.jpg' },
+            { id: 9, category: 'sites', name: 'landing-page', price: 'R$ 34,99', subtitle: 'Landing page moderna de alta performance', icon: 'fa-window-maximize', image: 'img/pages.jpg' },
+            { id: 10, category: 'sites', name: 'site-institucional', price: 'R$ 49,99', subtitle: 'Site corporativo profissional completo', icon: 'fa-building', image: 'img/institucional.jpg' },
+            { id: 11, category: 'sites', name: 'site-gta-rp', price: 'R$ 49,99', subtitle: 'Painel ou site dedicado para servidores GTA RP', icon: 'fa-car', image: 'img/gtarp.jpg' },
+            { id: 12, category: 'sites', name: 'site-personalizado', price: 'A partir de R$ 69,90', subtitle: 'Desenvolvimento web customizado do zero', icon: 'fa-code', image: 'img/site_personalizado.jpg' },
 
-    function renderPartnershipsUI(items) {
-      const container = document.getElementById('partnerships-container');
-      if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500">Nenhuma parceria cadastrada no momento.</p>`;
-        return;
-      }
-      container.innerHTML = items.map(item => `
-        <div class="neon-border glass-panel p-4 rounded-xl flex flex-col items-center gap-3 w-48">
-          <img src="${item.img}" class="w-16 h-16 rounded-full object-cover" alt="${item.nome}">
-          <span class="text-xs font-bold text-white text-center">${item.nome}</span>
-          <a href="${item.link}" target="_blank" class="text-[10px] text-brand-neon hover:underline">Acessar Canal Oficial</a>
-        </div>
-      `).join('');
-    }
+            { id: 13, category: 'marketing', name: 'post-design', price: 'A partir de R$ 5,49', subtitle: 'Artes criativas e profissionais para redes sociais', icon: 'fa-palette', image: 'img/post.jpg' },
+            { id: 14, category: 'marketing', name: 'arte-divulgação', price: 'A partir de R$ 9,99', subtitle: 'Banners e flyers promocionais de alto impacto', icon: 'fa-rectangle-ad', image: 'img/arte.jpg' },
+            { id: 15, category: 'marketing', name: 'edição-short', price: 'A partir de R$ 14,99', subtitle: 'Edição dinâmica de vídeos curtos / Reels / TikTok', icon: 'fa-clapperboard', image: 'img/short.jpg' },
+            { id: 16, category: 'marketing', name: 'campanha-divulgação', price: 'A partir de R$ 29,90', subtitle: 'Estratégia e material completo de marketing', icon: 'fa-rocket', image: 'img/divulgacao.jpg' }
+        ];
 
-    // Renders Listas Admin
-    function renderAdminProductsList(items) {
-      const container = document.getElementById('admin-list-produtos');
-      if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500">Nenhum item na lista.</p>`;
-        return;
-      }
-      container.innerHTML = items.map(item => `
-        <div class="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-brand-border text-xs">
-          <span class="font-bold text-white">${item.titulo} (${item.preco})</span>
-          <div class="flex gap-2">
-            <button onclick="editProduct('${item.id}')" class="px-2 py-1 bg-slate-800 text-slate-200 rounded hover:bg-slate-700">Editar</button>
-            <button onclick="window.deletarItem('produtos', '${item.id}')" class="px-2 py-1 bg-red-900/60 text-red-200 rounded hover:bg-red-800">Excluir</button>
-          </div>
-        </div>
-      `).join('');
-    }
+        // Define os produtos dinâmicos
+        window.products = [...window.defaultProductsList];
 
-    function renderAdminProjectsList(items) {
-      const container = document.getElementById('admin-list-projetos');
-      if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500">Nenhum item na lista.</p>`;
-        return;
-      }
-      container.innerHTML = items.map(item => `
-        <div class="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-brand-border text-xs">
-          <span class="font-bold text-white">${item.titulo}</span>
-          <div class="flex gap-2">
-            <button onclick="editProject('${item.id}')" class="px-2 py-1 bg-slate-800 text-slate-200 rounded hover:bg-slate-700">Editar</button>
-            <button onclick="window.deletarItem('projetos', '${item.id}')" class="px-2 py-1 bg-red-900/60 text-red-200 rounded hover:bg-red-800">Excluir</button>
-          </div>
-        </div>
-      `).join('');
-    }
+        let currentFilter = 'all';
+        let searchQuery = '';
 
-    function renderAdminPartnershipsList(items) {
-      const container = document.getElementById('admin-list-parcerias');
-      if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500">Nenhum item na lista.</p>`;
-        return;
-      }
-      container.innerHTML = items.map(item => `
-        <div class="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-brand-border text-xs">
-          <span class="font-bold text-white">${item.nome}</span>
-          <div class="flex gap-2">
-            <button onclick="editPartnership('${item.id}')" class="px-2 py-1 bg-slate-800 text-slate-200 rounded hover:bg-slate-700">Editar</button>
-            <button onclick="window.deletarItem('parcerias', '${item.id}')" class="px-2 py-1 bg-red-900/60 text-red-200 rounded hover:bg-red-800">Excluir</button>
-          </div>
-        </div>
-      `).join('');
-    }
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
 
-    // Carregar dados no formulário para Edição
-    function editProduct(id) {
-      const item = window.appState.produtos.find(p => p.id === id);
-      if (!item) return;
-      document.getElementById('prod-id').value = item.id;
-      document.getElementById('prod-titulo').value = item.titulo;
-      document.getElementById('prod-preco').value = item.preco;
-      document.getElementById('prod-img').value = item.img;
-      document.getElementById('prod-desc').value = item.desc;
-    }
+            const filtered = window.products.filter(p => {
+                const matchCat = currentFilter === 'all' || p.category === currentFilter;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.subtitle.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
 
-    function editProject(id) {
-      const item = window.appState.projetos.find(p => p.id === id);
-      if (!item) return;
-      document.getElementById('proj-id').value = item.id;
-      document.getElementById('proj-titulo').value = item.titulo;
-      document.getElementById('proj-cliente').value = item.cliente;
-      document.getElementById('proj-img').value = item.img;
-      document.getElementById('proj-desc').value = item.desc;
-    }
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400 glass-panel rounded-3xl border border-white/10">Nenhum produto encontrado para sua busca.</div>`;
+                return;
+            }
 
-    function editPartnership(id) {
-      const item = window.appState.parcerias.find(p => p.id === id);
-      if (!item) return;
-      document.getElementById('parc-id').value = item.id;
-      document.getElementById('parc-nome').value = item.nome;
-      document.getElementById('parc-link').value = item.link;
-      document.getElementById('parc-img').value = item.img;
-    }
-  </script>
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'rounded-3xl overflow-hidden border border-white/20 hover:border-white/50 transition-all duration-300 flex flex-col group hover:-translate-y-1 bg-transparent backdrop-blur-md shadow-2xl shadow-black/80';
+                card.innerHTML = `
+                    <div class="relative overflow-hidden aspect-video bg-transparent">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-95" onerror="this.src='https://placehold.co/600x400/0f1115/ffffff?text=TL+STUDIO'">
+                        <div class="absolute top-3 left-3 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-white/25 text-white backdrop-blur-md bg-black/70 shadow-lg shadow-white/10">
+                            ${product.category}
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between bg-transparent">
+                        <div>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-inner backdrop-blur-md">
+                                    <i class="fa-solid ${product.icon || 'fa-tag'}"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-white capitalize">${product.name.replace(/-/g, ' ')}</h3>
+                            </div>
+                            <p class="text-sm text-gray-200 mb-6 leading-relaxed">${product.subtitle}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-white/15">
+                            <div>
+                                <span class="text-[11px] text-gray-300 block uppercase font-bold">Investimento</span>
+                                <span class="text-lg font-black text-white text-neon">${product.price}</span>
+                            </div>
+                            <button onclick="openModal('${product.name}', '${product.price}')" class="px-5 py-2.5 btn-neon text-xs rounded-xl transition flex items-center space-x-2">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span>Adquirir</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('btn-neon');
+                btn.classList.add('bg-[#0f1115]', 'text-gray-300', 'border', 'border-white/10');
+            });
+            event.currentTarget.classList.remove('bg-[#0f1115]', 'text-gray-300', 'border', 'border-white/10');
+            event.currentTarget.classList.add('btn-neon');
+            renderProducts();
+        }
+
+        function handleSearch(query) {
+            searchQuery = query;
+            renderProducts();
+        }
+
+        function openModal(name, price) {
+            document.getElementById('modal-title').innerText = name.replace(/-/g, ' ').toUpperCase();
+            document.getElementById('modal-price').innerText = price;
+            document.getElementById('purchase-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('purchase-modal').classList.add('hidden');
+        }
+
+        // [LÓGICA DE CONTROLE DO PAINEL ADMIN E MODAIS]
+        function openAdminPortal() {
+            if (window.isAdminLoggedIn) {
+                toggleDashboardModal();
+            } else {
+                toggleLoginModal();
+            }
+        }
+
+        function toggleLoginModal() {
+            document.getElementById('login-modal').classList.toggle('hidden');
+        }
+
+        function toggleDashboardModal() {
+            document.getElementById('dashboard-modal').classList.toggle('hidden');
+            if (!document.getElementById('dashboard-modal').classList.contains('hidden')) {
+                renderDashboardProductsList();
+            }
+        }
+
+        // Autenticação do Administrador via Firebase Auth
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            const errDiv = document.getElementById('login-error');
+
+            try {
+                await window.authMethods.signInWithEmailAndPassword(window.firebaseAuth, email, pass);
+                errDiv.classList.add('hidden');
+                toggleLoginModal();
+                toggleDashboardModal();
+            } catch (err) {
+                errDiv.classList.remove('hidden');
+                errDiv.innerText = "Erro ao autenticar: Verifique se o e-mail e senha estão corretos.";
+            }
+        }
+
+        async function handleAdminLogout() {
+            await window.authMethods.signOut(window.firebaseAuth);
+            toggleDashboardModal();
+        }
+
+        // Salva ou atualiza produto no Firebase Firestore
+        async function handleSaveProduct(e) {
+            e.preventDefault();
+            const id = document.getElementById('dash-prod-id').value;
+            const prodData = {
+                id: id ? id : Date.now(),
+                name: document.getElementById('dash-prod-name').value,
+                category: document.getElementById('dash-prod-category').value,
+                price: document.getElementById('dash-prod-price').value,
+                icon: document.getElementById('dash-prod-icon').value,
+                image: document.getElementById('dash-prod-image').value,
+                subtitle: document.getElementById('dash-prod-subtitle').value
+            };
+
+            const docId = 'prod_' + prodData.id;
+            const docRef = window.firestoreMethods.doc(window.firebaseDB, 'produtos', docId);
+            await window.firestoreMethods.setDoc(docRef, prodData, { merge: true });
+            
+            resetDashForm();
+        }
+
+        // Deleta um produto do Firebase Firestore
+        async function deleteFirebaseProduct(prodId) {
+            if (confirm("Tem certeza que deseja excluir este produto do catálogo?")) {
+                const docId = 'prod_' + prodId;
+                await window.firestoreMethods.deleteDoc(window.firestoreMethods.doc(window.firebaseDB, 'produtos', docId));
+            }
+        }
+
+        // Preenche o formulário para edição
+        function editFirebaseProduct(prodId) {
+            const prod = window.products.find(p => p.id == prodId);
+            if (!prod) return;
+            document.getElementById('dash-prod-id').value = prod.id;
+            document.getElementById('dash-prod-name').value = prod.name;
+            document.getElementById('dash-prod-category').value = prod.category;
+            document.getElementById('dash-prod-price').value = prod.price;
+            document.getElementById('dash-prod-icon').value = prod.icon || 'fa-tag';
+            document.getElementById('dash-prod-image').value = prod.image;
+            document.getElementById('dash-prod-subtitle').value = prod.subtitle;
+        }
+
+        function resetDashForm() {
+            document.getElementById('product-form').reset();
+            document.getElementById('dash-prod-id').value = '';
+        }
+
+        // Renderiza a lista de gerenciamento dentro do Modal do Dashboard
+        function renderDashboardProductsList() {
+            const list = document.getElementById('dashboard-products-list');
+            if (!list) return;
+            if (!window.products || window.products.length === 0) {
+                list.innerHTML = `<p class="text-xs text-gray-500">Nenhum produto cadastrado no banco.</p>`;
+                return;
+            }
+            list.innerHTML = window.products.map(p => `
+                <div class="flex items-center justify-between bg-[#0f1115] border border-white/10 p-3 rounded-xl text-xs">
+                    <div class="flex items-center space-x-3">
+                        <img src="${p.image}" class="w-8 h-8 rounded-lg object-cover" onerror="this.src='https://placehold.co/100x100/0f1115/ffffff?text=TL'">
+                        <div>
+                            <span class="font-bold text-white capitalize block">${p.name.replace(/-/g, ' ')}</span>
+                            <span class="text-[10px] text-gray-400 uppercase">${p.category} • ${p.price}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="editFirebaseProduct('${p.id}')" class="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg transition">Editar</button>
+                        <button onclick="deleteFirebaseProduct('${p.id}')" class="px-2.5 py-1 bg-red-900/50 hover:bg-red-800 text-red-200 rounded-lg transition">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.onload = function() {
+            renderProducts();
+        }
+    </script>
 </body>
 </html>
